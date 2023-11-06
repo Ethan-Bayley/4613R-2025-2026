@@ -1,5 +1,7 @@
 #include "main.h"
 
+std::shared_ptr<OdomChassisController> drivetrain;
+
 /**
  * A callback function for LLEMU's center button.
  *
@@ -24,6 +26,16 @@ void on_center_button() {
  */
 void initialize() {
 	pros::delay(500);
+
+	drivetrain = ChassisControllerBuilder()
+		.withMotors(
+			{-1, -2}, // left motors -1, -2 (reversed)
+			{3, 4} // right motors 3, 4
+		)
+		// green gearset, 4 inch wheel diameter, 11.5 inch wheel track
+		.withDimensions(AbstractMotor::gearset::green, {{4_in, 11.5_in}, imev5GreenTPR})
+		.withOdometry()
+		.buildOdometry();	
 
 	// Autonomous Selector using LLEMU
 	ez::as::auton_selector.add_autons({
@@ -92,9 +104,6 @@ void opcontrol() {
 	pros::Motor right_mtr(2);
 
 	while (true) {
-		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
-		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
-		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
 		int left = master.get_analog(ANALOG_LEFT_Y);
 		int right = master.get_analog(ANALOG_RIGHT_Y);
 
