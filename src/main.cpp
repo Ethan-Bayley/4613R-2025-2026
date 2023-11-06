@@ -23,10 +23,21 @@ void on_center_button() {
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	pros::lcd::initialize();
-	pros::lcd::set_text(1, "Hello PROS User!");
+	pros::delay(500);
 
-	pros::lcd::register_btn1_cb(on_center_button);
+	// Autonomous Selector using LLEMU
+	ez::as::auton_selector.add_autons({
+		Auton("Example Drive\n\nDrive forward and come back.", drive_example),
+		Auton("Example Turn\n\nTurn 3 times.", turn_example),
+		Auton("Drive and Turn\n\nDrive forward, turn, come back. ", drive_and_turn),
+		Auton("Drive and Turn\n\nSlow down during drive.", wait_until_change_speed),
+		Auton("Swing Example\n\nSwing, drive, swing.", swing_example),
+		Auton("Combine all 3 movements", combining_movements),
+		Auton("Interference\n\nAfter driving forward, robot performs differently if interfered or not.", interfered_example),
+	});
+
+	// Initialize chassis and auton selector
+	ez::as::initialize();
 }
 
 /**
@@ -58,7 +69,9 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() {}
+void autonomous() {
+	ez::as::auton_selector.call_selected_auton(); // Calls selected auton from autonomous selector.
+}
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -88,6 +101,6 @@ void opcontrol() {
 		left_mtr = left;
 		right_mtr = right;
 
-		pros::delay(20);
+		pros::delay(ez::util::DELAY_TIME);
 	}
 }
