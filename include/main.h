@@ -44,6 +44,7 @@
 //#include "pros/api_legacy.h"
 
 #include "autons.hpp"
+#include "lemlib/api.hpp"
 
 /**
  * If you find doing pros::Motor() to be tedious and you'd prefer just to do

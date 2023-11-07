@@ -1,6 +1,7 @@
 #include "main.h"
+#include "hardware.hpp"
 
-std::shared_ptr<OdomChassisController> drivetrain;
+// std::shared_ptr<OdomChassisController> drivetrain;
 
 /**
  * A callback function for LLEMU's center button.
@@ -27,17 +28,17 @@ void on_center_button() {
 void initialize() {
 	pros::delay(500);
 
-	drivetrain = ChassisControllerBuilder()
-		.withMotors(
-			{-1, -2}, // left motors -1, -2 (reversed)
-			{3, 4} // right motors 3, 4
-		)
-		// green gearset, 4 inch wheel diameter, 11.5 inch wheel track
-		.withDimensions(AbstractMotor::gearset::green, {{4_in, 11.5_in}, imev5GreenTPR})
-		.withOdometry()
-		.buildOdometry();	
-
+	// drivetrain = ChassisControllerBuilder()
+	// 	.withMotors(
+	// 		{-1, -2}, // left motors -1, -2 (reversed)
+	// 		{3, 4} // right motors 3, 4
+	// 	)
+	// 	// green gearset, 4 inch wheel diameter, 11.5 inch wheel track
+	// 	.withDimensions(AbstractMotor::gearset::green, {{4_in, 11.5_in}, imev5GreenTPR})
+	// 	.withOdometry()
+	// 	.buildOdometry();	
 	// Autonomous Selector using LLEMU
+
 	ez::as::auton_selector.add_autons({
 		Auton("Example Drive\n\nDrive forward and come back.", drive_example),
 		Auton("Example Turn\n\nTurn 3 times.", turn_example),
@@ -107,8 +108,7 @@ void opcontrol() {
 		int left = master.get_analog(ANALOG_LEFT_Y);
 		int right = master.get_analog(ANALOG_RIGHT_Y);
 
-		left_mtr = left;
-		right_mtr = right;
+		drivetrain->getModel()->arcade(left, right);
 
 		pros::delay(ez::util::DELAY_TIME);
 	}
