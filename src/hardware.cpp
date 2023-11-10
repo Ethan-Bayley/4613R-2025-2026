@@ -10,3 +10,6 @@ std::shared_ptr<OdomChassisController> drivetrain =
 		.withDimensions(AbstractMotor::gearset::green, {{4_in, 11.5_in}, imev5GreenTPR})
 		.withOdometry()
 		.buildOdometry();
+
+Motor exampleMotor = Motor(2);
+pros::ADIDigitalOut pneumatic = pros::ADIDigitalOut(1, false);

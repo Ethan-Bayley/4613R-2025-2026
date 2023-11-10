@@ -8,3 +8,6 @@
 using namespace okapi;
 
 extern std::shared_ptr<OdomChassisController> drivetrain;
+
+extern Motor exampleMotor;
+extern pros::ADIDigitalOut pneumatic;
