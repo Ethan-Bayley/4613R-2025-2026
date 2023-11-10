@@ -2,7 +2,8 @@
 #include "hardware.hpp"
 
 void drive_example() {
-
+    drivetrain->moveDistance(1_tile);
+    drivetrain->turnAngle(90_deg);
 }
 
 void turn_example() {
