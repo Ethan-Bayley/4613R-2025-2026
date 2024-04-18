@@ -2,12 +2,7 @@
 
 #include "api.h"
 #include "okapi/api.hpp"
-#include "EZ-Template/api.hpp"
-#include "lemlib/api.hpp"
 
-using namespace okapi;
+using namespace okapi::literals;
 
-extern std::shared_ptr<OdomChassisController> drivetrain;
-
-extern Motor exampleMotor;
-extern pros::ADIDigitalOut pneumatic;
+extern pros::Controller master;

@@ -1,31 +1,17 @@
 #include "autons.hpp"
+#include "ARMS/api.h"
 #include "hardware.hpp"
 
-void drive_example() {
-    drivetrain->moveDistance(1_tile);
-    drivetrain->turnAngle(90_deg);
-}
+void drive_example() {}
 
-void turn_example() {
+void turn_example() {}
 
-}
+void drive_and_turn() {}
 
-void drive_and_turn() {
+void wait_until_change_speed() {}
 
-}
+void swing_example() {}
 
-void wait_until_change_speed() {
+void combining_movements() {}
 
-}
-
-void swing_example() {
-
-}
-
-void combining_movements() {
-
-}
-
-void interfered_example() {
-
-}
+void interfered_example() {}

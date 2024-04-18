@@ -1,21 +1,12 @@
 #include "main.h"
+#include "ARMS/config.h"
 #include "hardware.hpp"
 
-/**
- * A callback function for LLEMU's center button.
- *
- * When this callback is fired, it will toggle line 2 of the LCD text between
- * "I was pressed!" and nothing.
- */
-void on_center_button() {
-	static bool pressed = false;
-	pressed = !pressed;
-	if (pressed) {
-		pros::lcd::set_text(2, "I was pressed!");
-	} else {
-		pros::lcd::clear_line(2);
-	}
-}
+constexpr float FORWARD_T = 10.0;
+constexpr bool FORWARD_RED = false;
+
+constexpr float TURN_T = 16.0;
+constexpr bool TURN_RED = true;
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -24,22 +15,8 @@ void on_center_button() {
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	pros::delay(500);
-
-	// Autonomous Selector using LLEMU
-
-	ez::as::auton_selector.add_autons({
-		Auton("Example Drive\n\nDrive forward and come back.", drive_example),
-		Auton("Example Turn\n\nTurn 3 times.", turn_example),
-		Auton("Drive and Turn\n\nDrive forward, turn, come back. ", drive_and_turn),
-		Auton("Drive and Turn\n\nSlow down during drive.", wait_until_change_speed),
-		Auton("Swing Example\n\nSwing, drive, swing.", swing_example),
-		Auton("Combine all 3 movements", combining_movements),
-		Auton("Interference\n\nAfter driving forward, robot performs differently if interfered or not.", interfered_example),
-	});
-
-	// Initialize chassis and auton selector
-	ez::as::initialize();
+  arms::init();
+  pros::lcd::initialize();
 }
 
 /**
@@ -71,8 +48,23 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() {
-	ez::as::auton_selector.call_selected_auton(); // Calls selected auton from autonomous selector.
+void autonomous() {}
+
+// linear to steep
+float red_curve(float input, float t) {
+  float weight = exp(-0.1 * t);
+  return (weight + exp(0.1 * (abs(input) - 127)) * (1 - weight)) * input;
+}
+
+// S-curve
+float blue_curve(float input, float t) {
+  return exp(0.001 * (t * (abs(input) - 127))) * input;
+}
+
+// Pilons input scaling:
+// https://www.desmos.com/calculator/rcfjjg83zx
+float joystick_curves(float input, bool is_red, float t) {
+  return is_red ? red_curve(input, t) / 1.27 : blue_curve(input, t) / 1.27;
 }
 
 /**
@@ -89,14 +81,16 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-	pros::Controller master(pros::E_CONTROLLER_MASTER);
 
-	while (true) {
-		float forward = master.get_analog(ANALOG_LEFT_Y) / 10.0;
-		float turn = master.get_analog(ANALOG_RIGHT_X) / 10.0;
+  while (true) {
+    float forward = master.get_analog(ANALOG_LEFT_Y);
+    float turn = master.get_analog(ANALOG_RIGHT_X);
 
-		drivetrain->getModel()->arcade(forward, turn);
+    float forward_curve = joystick_curves(forward, FORWARD_RED, FORWARD_T);
+    float turn_curve = joystick_curves(turn, TURN_RED, TURN_T);
 
-		pros::delay(ez::util::DELAY_TIME);
-	}
+    arms::chassis::arcade(forward_curve, turn_curve);
+
+    pros::delay(ez::util::DELAY_TIME);
+  }
 }

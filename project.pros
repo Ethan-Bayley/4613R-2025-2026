@@ -4,6 +4,29 @@
         "project_name": "template",
         "target": "v5",
         "templates": {
+            "ARMS": {
+                "location": "/Users/darin/Library/Application Support/PROS/templates/ARMS@3.2.0",
+                "metadata": {
+                    "origin": "local"
+                },
+                "name": "ARMS",
+                "py/object": "pros.conductor.templates.local_template.LocalTemplate",
+                "supported_kernels": "^3.7.2",
+                "system_files": [
+                    "include/ARMS/selector.h",
+                    "include/ARMS/api.h",
+                    "include/ARMS/config.h",
+                    "include/ARMS/chassis.h",
+                    "firmware/ARMS.a",
+                    "include/ARMS/pid.h",
+                    "include/ARMS/odom.h",
+                    "include/ARMS/point.h",
+                    "include/ARMS/flags.h"
+                ],
+                "target": "v5",
+                "user_files": [],
+                "version": "3.2.0"
+            },
             "EZ-Template": {
                 "location": "/Users/darin/Library/Application Support/PROS/templates/EZ-Template@2.1.2",
                 "metadata": {
@@ -353,6 +376,7 @@
                 "version": "4.8.0"
             }
         },
-        "upload_options": {}
+        "upload_options": {},
+        "use_early_access": false
     }
 }
