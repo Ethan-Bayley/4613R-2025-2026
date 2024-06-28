@@ -1,0 +1,49 @@
+name: Build PROS Project
+
+on:
+  # push:
+  #   branches:
+  #     - main
+  pull_request:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install ARM Toolchain
+        uses: carlosperate/arm-none-eabi-gcc-action@v1
+        with:
+          release: 10.3-2021.10
+      - name: Get latest release tag
+        id: latestrelease
+        run: |
+          echo "releasetag=$(curl -s https://api.github.com/repos/purduesigbots/pros-cli/releases/latest | jq '.tag_name' | sed 's/\"//g')" >> $GITHUB_OUTPUT
+      - name: Confirm release tag
+        run: |
+          echo ${{ steps.latestrelease.outputs.releasetag }}
+      - name: Checkout Pros-CLI
+        uses: actions/checkout@v4
+        with:
+          repository: purduesigbots/pros-cli
+          ref: ${{ steps.latestrelease.outputs.releasetag }}
+          path: pros-cli
+      - name: Setup Python & Install PROS Install
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+          cache: "pip"
+      - run: pip3 install -e pros-cli/
+      - name: Testing PROS Install
+        run: pros --version
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: pros-project
+      - name: Run CI
+        working-directory: pros-project
+        run: make clean all
