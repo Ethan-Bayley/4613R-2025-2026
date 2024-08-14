@@ -4,6 +4,28 @@
         "project_name": "VRC-Pros-Template",
         "target": "v5",
         "templates": {
+            "ARMS": {
+                "location": "/Users/darin/Library/Application Support/PROS/templates/ARMS@3.2.1",
+                "metadata": {
+                    "origin": "local"
+                },
+                "name": "ARMS",
+                "py/object": "pros.conductor.templates.local_template.LocalTemplate",
+                "supported_kernels": "^4.1.0",
+                "system_files": [
+                    "include/ARMS/api.h",
+                    "include/ARMS/flags.h",
+                    "include/ARMS/config.h",
+                    "include/ARMS/pid.h",
+                    "include/ARMS/odom.h",
+                    "include/ARMS/chassis.h",
+                    "firmware/ARMS.a",
+                    "include/ARMS/point.h"
+                ],
+                "target": "v5",
+                "user_files": [],
+                "version": "3.2.1"
+            },
             "kernel": {
                 "location": "/Users/darin/Library/Application Support/PROS/templates/kernel@4.1.0",
                 "metadata": {
