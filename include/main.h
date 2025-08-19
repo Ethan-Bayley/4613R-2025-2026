@@ -77,4 +77,31 @@ void opcontrol(void);
 //#include <iostream>
 #endif
 
+namespace joystick {
+
+// https://www.desmos.com/calculator/rcfjjg83zx - blue
+float s_curve(float input, float strength) {
+  float weight = std::exp(-0.1 * strength);
+  return (weight + exp(0.1 * (std::abs(input) - 127.0)) * (1.0 - weight)) *
+         input;
+}
+
+// https://www.desmos.com/calculator/rcfjjg83zx - red
+float ramp_curve(float input, float strength) {
+  return exp(0.001 * (strength * (std::abs(input) - 127.0))) * input;
+}
+
+float deadzone(float input, float min_abs_output,
+                         float max_abs_output) {
+  if (input < min_abs_output && input > -min_abs_output) {
+    return 0.0;
+  }
+
+  return std::copysign((input - std::copysign(min_abs_output, input)) /
+                           (1 - min_abs_output / max_abs_output),
+                       input);
+}
+
+}  // namespace joystick
+
 #endif  // _PROS_MAIN_H_
