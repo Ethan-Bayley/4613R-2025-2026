@@ -3,6 +3,7 @@
 #include "lemlib/chassis/chassis.hpp"
 #include "lemlib/pose.hpp"
 #include "pros/rtos.h"
+#include "longGoalAuto.h"
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 pros::MotorGroup left_mg({11, -14, -13}, pros::MotorGearset::blue);    // Creates a motor group with forwards ports 1 & 3 and reversed port 2
@@ -146,61 +147,8 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	// 9 LONG GOAL AUTO 
-	// int TIMEOUT = 2000;
-	// int TIMEOUT_LONG = 3000;
-	// float MIN_SPEED = 80;
-	// lemlib::Pose startingPos = lemlib::Pose(-20.25, 16.25, 0);
-
-	// lemlib::Pose STACK1 = lemlib::Pose(-24, 48, -20);
-	// lemlib::Pose STACK2 = lemlib::Pose(-44, 60, -75);
-	// lemlib::Pose GOAL_WAYPOINTS = lemlib::Pose(-32, 36, 0);
-	// lemlib::Pose GOAL = lemlib::Pose(-58, 40, -180);
-	// lemlib::Pose MATCHLOAD = lemlib::Pose(GOAL.x, 8, -180);
-
-	// chassis.setPose(startingPos);
-	// chassis.moveToPoint(
-	// 	STACK1.x, STACK1.y,  
-	// 	TIMEOUT, 
-	// 	{
-	// 		.minSpeed = MIN_SPEED, 
-	// 		.earlyExitRange = 4
-	// 	}
-	// );
-	// chassis.moveToPose(
-	// 	STACK2.x, STACK2.y, STACK2.theta, 
-	// 	TIMEOUT
-	// );
-	// chassis.moveToPoint(
-	// 	GOAL_WAYPOINTS.x, GOAL_WAYPOINTS.y,
-	// 	TIMEOUT, 
-	// 	{
-	// 		.forwards = false,
-	// 		.minSpeed = MIN_SPEED, 
-	// 		.earlyExitRange = 4
-	// 	}
-	// );
-	// chassis.moveToPose(
-	// 	GOAL.x, GOAL.y, GOAL.theta, 
-	// 	TIMEOUT_LONG,
-	// 	{
-	// 		.forwards = false
-	// 	}
-	// );
-	// pros::c::delay(2000);
-	// chassis.moveToPoint(
-	// 	MATCHLOAD.x, MATCHLOAD.y,
-	// 	TIMEOUT
-	// );
-	// pros::c::delay(1000);
-	// chassis.moveToPose(
-	// 	GOAL.x, GOAL.y, GOAL.theta, 
-	// 	TIMEOUT_LONG,
-	// 	{
-	// 		.forwards = false
-	// 	}
-	// );
-
+	LongGoalAuto autoRoutine(chassis);
+	autoRoutine.run();
 	// SKILLS AUTO
 	lemlib::Pose startingPos = lemlib::Pose(16, 24, 90);
 	lemlib::Pose LOADER_BR = lemlib::Pose(48, 12, -180);
