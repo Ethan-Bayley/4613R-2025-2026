@@ -145,68 +145,6 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	int TIMEOUT = 2000;
-	int SHORT_TIMEOUT = 800;
-	float MAX_SPEED = 100;
-	float MIN_SPEED = 80;
-
-	lemlib::Pose STARTING_POS(16.5, 24, 0);
-	lemlib::Pose INTAKE_POS_1(16.5, 45, 0);
-	lemlib::Pose INTAKE_POS_2(42, 68, 30);
-	lemlib::Pose GOAL_WAYPOINT(42, 45, 30);
-	lemlib::Pose LOADER(48, 10, 180);
-	lemlib::Pose PREP_GOAL(49, 35, 180);
-	lemlib::Pose NEW_GOAL(49, 50, 180);
-	
-	chassis.setPose(STARTING_POS.x, STARTING_POS.y, STARTING_POS.theta);
-	chassis.moveToPose(
-		INTAKE_POS_1.x, INTAKE_POS_1.y, INTAKE_POS_1.theta, 
-		TIMEOUT, 
-		{
-			.minSpeed = MIN_SPEED,
-			.earlyExitRange = 2
-		}
-	);
-	chassis.moveToPose(
-		INTAKE_POS_2.x, INTAKE_POS_2.y, INTAKE_POS_2.theta, 
-		TIMEOUT, 
-		{
-		}
-	);
-	chassis.moveToPoint(
-		GOAL_WAYPOINT.x, GOAL_WAYPOINT.y,  
-		SHORT_TIMEOUT, 
-		{
-			.forwards = false,
-			.minSpeed = MIN_SPEED, 
-			.earlyExitRange = 5
-
-		}
-	);
-	chassis.moveToPoint(
-		PREP_GOAL.x, PREP_GOAL.y,  
-		SHORT_TIMEOUT, 
-		{
-			.forwards = false,
-			.minSpeed = MIN_SPEED, 
-			.earlyExitRange = 5
-
-		}
-	);
-	chassis.moveToPose(
-		NEW_GOAL.x, NEW_GOAL.y, NEW_GOAL.theta, 
-		TIMEOUT, 
-		{
-			.forwards = false
-		}
-	);
-
-	// pros::Task screen_task([&] {
-	// 	while (true) {
-	// 		pros::lcd::print(0, "X: %f", "error: %f", 90 - chassis.getPose().theta);
-	// 		pros::delay(25);
-	// 	}
-	// });
 
 }
 
