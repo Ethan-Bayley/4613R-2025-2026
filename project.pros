@@ -1,33 +1,11 @@
 {
     "py/object": "pros.conductor.project.Project",
     "py/state": {
-        "project_name": "VRC-Pros-Template",
+        "project_name": "v5-programming-chassis",
         "target": "v5",
         "templates": {
-            "ARMS": {
-                "location": "/Users/darin/Library/Application Support/PROS/templates/ARMS@3.2.1",
-                "metadata": {
-                    "origin": "local"
-                },
-                "name": "ARMS",
-                "py/object": "pros.conductor.templates.local_template.LocalTemplate",
-                "supported_kernels": "^4.1.0",
-                "system_files": [
-                    "include/ARMS/api.h",
-                    "include/ARMS/flags.h",
-                    "include/ARMS/config.h",
-                    "include/ARMS/pid.h",
-                    "include/ARMS/odom.h",
-                    "include/ARMS/chassis.h",
-                    "firmware/ARMS.a",
-                    "include/ARMS/point.h"
-                ],
-                "target": "v5",
-                "user_files": [],
-                "version": "3.2.1"
-            },
             "LemLib": {
-                "location": "C:\\Users\\robostudent\\AppData\\Roaming\\PROS\\templates\\LemLib@0.5.6",
+                "location": "C:\\Users\\zhouc\\AppData\\Roaming\\PROS\\templates\\LemLib@0.5.6",
                 "metadata": {
                     "origin": "LemLib"
                 },
@@ -70,7 +48,7 @@
                 "version": "0.5.6"
             },
             "kernel": {
-                "location": "/Users/darin/Library/Application Support/PROS/templates/kernel@4.2.1",
+                "location": "C:\\Users\\zhouc\\AppData\\Roaming\\PROS\\templates\\kernel@4.2.1",
                 "metadata": {
                     "cold_addr": "58720256",
                     "cold_output": "bin/cold.package.bin",
@@ -146,7 +124,7 @@
                 "version": "4.2.1"
             },
             "liblvgl": {
-                "location": "/Users/darin/Library/Application Support/PROS/templates/liblvgl@9.2.0",
+                "location": "C:\\Users\\zhouc\\AppData\\Roaming\\PROS\\templates\\liblvgl@9.2.0",
                 "metadata": {
                     "origin": "pros-mainline"
                 },
