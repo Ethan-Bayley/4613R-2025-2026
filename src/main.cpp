@@ -150,6 +150,8 @@ void autonomous() {
 	LongGoalAuto autoRoutine(chassis);
 	autoRoutine.run();
 	// SKILLS AUTO
+
+	// This sucks because I am not putting it into a different function.
 	lemlib::Pose startingPos = lemlib::Pose(16, 24, 90);
 	lemlib::Pose LOADER_BR = lemlib::Pose(48, 12, -180);
 	lemlib::Pose GOAL_R = lemlib::Pose(45, 40, -180);
