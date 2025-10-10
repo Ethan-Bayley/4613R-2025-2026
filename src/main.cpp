@@ -153,6 +153,8 @@ void autonomous() {
 
 	// This sucks because I am not putting it into a different function.
 	// Dont be so hard on yourself, you can do it! - Ethan
+
+	// MORE AUTO SKILLS STUFF
 	lemlib::Pose startingPos = lemlib::Pose(16, 24, 90);
 	lemlib::Pose LOADER_BR = lemlib::Pose(48, 12, -180);
 	lemlib::Pose GOAL_R = lemlib::Pose(45, 40, -180);
