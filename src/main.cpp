@@ -2,7 +2,7 @@
 #include "lemlib/api.hpp" // IWYU pragma: keep
 #include "lemlib/chassis/chassis.hpp"
 #include "lemlib/pose.hpp"
-#include "longGoalAuto.h"
+#include "autoLongGoal.h"
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 pros::MotorGroup left_mg({11, -14, -13}, pros::MotorGearset::blue);    // Creates a motor group with forwards ports 1 & 3 and reversed port 2
@@ -147,7 +147,7 @@ void competition_initialize() {}
  */
 void autonomous() {
 	// Match auto Red left
-	// LongGoalAuto autoRoutine(chassis);
+	// autoLongGoal autoRoutine(chassis);
 	// autoRoutine.run();
 
 	
