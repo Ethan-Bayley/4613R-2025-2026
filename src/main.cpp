@@ -152,65 +152,72 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	LongGoalAuto autoRoutine(chassis);
-	autoRoutine.run();
-	// SKILLS AUTO
-	
-	lemlib::Pose startingPos = lemlib::Pose(16, 24, 90);
-	lemlib::Pose LOADER_BR = lemlib::Pose(48, 12, -180);
-	lemlib::Pose GOAL_R = lemlib::Pose(45, 40, -180);
-	lemlib::Pose LOADER_TR_WAY = lemlib::Pose(45, 30, -180);
-	lemlib::Pose LOADER_TR_WAY1 = lemlib::Pose(30, 48, 20);
-	lemlib::Pose LOADER_TR_WAY2 = lemlib::Pose(24, 125, 40);
-	lemlib::Pose LOADER_TR = lemlib::Pose(48, 135, 0);
-	int TIMEOUT = 2000;
-	int TIMEOUT_SHORT = 1000;
-	float MIN_SPEED = 80;
+		lemlib::Pose startingPos = lemlib::Pose(0, 0, 0);
+		lemlib::Pose rotatedStartingPos = lemlib::Pose(0, 10, 90);
+		Drivetrain drive(chassis, controller);
+		drive.setPose(startingPos);
+		drive.moveToPose(rotatedStartingPos, 2000);
 
-	chassis.setPose(startingPos);
-	chassis.moveToPose(
-		LOADER_BR.x, LOADER_BR.y, LOADER_BR.theta,
-		TIMEOUT, 
-		{
-			.minSpeed = MIN_SPEED, 
-			.earlyExitRange = 8
-		}
-	);
-	chassis.moveToPose(
-		GOAL_R.x, GOAL_R.y, GOAL_R.theta, 
-		TIMEOUT,
-		{
-			.forwards = false
-		}
-	);
-	chassis.moveToPose(
-		LOADER_TR_WAY.x, LOADER_TR_WAY.y, LOADER_TR_WAY.theta,
-		TIMEOUT_SHORT,
-		{
-			.earlyExitRange = 4
-		}
-	);
-	chassis.moveToPose(
-		LOADER_TR_WAY1.x, LOADER_TR_WAY1.y, LOADER_TR_WAY1.theta,
-		TIMEOUT,
-		{
-			.earlyExitRange = 4
-		}
-	);
-	chassis.moveToPose(
-		LOADER_TR_WAY2.x, LOADER_TR_WAY2.y, LOADER_TR_WAY2.theta,
-		TIMEOUT,
-		{
-			.earlyExitRange = 4
-		}
-	);
-	chassis.moveToPose(
-		LOADER_TR.x, LOADER_TR.y, LOADER_TR.theta,
-		TIMEOUT,
-		{
-			.earlyExitRange = 4
-		}
-	);
+
+	// LongGoalAuto autoRoutine(chassis);
+	// autoRoutine.run();
+	// // SKILLS AUTO
+	
+	// lemlib::Pose startingPos = lemlib::Pose(16, 24, 90);
+	// lemlib::Pose LOADER_BR = lemlib::Pose(48, 12, -180);
+	// lemlib::Pose GOAL_R = lemlib::Pose(45, 40, -180);
+	// lemlib::Pose LOADER_TR_WAY = lemlib::Pose(45, 30, -180);
+	// lemlib::Pose LOADER_TR_WAY1 = lemlib::Pose(30, 48, 20);
+	// lemlib::Pose LOADER_TR_WAY2 = lemlib::Pose(24, 125, 40);
+	// lemlib::Pose LOADER_TR = lemlib::Pose(48, 135, 0);
+	// int TIMEOUT = 2000;
+	// int TIMEOUT_SHORT = 1000;
+	// float MIN_SPEED = 80;
+
+	// chassis.setPose(startingPos);
+	// chassis.moveToPose(
+	// 	LOADER_BR.x, LOADER_BR.y, LOADER_BR.theta,
+	// 	TIMEOUT, 
+	// 	{
+	// 		.minSpeed = MIN_SPEED, 
+	// 		.earlyExitRange = 8
+	// 	}
+	// );
+	// chassis.moveToPose(
+	// 	GOAL_R.x, GOAL_R.y, GOAL_R.theta, 
+	// 	TIMEOUT,
+	// 	{
+	// 		.forwards = false
+	// 	}
+	// );
+	// chassis.moveToPose(
+	// 	LOADER_TR_WAY.x, LOADER_TR_WAY.y, LOADER_TR_WAY.theta,
+	// 	TIMEOUT_SHORT,
+	// 	{
+	// 		.earlyExitRange = 4
+	// 	}
+	// );
+	// chassis.moveToPose(
+	// 	LOADER_TR_WAY1.x, LOADER_TR_WAY1.y, LOADER_TR_WAY1.theta,
+	// 	TIMEOUT,
+	// 	{
+	// 		.earlyExitRange = 4
+	// 	}
+	// );
+	// chassis.moveToPose(
+	// 	LOADER_TR_WAY2.x, LOADER_TR_WAY2.y, LOADER_TR_WAY2.theta,
+	// 	TIMEOUT,
+	// 	{
+	// 		.earlyExitRange = 4
+	// 	}
+	// );
+	// chassis.moveToPose(
+	// 	LOADER_TR.x, LOADER_TR.y, LOADER_TR.theta,
+	// 	TIMEOUT,
+	// 	{
+	// 		.earlyExitRange = 4
+	// 	}
+	// );
 }
 
 /**

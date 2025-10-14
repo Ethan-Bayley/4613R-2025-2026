@@ -9,15 +9,14 @@ public:
     Drivetrain(lemlib::Chassis &drivetrain, pros::Controller &controller);
     
     void arcade();
+    void setPose(lemlib::Pose pose);
+    void moveToPose(lemlib::Pose pose, int timeout);
     void turnToPoint();
-    void moveToPoint();
-    void setPose();
+    
 
 private:
-
     lemlib::Chassis &drivetrain;
     pros::Controller &controller;
-    
 };
 
 #endif
