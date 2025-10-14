@@ -1,4 +1,4 @@
-#include "autoLongGoal.h"
+#include "AutoLongGoal.h"
 
 #include "lemlib/api.hpp"  // IWYU pragma: keep
 #include "lemlib/chassis/chassis.hpp"
