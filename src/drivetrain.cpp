@@ -1,92 +1,27 @@
 #include "drivetrain.h"
 #include "lemlib/api.hpp" // IWYU pragma: keep
+#include "lemlib/chassis/chassis.hpp"
+#include "pros/misc.hpp"
 
 //MARK: - CONSTANTS
 
+//MARK: - INITIALISERS
 
+Drivetrain::Drivetrain(lemlib::Chassis &drivetrain, pros::Controller &controller) 
+    : drivetrain(drivetrain), controller(controller) {}
 
 //MARK: - INITIALISERS
 
-Drivetrain::Drivetrain(pros::MotorGroup &left_mg, pros::MotorGroup &right_mg)
-    : left_mg(left_mg), right_mg(right_mg) 
-{
-    lemlib::Drivetrain drive(
-        &left_mg,
-        &right_mg,
-        12, 
-        lemlib::Omniwheel::NEW_325, 
-        400, 
-        2
-    );
-
-    pros::Imu imu(10);
-pros::Rotation odometry(-20);
-lemlib::TrackingWheel vertical_tracking_wheel(
-	&odometry, 
-	lemlib::Omniwheel::NEW_2, 
-	0
-);
-lemlib::OdomSensors sensors(
-	&vertical_tracking_wheel,
-	nullptr, 
-	nullptr,
-	nullptr, 
-	&imu
-);
-
-// lateral PID controller
-lemlib::ControllerSettings lateral_controller(
-	6, // proportional gain (kP)
-	0, // integral gain (kI)
-	0, // derivative gain (kD)
-	0, // anti windup
-	0, // small error range, in inches
-	0, // small error range timeout, in milliseconds
-	0, // large error range, in inches
-	0, // large error range timeout, in milliseconds
-	10 // maximum acceleration (slew)
-);
-
-// angular PID controller
-lemlib::ControllerSettings angular_controller(
-	1.75, // proportional gain (kP)
-	0, // integral gain (kI)
-	10, // derivative gain (kD)
-	3, // anti windup
-	0, // small error range, in degrees
-	0, // small error range timeout, in milliseconds
-	0, // large error range, in degrees
-	0, // large error range timeout, in milliseconds
-	10 // maximum acceleration (slew)
-);
-
-// input curve for throttle input during driver control
-lemlib::ExpoDriveCurve throttle_curve(
-	3, // joystick deadband out of 127
-	10, // minimum output where drivetrain will move out of 127
-	1.019 // expo curve gain
-);
-
-// input curve for steer input during driver control
-lemlib::ExpoDriveCurve steer_curve(
-	3, // joystick deadband out of 127
-	10, // minimum output where drivetrain will move out of 127
-	1.019 // expo curve gain
-);
-
-lemlib::Chassis chassis(
-	drivetrain, 
-	lateral_controller, 
-	angular_controller, 
-	sensors, 
-	&throttle_curve, 
-	&steer_curve
-);
-
+void Drivetrain::arcade() {
+	int leftY = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+    int leftX = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X);
+	drivetrain.arcade(leftY, leftX);
 }
 
-//MARK: - METHODS
+// void Drivetrain::turnToPoint(){
 
-void Drivetrain::moveToPoint(Lemlib::Pose target, ) {
-    chassis.moveToPoint(target.x, target.y, target.theta, timeout);
-}
+// };
+
+// void moveToPoint();
+// void setPose();
+

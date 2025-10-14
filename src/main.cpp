@@ -5,6 +5,10 @@
 #include "pros/rtos.h"
 #include "longGoalAuto.h"
 
+#include "drivetrain.h"
+
+
+
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 pros::MotorGroup left_mg({11, -14, -13}, pros::MotorGearset::blue);    // Creates a motor group with forwards ports 1 & 3 and reversed port 2
 pros::MotorGroup right_mg({1, 2, -3}, pros::MotorGearset::blue);  // Creates a motor group with forwards port 5 and reversed ports 4 & 6
@@ -104,6 +108,7 @@ void on_center_button() {
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
+	printf("running");
 	pros::lcd::initialize();
 	chassis.calibrate();
 	chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
@@ -114,7 +119,7 @@ void initialize() {
 			pros::lcd::print(2, "Angle: %f", chassis.getPose().theta);
 		}
 	});
-	
+
 }
 
 /**
@@ -222,13 +227,9 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+	Drivetrain drive(chassis, controller);
 	while (true) {
-		// get left y and right x positions
-        int leftY = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
-        int rightX = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
-        // move the robot
-        chassis.arcade(leftY, rightX);
-        // delay to save resources
+		drive.arcade();
         pros::delay(25);                               // Run for 20 ms then update
 	}
 }

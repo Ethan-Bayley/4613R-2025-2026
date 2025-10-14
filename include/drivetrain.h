@@ -1,23 +1,23 @@
 #ifndef DRIVETRAIN_H
 #define DRIVETRAIN_H
-
-#include "lemlib/api.h"
+#include "lemlib/chassis/chassis.hpp"
+#include "pros/misc.hpp"
 
 class Drivetrain{
 
 public:
-    Drivetrain(pros::MotorGroup &left_mg, pros::MotorGroup &right_mg);
+    Drivetrain(lemlib::Chassis &drivetrain, pros::Controller &controller);
     
+    void arcade();
     void turnToPoint();
     void moveToPoint();
     void setPose();
 
 private:
 
-    pros::MotorGroup &left_mg;
-    pros::MotorGroup &right_mg;
-
-    lemlib::Chassis &drivetrain
+    lemlib::Chassis &drivetrain;
+    pros::Controller &controller;
+    
 };
 
 #endif
