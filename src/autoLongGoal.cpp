@@ -1,4 +1,4 @@
-#include "longGoalAuto.h"
+#include "AutoLongGoal.h"
 
 #include "lemlib/api.hpp"  // IWYU pragma: keep
 #include "lemlib/chassis/chassis.hpp"
@@ -22,14 +22,14 @@ const lemlib::Pose MATCHLOAD(GOAL.x, 8, -180);
 // MARK: - Initialisers
 //--------------------------------------
 
-LongGoalAuto::LongGoalAuto(lemlib::Chassis &chassis) 
+autoLongGoal::autoLongGoal(lemlib::Chassis &chassis) 
     : chassis(chassis) {}
 
 //--------------------------------------
 // MARK: - Methods
 //--------------------------------------
 
-void LongGoalAuto::run() {
+void autoLongGoal::run() {
     chassis.setPose(STARTING_POS);
 	chassis.moveToPoint(
 		STACK1.x, STACK1.y,  
