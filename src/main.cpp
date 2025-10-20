@@ -4,6 +4,10 @@
 #include "lemlib/pose.hpp"
 #include "autoLongGoal.h"
 #include "config.hpp"
+#include "pros/adi.hpp"
+#include "pros/motors.hpp"
+#include "subsystems/drivetrain.h"
+#include "subsystems/intake.h"
 
 /**
  * A callback function for LLEMU's center button.
@@ -92,6 +96,7 @@ void autonomous() {
  */
 void opcontrol() {
 	Drivetrain drive(chassis, controller);
+	Intake intake(bottomIntake, matchLoader, controller);
 	while (true) {
 		drive.arcade();
         pros::delay(25);                               // Run for 20 ms then update
