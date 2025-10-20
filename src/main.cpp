@@ -38,7 +38,7 @@ void initialize() {
 			pros::lcd::print(2, "Angle: %f", chassis.getPose().theta);
 		}
 	});
-	
+
 }
 
 /**
@@ -91,13 +91,9 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+	Drivetrain drive(chassis, controller);
 	while (true) {
-		// get left y and right x positions
-        int leftY = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
-        int rightX = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
-        // move the robot
-        chassis.arcade(leftY, rightX);
-        // delay to save resources
+		drive.arcade();
         pros::delay(25);                               // Run for 20 ms then update
 	}
 }

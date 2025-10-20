@@ -679,6 +679,7 @@ class Chassis {
          * chassis.moveToPoint(7.5, 7.5, 4000, {.minSpeed = 60, .earlyExitRange = 5});
          * @endcode
          */
+         
         void moveToPoint(float x, float y, int timeout, MoveToPointParams params = {}, bool async = true);
         /**
          * @brief Move the chassis along a path
