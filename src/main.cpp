@@ -28,7 +28,6 @@ void on_center_button() {
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	printf("running");
 	pros::lcd::initialize();
 	chassis.calibrate();
 	chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
