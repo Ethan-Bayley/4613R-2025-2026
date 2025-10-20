@@ -4,6 +4,7 @@
 #include "lemlib/pose.hpp"
 #include "autoLongGoal.h"
 #include "config.hpp"
+#include "drivetrain.h"
 
 /**
  * A callback function for LLEMU's center button.
