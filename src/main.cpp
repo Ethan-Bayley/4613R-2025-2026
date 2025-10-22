@@ -4,22 +4,7 @@
 #include "lemlib/pose.hpp"
 #include "autoLongGoal.h"
 #include "config.hpp"
-
-/**
- * A callback function for LLEMU's center button.
- *
- * When this callback is fired, it will toggle line 2 of the LCD text between
- * "I was pressed!" and nothing.
- */
-void on_center_button() {
-	static bool pressed = false;
-	pressed = !pressed;
-	if (pressed) {
-		pros::lcd::set_text(2, "I was pressed!");
-	} else {
-		pros::lcd::clear_line(2);
-	}
-}
+#include <drivetrain.h>
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -94,6 +79,6 @@ void opcontrol() {
 	Drivetrain drive(chassis, controller);
 	while (true) {
 		drive.arcade();
-        pros::delay(25);                               // Run for 20 ms then update
+    pros::delay(25);                               // Run for 20 ms then update
 	}
 }
