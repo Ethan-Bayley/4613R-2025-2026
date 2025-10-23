@@ -5,6 +5,8 @@
 #include "autoLongGoal.h"
 #include "config.hpp"
 #include "drivetrain.h"
+#include "pros/motors.hpp"
+#include "score.h"
 
 /**
  * A callback function for LLEMU's center button.
@@ -93,8 +95,9 @@ void autonomous() {
  */
 void opcontrol() {
 	Drivetrain drive(chassis, controller);
+	//Score score(scoreMotor, middleGoalPiston, controller);
 	while (true) {
 		drive.arcade();
-        pros::delay(25);                               // Run for 20 ms then update
+        pros::delay(25);
 	}
 }

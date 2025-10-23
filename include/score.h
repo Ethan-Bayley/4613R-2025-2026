@@ -13,6 +13,7 @@ class Score{
 
     private:
         pros::Controller &controller;
+        pros::adi::Pneumatics &middleGoalPiston;
         pros::Motor &scoreMotor;
 
         void scoreHigh();
