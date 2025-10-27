@@ -8,5 +8,7 @@
 
 extern pros::Controller controller;
 extern lemlib::Chassis chassis;
-extern pros::Motor bottomIntake;
-extern pros::adi::Pneumatics matchLoader;
+extern pros::Motor bottomMotor;
+extern pros::Motor topMotor;
+extern pros::adi::Pneumatics matchLoaderPiston;
+extern pros::adi::Pneumatics middleGoalPiston;

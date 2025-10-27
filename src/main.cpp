@@ -5,9 +5,10 @@
 #include "autoLongGoal.h"
 #include "config.hpp"
 #include "pros/adi.hpp"
+#include "pros/misc.h"
 #include "pros/motors.hpp"
 #include "subsystems/drivetrain.h"
-#include "subsystems/intake.h"
+#include "subsystems/conveyer.h"
 
 /**
  * A callback function for LLEMU's center button.
@@ -96,10 +97,28 @@ void autonomous() {
  */
 void opcontrol() {
 	Drivetrain drive(chassis, controller);
-	Intake intake(bottomIntake, matchLoader, controller);
-	//Score score(scoreMotor, middleGoalPiston, controller);
+	Conveyer conveyer(bottomMotor, topMotor, matchLoaderPiston, middleGoalPiston);
 	while (true) {
 		drive.arcade();
-        pros::delay(25);
+		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+			
+			conveyer.transitionTo(Conveyer::SCORE_LONG);
+		}
+		else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
+			conveyer.transitionTo(Conveyer::SCORE_MIDDLE);
+		}
+		else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+			conveyer.transitionTo(Conveyer::INTAKE);
+		}
+		else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+			conveyer.transitionTo(Conveyer::OUTTAKE);
+		}
+		else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
+			conveyer.transitionTo(Conveyer::MATCH_LOADER);
+		} 
+		else {
+			topMotor.move_voltage(0);
+		}
+		pros::delay(25);
 	}
 }
