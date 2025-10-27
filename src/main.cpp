@@ -97,8 +97,9 @@ void autonomous() {
 void opcontrol() {
 	Drivetrain drive(chassis, controller);
 	Intake intake(bottomIntake, matchLoader, controller);
+	//Score score(scoreMotor, middleGoalPiston, controller);
 	while (true) {
 		drive.arcade();
-        pros::delay(25);                               // Run for 20 ms then update
+        pros::delay(25);
 	}
 }
