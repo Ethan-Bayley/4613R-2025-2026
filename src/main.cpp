@@ -100,25 +100,23 @@ void opcontrol() {
 	Conveyer conveyer(bottomMotor, topMotor, matchLoaderPiston, middleGoalPiston);
 	while (true) {
 		drive.arcade();
-		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
-			
+		while (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
 			conveyer.transitionTo(Conveyer::SCORE_LONG);
 		}
-		else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
+		while (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
 			conveyer.transitionTo(Conveyer::SCORE_MIDDLE);
 		}
-		else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+		while (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
 			conveyer.transitionTo(Conveyer::INTAKE);
 		}
-		else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+		while (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
 			conveyer.transitionTo(Conveyer::OUTTAKE);
 		}
-		else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
+		while (controller.get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
 			conveyer.transitionTo(Conveyer::MATCH_LOADER);
 		} 
-		else {
-			topMotor.move_voltage(0);
-		}
+		topMotor.move_voltage(0);
+		bottomMotor.move_voltage(0);
 		pros::delay(25);
 	}
 }
