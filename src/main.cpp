@@ -2,9 +2,7 @@
 #include "lemlib/api.hpp" // IWYU pragma: keep
 #include "lemlib/chassis/chassis.hpp"
 #include "lemlib/pose.hpp"
-#include "autoLongGoal.h"
-#include "config.hpp"
-#include <drivetrain.h>
+#include "config.h"
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -14,15 +12,6 @@
  */
 void initialize() {
 	pros::lcd::initialize();
-	chassis.calibrate();
-	chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
-	pros::Task screen_task([&] {
-		while (true) {
-			pros::lcd::print(0, "X: %f", chassis.getPose().x);
-			pros::lcd::print(1, "Y: %f", chassis.getPose().y);
-			pros::lcd::print(2, "Angle: %f", chassis.getPose().theta);
-		}
-	});
 
 }
 
@@ -76,9 +65,5 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-	Drivetrain drive(chassis, controller);
-	while (true) {
-		drive.arcade();
-    pros::delay(25);                               // Run for 20 ms then update
-	}
+	
 }
