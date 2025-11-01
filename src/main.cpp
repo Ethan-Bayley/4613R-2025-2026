@@ -1,8 +1,17 @@
 #include "main.h"
+#include "EventLoop.h"
 #include "lemlib/api.hpp" // IWYU pragma: keep
-#include "lemlib/chassis/chassis.hpp"
-#include "lemlib/pose.hpp"
-#include "config.h"
+#include "subsystems/DriveConstants.h"
+#include "pros/misc.h"
+#include "pros/misc.hpp"
+#include "Robot.h"
+#include "subsystems/Conveyer.h"
+#include "subsystems/MatchLoad.h"
+#include <memory>
+
+pros::Controller controller(pros::E_CONTROLLER_MASTER);
+EventLoop eventLoop{controller};
+std::unique_ptr<Robot> robotInstance;
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -13,6 +22,17 @@
 void initialize() {
 	pros::lcd::initialize();
 
+	robotInstance = std::make_unique<Robot>(eventLoop);
+
+	robotInstance->addSubsystem(
+		std::make_unique<Conveyer>()
+	);
+	robotInstance->addSubsystem(
+		std::make_unique<MatchLoad>()
+	);
+	
+	robotInstance->setup();
+	robotInstance->registerButtonHandlers();
 }
 
 /**
@@ -65,5 +85,12 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+	while (true) {
+		int leftY = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+    int leftX = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X);
+		chassis.arcade(leftY, leftX);
+		robotInstance->update();
+		pros::delay(25);
+	}
 	
 }

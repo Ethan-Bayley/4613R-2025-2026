@@ -3,7 +3,6 @@
 #include <functional>
 #include <vector>
 
-#include "lemlib/api.hpp"
 #include "pros/misc.hpp"
 
 struct ButtonBinding {

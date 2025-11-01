@@ -1,4 +1,5 @@
 #include "EventLoop.h"
+#include <cstdio>
 
 EventLoop::EventLoop(pros::Controller &controller) : controller(controller) { }
 
@@ -21,10 +22,13 @@ void EventLoop::update() {
 
     // If was not pressed, and bindings last state was 'pressed' handle release
     if (!currentState && binding.previousState && binding.onRelease) {
+
       binding.onRelease();
     }
 
+    binding.previousState = currentState;
   }
+
 }
 
 void EventLoop::clearBindings() {
