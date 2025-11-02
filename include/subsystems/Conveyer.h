@@ -1,6 +1,6 @@
 #pragma once
 
-#include "EventLoop.h"
+#include "commands/EventLoop.h"
 #include "Subsystem.h"
 #include "pros/adi.hpp"
 #include "pros/motors.hpp"
@@ -15,12 +15,13 @@ class Conveyer : public Subsystem {
 
     void setup() override;
     void registerButtonHandlers(EventLoop &eventLoop) override;
+    void registerJoystickHandlers(EventLoop &eventLoop) override;
+    void update() override;
 
     void intake();
     void outtake();
     void stow();
     void stop();
-
     void scoreLong();
     void scoreMiddle();
 

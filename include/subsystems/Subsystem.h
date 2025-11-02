@@ -1,6 +1,6 @@
 #pragma once
 
-#include "EventLoop.h"
+#include "commands/EventLoop.h"
 
 class Subsystem {
 public:
@@ -8,6 +8,8 @@ public:
 
   virtual void setup() = 0;
   virtual void registerButtonHandlers(EventLoop &eventLoop) = 0;
+  virtual void registerJoystickHandlers(EventLoop &eventLoop) = 0;
+  virtual void update() = 0;
 
 };
 

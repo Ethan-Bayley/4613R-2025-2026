@@ -15,10 +15,18 @@ MatchLoad::MatchLoad(int pistonPort1, int pistonPort2) :
 }
 
 void MatchLoad::registerButtonHandlers(EventLoop &eventLoop) {
-  eventLoop.registerBinding(pros::E_CONTROLLER_DIGITAL_B, [this]() {this->extend();}, [this]() {this->retract();});
+  eventLoop.registerButton(pros::E_CONTROLLER_DIGITAL_B, this, &MatchLoad::extend, &MatchLoad::retract);
+}
+
+void MatchLoad::registerJoystickHandlers(EventLoop &eventLoop) {
+
 }
 
 void MatchLoad::setup() {
+
+}
+
+void MatchLoad::update() {
 
 }
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "EventLoop.h"
+#include "commands/EventLoop.h"
 #include "lemlib/api.hpp" // IWYU pragma: keep
 #include "subsystems/Subsystem.h"
 #include <memory>
@@ -13,7 +13,7 @@ class Robot {
 
     void addSubsystem(std::unique_ptr<Subsystem> subsystem);
     void initSubsystems();
-    void registerButtonHandlers();
+    void registerCommands();
     void update();
 
   private:

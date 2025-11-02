@@ -1,11 +1,13 @@
 #include "main.h"
-#include "EventLoop.h"
+#include "commands/EventLoop.h"
 #include "lemlib/api.hpp" // IWYU pragma: keep
 #include "subsystems/DriveConstants.h"
 #include "pros/misc.h"
 #include "pros/misc.hpp"
 #include "Robot.h"
 #include "subsystems/Conveyer.h"
+#include "subsystems/Drivetrain.h"
+#include "subsystems/DriveConstants.h"
 #include "subsystems/MatchLoad.h"
 #include <memory>
 
@@ -30,9 +32,12 @@ void initialize() {
 	robotInstance->addSubsystem(
 		std::make_unique<MatchLoad>()
 	);
+	robotInstance->addSubsystem(
+		std::make_unique<Drivetrain>(drive)
+	);
 	
 	robotInstance->setup();
-	robotInstance->registerButtonHandlers();
+	robotInstance->registerCommands();
 }
 
 /**
@@ -86,9 +91,6 @@ void autonomous() {
  */
 void opcontrol() {
 	while (true) {
-		int leftY = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
-    int leftX = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X);
-		chassis.arcade(leftY, leftX);
 		robotInstance->update();
 		pros::delay(25);
 	}

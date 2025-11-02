@@ -1,5 +1,4 @@
 #include "subsystems/Conveyer.h"
-#include "subsystems/conveyer.h"
 #include <cstdio>
 
 Conveyer::Conveyer() : 
@@ -27,31 +26,43 @@ void Conveyer::setup() {
   bottomMotor.set_reversed(true);
 }
 
+void Conveyer::update() {
+
+}
+
 void Conveyer::registerButtonHandlers(EventLoop &eventLoop) {
   // Intake
-  eventLoop.registerBinding(
+  eventLoop.registerButton(
     pros::E_CONTROLLER_DIGITAL_R1, 
-    [this]() {this->intake();}, 
-    [this]() {this->stow();}
+    this, 
+    &Conveyer::intake, 
+    &Conveyer::stow
   );
   // Outtake
-  eventLoop.registerBinding(
+  eventLoop.registerButton(
     pros::E_CONTROLLER_DIGITAL_R2, 
-    [this]() {this->outtake();}, 
-    [this]() {this->stow();}
+    this, 
+    &Conveyer::outtake,
+    &Conveyer::stow
   );
   // Score Long
-  eventLoop.registerBinding(
+  eventLoop.registerButton(
     pros::E_CONTROLLER_DIGITAL_L1, 
-    [this]() {this->scoreLong();}, 
-    [this]() {this->stow();}
+    this, 
+    &Conveyer::scoreLong,
+    &Conveyer::stow
   );
   // Score Middle
-  eventLoop.registerBinding(
+  eventLoop.registerButton(
     pros::E_CONTROLLER_DIGITAL_L2, 
-    [this]() {this->scoreMiddle();}, 
-    [this]() {this->stow();}
+    this,
+    &Conveyer::scoreMiddle,
+    &Conveyer::stow
   );
+}
+
+void Conveyer::registerJoystickHandlers(EventLoop &eventLoop) {
+
 }
 
 void Conveyer::intake() {
