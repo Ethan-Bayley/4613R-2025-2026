@@ -2,7 +2,7 @@
 
 #include "Command.h"
 #include "ButtonCommand.h"
-#include "JoystickCommand.h"
+#include "PeriodicCommand.h"
 #include "pros/misc.h"
 #include "pros/misc.hpp"
 #include <functional>
