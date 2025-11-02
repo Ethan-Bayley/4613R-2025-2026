@@ -21,8 +21,8 @@ void Robot::registerCommands() {
 }
 
 void Robot::update() {
+  eventLoop.update();
   for (auto &subsystem : robotSubsystems) {
-    eventLoop.update();
     subsystem->update();
   }
 }
