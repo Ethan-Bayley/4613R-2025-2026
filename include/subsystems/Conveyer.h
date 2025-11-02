@@ -5,34 +5,34 @@
 #include "pros/adi.hpp"
 #include "pros/motors.hpp"
 
-class Conveyer : public Subsystem {
-  public:       
-    Conveyer();
-    Conveyer(
-      int bottomMotorPort, int topMotorPort, 
-      int pistonPort1, int pistonPort2 
-    );
+class Conveyer : public Subsystem
+{
+public:
+  Conveyer();
+  Conveyer(
+      int bottomMotorPort, int topMotorPort,
+      int pistonPort1, int pistonPort2);
 
-    void setup() override;
-    void registerButtonHandlers(EventLoop &eventLoop) override;
-    void registerJoystickHandlers(EventLoop &eventLoop) override;
-    void update() override;
+  void setup() override;
+  void update() override;
 
-    void intake();
-    void outtake();
-    void stow();
-    void stop();
-    void scoreLong();
-    void scoreMiddle();
+  void registerHandlers(EventLoop &eventLoop) override;
 
-  private:
-    static constexpr int DEFAULT_BOTTOM_PORT = 7;
-    static constexpr int DEFAULT_TOP_PORT = 20;
-    static constexpr int DEFAULT_PISTON_1_PORT = 'A';
-    static constexpr int DEFAULT_PISTON_2_PORT = 'C';
+  void intake();
+  void outtake();
+  void stow();
+  void stop();
+  void scoreLong();
+  void scoreMiddle();
 
-    pros::Motor topMotor;
-    pros::Motor bottomMotor;
-    pros::adi::Pneumatics piston1;
-    pros::adi::Pneumatics piston2;
+private:
+  static constexpr int DEFAULT_BOTTOM_PORT = 7;
+  static constexpr int DEFAULT_TOP_PORT = 20;
+  static constexpr int DEFAULT_PISTON_1_PORT = 'A';
+  static constexpr int DEFAULT_PISTON_2_PORT = 'C';
+
+  pros::Motor topMotor;
+  pros::Motor bottomMotor;
+  pros::adi::Pneumatics piston1;
+  pros::adi::Pneumatics piston2;
 };

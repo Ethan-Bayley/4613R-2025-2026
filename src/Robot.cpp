@@ -16,8 +16,7 @@ void Robot::addSubsystem(std::unique_ptr<Subsystem> subsystem) {
 
 void Robot::registerCommands() {
   for (auto &subsystem : robotSubsystems) {
-    subsystem->registerButtonHandlers(eventLoop);
-    subsystem->registerJoystickHandlers(eventLoop);
+    subsystem->registerHandlers(eventLoop);
   }
 }
 

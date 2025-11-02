@@ -12,7 +12,6 @@ class Robot {
     void setup();
 
     void addSubsystem(std::unique_ptr<Subsystem> subsystem);
-    void initSubsystems();
     void registerCommands();
     void update();
 

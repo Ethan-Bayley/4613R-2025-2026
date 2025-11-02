@@ -1,25 +1,19 @@
 #include "commands/EventLoop.h"
-#include <cstdio>
+#include <memory>
 
-EventLoop::EventLoop(pros::Controller &controller) 
-: controller(controller), buttonCommand(controller), joystickCommand(controller) {}
+EventLoop::EventLoop(pros::Controller &controller)
+  : controller(controller) {}
 
 void EventLoop::update() {
-  buttonCommand.execute();
-  joystickCommand.execute();
+  for (auto &command : commands) {
+    command->execute();
+  }
 }
 
-
-void EventLoop::registerJoystick(pros::controller_analog_e_t axis, std::function<void(int value)> onChange) {
-  Joystick newJoystick {axis, onChange, 5};
-  joystickCommand.registerJoystickCommand(newJoystick);
+void EventLoop::registerCommand(std::shared_ptr<Command> command) {
+  commands.push_back(command);
 }
 
 void EventLoop::clear() {
-  buttonCommand.clear();
-  joystickCommand.clear();
-}
-
-int EventLoop::getJoystickValue(pros::controller_analog_e_t axis) {
-  return joystickCommand.getValue(axis);
+  commands.clear();
 }

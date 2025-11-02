@@ -5,13 +5,12 @@
 #include "pros/adi.hpp"
 
 class MatchLoad : public Subsystem {
-  public: 
+  public:
     MatchLoad();
     MatchLoad(int pistonPort1, int pistonPort2);
 
     void setup() override;
-    void registerButtonHandlers(EventLoop &eventLoop) override;
-    void registerJoystickHandlers(EventLoop &eventLoop) override;
+    void registerHandlers(EventLoop &eventLoop) override;
     void update() override;
 
     void extend();

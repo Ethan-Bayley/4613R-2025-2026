@@ -1,39 +1,24 @@
 #pragma once
 
+#include "Command.h"
 #include "ButtonCommand.h"
 #include "JoystickCommand.h"
 #include "pros/misc.h"
 #include "pros/misc.hpp"
 #include <functional>
+#include <memory>
+#include <vector>
 
 class EventLoop {
 public:
   EventLoop(pros::Controller &controller);
 
   void update();
-
-  template<typename T>
-  void registerButton(
-    pros::controller_digital_e_t button,
-    T* instance,
-    void (T::*onPress)(),
-    void (T::*onRelease)() = nullptr)
-  {
-    std::function<void()> press = onPress ? [instance, onPress]() { (instance->*onPress)(); } : std::function<void()>();
-    std::function<void()> release = onRelease ? [instance, onRelease]() { (instance->*onRelease)(); } : std::function<void()>();
-    Button newButton {button,press, release, false};
-    buttonCommand.registerButtonCommand(newButton);
-  }
-
-  void registerJoystick(
-    pros::controller_analog_e_t axis, 
-    std::function<void(int)> onChange);
+  void registerCommand(std::shared_ptr<Command> command);
   void clear();
 
-  int getJoystickValue(pros::controller_analog_e_t axis);
+  pros::Controller &controller;
 
 private:
-  pros::Controller &controller;
-  ButtonCommand buttonCommand;
-  JoystickCommand joystickCommand;
+  std::vector<std::shared_ptr<Command>> commands;
 };
