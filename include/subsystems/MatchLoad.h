@@ -15,6 +15,7 @@ class MatchLoad : public Subsystem {
 
     void extend();
     void retract();
+    void toggle();
 
   private:
   static constexpr int DEFAULT_PISTON_1_PORT = 'F';
@@ -22,4 +23,9 @@ class MatchLoad : public Subsystem {
 
   pros::adi::Pneumatics piston1;
   pros::adi::Pneumatics piston2;
+
+  bool isExtended;
+
+
+
 };

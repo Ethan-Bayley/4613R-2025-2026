@@ -1,11 +1,7 @@
 #pragma once
 
 #include "Command.h"
-#include "ButtonCommand.h"
-#include "PeriodicCommand.h"
-#include "pros/misc.h"
 #include "pros/misc.hpp"
-#include <functional>
 #include <memory>
 #include <vector>
 

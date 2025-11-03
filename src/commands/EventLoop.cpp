@@ -17,3 +17,4 @@ void EventLoop::registerCommand(std::shared_ptr<Command> command) {
 void EventLoop::clear() {
   commands.clear();
 }
+ 
