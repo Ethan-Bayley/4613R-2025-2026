@@ -1,10 +1,19 @@
 #include "main.h"
+#include "commands/EventLoop.h"
 #include "lemlib/api.hpp" // IWYU pragma: keep
-#include "lemlib/chassis/chassis.hpp"
-#include "lemlib/pose.hpp"
-#include "autoLongGoal.h"
-#include "config.hpp"
-#include <drivetrain.h>
+#include "subsystems/DriveConstants.h"
+#include "pros/misc.h"
+#include "pros/misc.hpp"
+#include "Robot.h"
+#include "subsystems/Conveyer.h"
+#include "subsystems/Drivetrain.h"
+#include "subsystems/DriveConstants.h"
+#include "subsystems/MatchLoad.h"
+#include <memory>
+
+pros::Controller controller(pros::E_CONTROLLER_MASTER);
+EventLoop eventLoop{controller};
+std::unique_ptr<Robot> robotInstance;
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -14,16 +23,21 @@
  */
 void initialize() {
 	pros::lcd::initialize();
-	chassis.calibrate();
-	chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
-	pros::Task screen_task([&] {
-		while (true) {
-			pros::lcd::print(0, "X: %f", chassis.getPose().x);
-			pros::lcd::print(1, "Y: %f", chassis.getPose().y);
-			pros::lcd::print(2, "Angle: %f", chassis.getPose().theta);
-		}
-	});
 
+	robotInstance = std::make_unique<Robot>(eventLoop);
+
+	robotInstance->addSubsystem(
+		std::make_unique<Conveyer>()
+	);
+	robotInstance->addSubsystem(
+		std::make_unique<MatchLoad>()
+	);
+	robotInstance->addSubsystem(
+		std::make_unique<Drivetrain>(drive)
+	);
+	
+	robotInstance->setup();
+	robotInstance->registerCommands();
 }
 
 /**
@@ -76,9 +90,9 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-	Drivetrain drive(chassis, controller);
 	while (true) {
-		drive.arcade();
-    pros::delay(25);                               // Run for 20 ms then update
+		robotInstance->update();
+		pros::delay(25);
 	}
+	
 }
