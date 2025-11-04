@@ -11,14 +11,16 @@ class MatchLoad : public Subsystem {
 
     void setup() override;
     void registerHandlers(EventLoop &eventLoop) override;
-    void update() override;
 
     void extend();
     void retract();
+    void toggle();
 
   private:
   static constexpr int DEFAULT_PISTON_1_PORT = 'F';
   static constexpr int DEFAULT_PISTON_2_PORT = 'B';
+
+  bool isRetracted;
 
   pros::adi::Pneumatics piston1;
   pros::adi::Pneumatics piston2;

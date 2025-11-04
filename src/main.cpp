@@ -1,19 +1,14 @@
 #include "main.h"
-#include "commands/EventLoop.h"
 #include "lemlib/api.hpp" // IWYU pragma: keep
-#include "subsystems/DriveConstants.h"
-#include "pros/misc.h"
-#include "pros/misc.hpp"
 #include "Robot.h"
+#include "commands/EventLoop.h"
 #include "subsystems/Conveyer.h"
-#include "subsystems/Drivetrain.h"
-#include "subsystems/DriveConstants.h"
 #include "subsystems/MatchLoad.h"
+#include "subsystems/Descore.h"
 #include <memory>
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
-EventLoop eventLoop{controller};
-std::unique_ptr<Robot> robotInstance;
+Robot robot(controller);
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -24,20 +19,12 @@ std::unique_ptr<Robot> robotInstance;
 void initialize() {
 	pros::lcd::initialize();
 
-	robotInstance = std::make_unique<Robot>(eventLoop);
+	robot.addSubsystem(std::make_unique<Conveyer>());
+	robot.addSubsystem(std::make_unique<MatchLoad>());
+	robot.addSubsystem(std::make_unique<Descore>());
 
-	robotInstance->addSubsystem(
-		std::make_unique<Conveyer>()
-	);
-	robotInstance->addSubsystem(
-		std::make_unique<MatchLoad>()
-	);
-	robotInstance->addSubsystem(
-		std::make_unique<Drivetrain>(drive)
-	);
-	
-	robotInstance->setup();
-	robotInstance->registerCommands();
+	robot.setup();
+	robot.registerCommands();
 }
 
 /**
@@ -91,8 +78,14 @@ void autonomous() {
  */
 void opcontrol() {
 	while (true) {
-		robotInstance->update();
-		pros::delay(25);
+		auto start_time = pros::millis();
+
+		// Chassis controls
+
+		// Subsysytems
+		robot.update();
+
+		pros::c::task_delay_until(&start_time, 10);
 	}
-	
+
 }
