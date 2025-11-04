@@ -14,7 +14,6 @@ public:
       int pistonPort1, int pistonPort2);
 
   void setup() override;
-  void update() override;
 
   void registerHandlers(EventLoop &eventLoop) override;
 

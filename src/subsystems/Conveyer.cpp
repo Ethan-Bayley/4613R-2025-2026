@@ -1,6 +1,7 @@
 #include "subsystems/Conveyer.h"
 #include "commands/ButtonCommand.h"
 #include <cstdio>
+#include <memory>
 
 Conveyer::Conveyer() : topMotor(DEFAULT_TOP_PORT, pros::MotorGearset::blue),
                        bottomMotor(DEFAULT_BOTTOM_PORT, pros::MotorGearset::blue),
@@ -24,50 +25,46 @@ void Conveyer::setup()
   bottomMotor.set_reversed(true);
 }
 
-void Conveyer::update()
-{
-}
-
 void Conveyer::registerHandlers(EventLoop &eventLoop)
 {
   // Intake
   eventLoop.registerCommand(
-    std::make_shared<ButtonCommand>(
+    std::unique_ptr<Command>(new ButtonCommand(
       eventLoop.controller,
       pros::E_CONTROLLER_DIGITAL_R1,
       [this]() { intake(); },
       [this]() { stow(); }
-    )
+    ))
   );
 
   // Outtake
   eventLoop.registerCommand(
-    std::make_shared<ButtonCommand>(
+    std::unique_ptr<Command>(new ButtonCommand(
       eventLoop.controller,
       pros::E_CONTROLLER_DIGITAL_R2,
       [this]() { outtake(); },
       [this]() { stow(); }
-    )
+    ))
   );
 
   // Score Long
   eventLoop.registerCommand(
-    std::make_shared<ButtonCommand>(
+    std::unique_ptr<Command>(new ButtonCommand(
       eventLoop.controller,
       pros::E_CONTROLLER_DIGITAL_L1,
       [this]() { scoreLong(); },
       [this]() { stow(); }
-    )
+    ))
   );
 
   // Score Middle
   eventLoop.registerCommand(
-    std::make_shared<ButtonCommand>(
+    std::unique_ptr<Command>(new ButtonCommand(
       eventLoop.controller,
       pros::E_CONTROLLER_DIGITAL_L2,
       [this]() { scoreMiddle(); },
       [this]() { stow(); }
-    )
+    ))
   );
 }
 
@@ -92,6 +89,9 @@ void Conveyer::stow()
 void Conveyer::stop()
 {
   bottomMotor.move_voltage(0);
+  topMotor.move_voltage(0);
+  piston1.extend();
+  piston2.retract();
 }
 
 void Conveyer::scoreLong()

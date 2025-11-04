@@ -189,7 +189,7 @@ struct TurnToPointParams {
         /** the direction the robot should turn in. AUTO by default */
         AngularDirection direction = AngularDirection::AUTO;
         /** the maximum speed the robot can turn at. Value between 0-127. 127 by default */
-        int maxSpeed = 90;
+        int maxSpeed = 127;
         /** the minimum speed the robot can turn at. If set to a non-zero value, the `it conditions will switch to less
          * accurate but smoother ones. Value between 0-127. 0 by default */
         int minSpeed = 0;
@@ -679,7 +679,6 @@ class Chassis {
          * chassis.moveToPoint(7.5, 7.5, 4000, {.minSpeed = 60, .earlyExitRange = 5});
          * @endcode
          */
-         
         void moveToPoint(float x, float y, int timeout, MoveToPointParams params = {}, bool async = true);
         /**
          * @brief Move the chassis along a path

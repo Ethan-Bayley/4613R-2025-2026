@@ -7,6 +7,8 @@ public:
   Command(const std::string& name, std::function<void()> executeFunc)
     : name(name), executeFunc(executeFunc) {}
 
+  virtual ~Command() = default;
+
   void execute() {
     executeFunc();
   }

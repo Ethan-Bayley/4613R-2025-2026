@@ -6,19 +6,20 @@
 #include "pros/misc.h"
 #include "pros/misc.hpp"
 #include <functional>
-#include <memory>
 #include <vector>
+#include <memory>
 
 class EventLoop {
 public:
   EventLoop(pros::Controller &controller);
+  ~EventLoop() = default;
 
   void update();
-  void registerCommand(std::shared_ptr<Command> command);
+  void registerCommand(std::unique_ptr<Command> command);
   void clear();
 
   pros::Controller &controller;
 
 private:
-  std::vector<std::shared_ptr<Command>> commands;
+  std::vector<std::unique_ptr<Command>> commands;
 };
