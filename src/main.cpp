@@ -61,6 +61,8 @@ void autonomous() {
 	// autoLongGoal autoRoutine(chassis);
 	// autoRoutine.run();
 
+	
+
 }
 
 /**
@@ -80,12 +82,12 @@ void opcontrol() {
 	while (true) {
 		auto start_time = pros::millis();
 
-		// Chassis controls
-
 		// Subsysytems
 		robot.update();
 
 		pros::c::task_delay_until(&start_time, 10);
 	}
+
+
 
 }
