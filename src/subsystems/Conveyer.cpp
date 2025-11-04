@@ -78,7 +78,7 @@ void Conveyer::outtake()
   bottomMotor.move_voltage(-12000);
 }
 
-void Conveyer::stop()
+void Conveyer::stow()
 {
   bottomMotor.move_voltage(10000);
   topMotor.move_voltage(0);
