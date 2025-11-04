@@ -5,6 +5,7 @@
 #include "subsystems/Conveyer.h"
 #include "subsystems/MatchLoad.h"
 #include "subsystems/Descore.h"
+#include "autonomous/StatesAwp.h"
 #include <memory>
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
@@ -57,14 +58,12 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	// Match auto Red left
-	// autoLongGoal autoRoutine(chassis);
-	// autoRoutine.run();
-
-	
-
+	robot.runAuto<StatesAwp>(
+		robot.getSubsystem<Conveyer>(),
+		robot.getSubsystem<MatchLoad>()
+	);
 }
-
+````
 /**
  * Runs the operator control code. This function will be started in its own task
  * with the default priority and stack size whenever the robot is enabled via
