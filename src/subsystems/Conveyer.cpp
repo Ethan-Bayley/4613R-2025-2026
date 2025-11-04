@@ -6,7 +6,7 @@
 Conveyer::Conveyer() : topMotor(DEFAULT_TOP_PORT, pros::MotorGearset::blue),
                        bottomMotor(DEFAULT_BOTTOM_PORT, pros::MotorGearset::blue),
                        piston1(DEFAULT_PISTON_1_PORT, true),
-                       piston2(DEFAULT_PISTON_2_PORT, false)
+                       piston2(DEFAULT_PISTON_2_PORT, true)
 {
 }
 
@@ -21,7 +21,6 @@ void Conveyer::setup()
 {
   topMotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
   bottomMotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
-  topMotor.set_reversed(true);
   bottomMotor.set_reversed(true);
 }
 
@@ -71,27 +70,29 @@ void Conveyer::registerHandlers(EventLoop &eventLoop)
 void Conveyer::intake()
 {
   bottomMotor.move_voltage(12000);
+  topMotor.move_voltage(0);
 }
 
 void Conveyer::outtake()
 {
   bottomMotor.move_voltage(-12000);
+  topMotor.move_voltage(0);
 }
 
 void Conveyer::stow()
 {
   bottomMotor.move_voltage(10000);
   topMotor.move_voltage(0);
-  piston1.extend();
-  piston2.retract();
+  // piston1.extend();
+  // piston2.retract();
 }
 
 void Conveyer::stop()
 {
   bottomMotor.move_voltage(0);
   topMotor.move_voltage(0);
-  piston1.extend();
-  piston2.retract();
+  // piston1.extend();
+  // piston2.retract();
 }
 
 void Conveyer::scoreLong()

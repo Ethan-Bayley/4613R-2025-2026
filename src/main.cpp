@@ -1,4 +1,5 @@
 #include "main.h"
+#include "autonomous/StatesSkills.h"
 #include "lemlib/api.hpp" // IWYU pragma: keep
 #include "Robot.h"
 #include "commands/EventLoop.h"
@@ -58,12 +59,12 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	robot.runAuto<StatesAwp>(
+	robot.runAuto<StatesSkills>(
 		robot.getSubsystem<Conveyer>(),
 		robot.getSubsystem<MatchLoad>()
 	);
 }
-````
+
 /**
  * Runs the operator control code. This function will be started in its own task
  * with the default priority and stack size whenever the robot is enabled via
