@@ -32,10 +32,12 @@ public:
         conveyer->scoreLong();
         pros::delay(1500);
 
+        conveyer->intake();
+        chassis.swingToHeading(-45, lemlib::DriveSide::RIGHT, TIMEOUT_SHORT);
+        chassis.moveToPoint(STACK_RR.x , STACK_RR.y, TIMEOUT_SHORT);
+
       // MOVE TO SECOND LOADER
-      chassis.moveToPose(LOADER_TR_WAY.x, LOADER_TR_WAY.y, LOADER_TR_WAY.theta,
-        TIMEOUT_SHORT
-      );
+      chassis.moveToPoint(LOADER_TR_WAY.x, LOADER_TR_WAY.y, TIMEOUT_SHORT);
       conveyer->intake();
       chassis.turnToHeading(-20,TIMEOUT_SHORT);
 
@@ -143,9 +145,9 @@ private:
     lemlib::Pose LOADER_BR_WAY = lemlib::Pose(48, 24, 90);
     lemlib::Pose LOADER_BR = lemlib::Pose(48, 13, -180);
 
-    lemlib::Pose GOAL_R = lemlib::Pose(48, 44, -180);
+    lemlib::Pose GOAL_R = lemlib::Pose(47, 44, -180);
 
-    lemlib::Pose LOADER_TR_WAY = lemlib::Pose(45, 30, -180);//drive forward
+    lemlib::Pose LOADER_TR_WAY = lemlib::Pose(20,52,-135);//diagonal forward toward middle goal
     lemlib::Pose LOADER_TR_WAY1 = lemlib::Pose(30, 55, 20);//right turn
     lemlib::Pose LOADER_TR_WAY2 = lemlib::Pose(33, 118, 41);//across the field 
     lemlib::Pose LOADER_TR = lemlib::Pose(42, 138, 5);

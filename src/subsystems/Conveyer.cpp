@@ -6,7 +6,7 @@
 Conveyer::Conveyer() : topMotor(DEFAULT_TOP_PORT, pros::MotorGearset::blue),
                        bottomMotor(DEFAULT_BOTTOM_PORT, pros::MotorGearset::blue),
                        piston1(DEFAULT_PISTON_1_PORT, true),
-                       piston2(DEFAULT_PISTON_2_PORT, true)
+                       piston2(DEFAULT_PISTON_2_PORT, false)
 {
 }
 
@@ -62,7 +62,7 @@ void Conveyer::registerHandlers(EventLoop &eventLoop)
       eventLoop.controller,
       pros::E_CONTROLLER_DIGITAL_L2,
       [this]() { scoreMiddle(); },
-      [this]() { stow(); }
+      [this]() { stow();}
     ))
   );
 }
@@ -83,16 +83,14 @@ void Conveyer::stow()
 {
   bottomMotor.move_voltage(10000);
   topMotor.move_voltage(0);
-  // piston1.extend();
-  // piston2.retract();
+  piston2.retract();
+  piston1.extend();
 }
 
 void Conveyer::stop()
 {
   bottomMotor.move_voltage(0);
   topMotor.move_voltage(0);
-  // piston1.extend();
-  // piston2.retract();
 }
 
 void Conveyer::scoreLong()
@@ -103,8 +101,8 @@ void Conveyer::scoreLong()
 
 void Conveyer::scoreMiddle()
 {
-  bottomMotor.move_velocity(12000);
-  topMotor.move_velocity(-9000);
+  bottomMotor.move_voltage(12000);
+  topMotor.move_voltage(-9000);
   piston1.retract();
   piston2.extend();
 }

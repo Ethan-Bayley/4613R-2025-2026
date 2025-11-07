@@ -26,9 +26,9 @@ public:
         chassis.moveToPoint(LOADER_BR_WAY.x, LOADER_BR_WAY.y, TIMEOUT_SHORT);
         chassis.turnToHeading(-180, TIMEOUT_SUPER_SHORT);
         matchLoad->extend();
-        chassis.moveToPoint(LOADER_BR.x, LOADER_BR.y, TIMEOUT_SHORT,{}
+        chassis.moveToPoint(LOADER_BR.x, LOADER_BR.y, 900,{}
         );
-        chassis.moveToPoint(GOAL_R.x, GOAL_R.y, TIMEOUT_SHORT,{
+        chassis.moveToPoint(GOAL_R.x, GOAL_R.y, 800,{
             .forwards = false
         });
         pros::delay(500);
@@ -51,11 +51,12 @@ public:
         chassis.moveToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y, TIMEOUT_SHORT,{
             .forwards = false
         });
-        chassis.turnToHeading(-137, TIMEOUT_SUPER_SHORT);
         conveyer->scoreMiddle();
+        chassis.turnToHeading(-137, TIMEOUT_SUPER_SHORT);
 
         //END OF MIDDLE GOAL
-        conveyer->stop();
+        pros::delay(500);
+        conveyer->stow();
         chassis.moveToPoint(GOAL_L_WAIT.x, GOAL_L_WAIT.y, TIMEOUT_SHORT);
         chassis.turnToHeading(-180, TIMEOUT_SUPER_SHORT);
         // chassis.moveToPoint(LOADER_BL.x, LOADER_BR.y, TIMEOUT_SHORT);
