@@ -59,7 +59,7 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	robot.runAuto<StatesAwp>(
+	robot.runAuto<StatesSkills>(
 		robot.getSubsystem<Conveyer>(),
 		robot.getSubsystem<MatchLoad>()
 	);

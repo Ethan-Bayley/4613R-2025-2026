@@ -26,7 +26,7 @@ public:
         chassis.moveToPoint(LOADER_BR_WAY.x, LOADER_BR_WAY.y, TIMEOUT_SHORT);
         chassis.turnToHeading(-180, TIMEOUT_SUPER_SHORT);
         matchLoad->extend();
-        chassis.moveToPoint(LOADER_BR.x, LOADER_BR.y, 900,{}
+        chassis.moveToPoint(LOADER_BR.x, LOADER_BR.y, TIMEOUT_SHORT,{}
         );
         chassis.moveToPoint(GOAL_R.x, GOAL_R.y, 800,{
             .forwards = false
