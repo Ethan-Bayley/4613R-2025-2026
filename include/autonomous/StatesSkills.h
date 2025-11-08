@@ -31,7 +31,7 @@ public:
         });
         pros::delay(1000);
         conveyer->scoreLong();
-        pros::delay(2200);
+        pros::delay(3000);
         matchLoad->retract();
 
         // Finish first score
