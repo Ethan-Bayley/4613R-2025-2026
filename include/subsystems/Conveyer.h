@@ -20,6 +20,7 @@ public:
   void intake();
   void outtake();
   void stow();
+  void stow1();
   void stop();
   void scoreLong();
   void scoreMiddle();

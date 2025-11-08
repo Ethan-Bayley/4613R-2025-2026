@@ -32,7 +32,7 @@ void Conveyer::registerHandlers(EventLoop &eventLoop)
       eventLoop.controller,
       pros::E_CONTROLLER_DIGITAL_R1,
       [this]() { intake(); },
-      [this]() { stow(); }
+      [this]() { stow1(); }
     ))
   );
 
@@ -42,7 +42,7 @@ void Conveyer::registerHandlers(EventLoop &eventLoop)
       eventLoop.controller,
       pros::E_CONTROLLER_DIGITAL_R2,
       [this]() { outtake(); },
-      [this]() { stow(); }
+      [this]() { stow1(); }
     ))
   );
 
@@ -52,7 +52,7 @@ void Conveyer::registerHandlers(EventLoop &eventLoop)
       eventLoop.controller,
       pros::E_CONTROLLER_DIGITAL_L1,
       [this]() { scoreLong(); },
-      [this]() { stow(); }
+      [this]() { stow1(); }
     ))
   );
 
@@ -62,7 +62,7 @@ void Conveyer::registerHandlers(EventLoop &eventLoop)
       eventLoop.controller,
       pros::E_CONTROLLER_DIGITAL_L2,
       [this]() { scoreMiddle(); },
-      [this]() { stow();}
+      [this]() { stow1();}
     ))
   );
 }
@@ -82,6 +82,14 @@ void Conveyer::outtake()
 void Conveyer::stow()
 {
   bottomMotor.move_voltage(10000);
+  topMotor.move_voltage(0);
+  piston2.retract();
+  piston1.extend();
+}
+
+void Conveyer::stow1()
+{
+  bottomMotor.move_voltage(0);
   topMotor.move_voltage(0);
   piston2.retract();
   piston1.extend();
