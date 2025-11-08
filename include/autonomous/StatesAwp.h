@@ -79,7 +79,7 @@ private:
     const lemlib::Pose LOADER_BR = {48, 11, -180};
 
     const lemlib::Pose GOAL_R = lemlib::Pose{47, 44, -180};
-    const lemlib::Pose GOAL_L = lemlib::Pose{-55, 40, 180};
+    const lemlib::Pose GOAL_L = lemlib::Pose{-54, 40, 180};
 
     int TIMEOUT_SUPER_SHORT = 500;
     int TIMEOUT_SHORT = 1000;
