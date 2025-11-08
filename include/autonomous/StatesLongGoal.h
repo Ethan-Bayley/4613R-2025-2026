@@ -23,51 +23,30 @@ public:
 
         chassis.setPose(STARTING_POS);
         conveyer->intake();
-        chassis.moveToPoint(
-            STACK1.x, STACK1.y,  
-            TIMEOUT, 
-            {
-                .minSpeed = MIN_SPEED, 
+        chassis.moveToPoint( STACK1.x, STACK1.y,  TIMEOUT, {
+                // .minSpeed = MIN_SPEED, 
+                .maxSpeed=80,
                 .earlyExitRange = 4
-            }
-        );
-        chassis.moveToPose(
-            STACK2.x, STACK2.y, STACK2.theta, 
-            TIMEOUT
-        );
-        chassis.moveToPoint(
-            GOAL_WAYPOINTS.x, GOAL_WAYPOINTS.y,
-            TIMEOUT, 
-            {
+            });
+        chassis.moveToPose(STACK2.x, STACK2.y, STACK2.theta, TIMEOUT);
+        chassis.moveToPoint(GOAL_WAYPOINTS.x, GOAL_WAYPOINTS.y,TIMEOUT, {
                 .forwards = false,
                 .minSpeed = MIN_SPEED, 
                 .earlyExitRange = 4
-            }
-        );
-        conveyer->scoreLong();
-        chassis.moveToPose(
-            GOAL.x, GOAL.y, GOAL.theta, 
-            TIMEOUT_LONG,
-            {
+            });
+        chassis.moveToPose(GOAL.x, GOAL.y, GOAL.theta, TIMEOUT_LONG,{
                 .forwards = false
-            }
-        );
+            });
+        conveyer->scoreLong();
+        pros::c::delay(2000);
         matchLoad->extend();
         conveyer->intake();
-        pros::c::delay(2000);
-        chassis.moveToPoint(
-            MATCHLOAD.x, MATCHLOAD.y,
-            TIMEOUT
-        );
-        conveyer->scoreLong();
-        pros::c::delay(1000);
-        chassis.moveToPose(
-            GOAL.x, GOAL.y, GOAL.theta, 
-            TIMEOUT_LONG,
-            {
+        chassis.moveToPoint(MATCHLOAD.x, MATCHLOAD.y,   TIMEOUT);
+        pros::c::delay(900);
+        chassis.moveToPose(GOAL.x, GOAL.y, GOAL.theta, TIMEOUT_LONG,{
                 .forwards = false
-            }
-        );
+            });
+        conveyer->scoreLong();
     }
 
 private: 
