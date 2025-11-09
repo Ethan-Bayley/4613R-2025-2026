@@ -125,20 +125,20 @@ public:
 private: 
     lemlib::Pose STARTING_POS{15.25, 24, 90};
 
-    lemlib::Pose LOADER_BR_WAY = lemlib::Pose(48, 24, 90);
-    lemlib::Pose LOADER_BR = lemlib::Pose(48, 12, -180);
+    lemlib::Pose LOADER_BR_WAY = lemlib::Pose(49.3, 24, 90);
+    lemlib::Pose LOADER_BR = lemlib::Pose(49.3, 12, -180);
 
     lemlib::Pose GOAL_R = lemlib::Pose(47, 44, -180);
 
     lemlib::Pose LOADER_TR_WAY = lemlib::Pose(28,52,-135); //diagonal forward toward middle goal
-    lemlib::Pose LOADER_TR_WAY1 = lemlib::Pose(28, 118, 0); //across the field
-    lemlib::Pose LOADER_TR_WAY2 = lemlib::Pose(39, 118, 0);
+    lemlib::Pose LOADER_TR_WAY1 = lemlib::Pose(26, 118, 0); //across the field
+    lemlib::Pose LOADER_TR_WAY2 = lemlib::Pose(39.5, 118, 0);
 
     lemlib::Pose GOAL_TR = lemlib::Pose(41, 105, 0);
 
     lemlib::Pose GOAL_LOADER_TR_MIDPOINT = lemlib::Pose(42, 115, 0);
-    lemlib::Pose GOAL_LOADER_TL_MIDPOINT = lemlib::Pose(-60, 115, -90);
-    lemlib::Pose LOADER_TL = lemlib::Pose(-60, 131, -90);
+    lemlib::Pose GOAL_LOADER_TL_MIDPOINT = lemlib::Pose(-60, 114, -90);
+    lemlib::Pose LOADER_TL = lemlib::Pose(-60, 132, -90);
     lemlib::Pose MIDPOINT_TL = lemlib::Pose(-56, 116, -90);
 
     lemlib::Pose LOADER_BL_WAY = lemlib::Pose(-30, 116, 90);
@@ -147,10 +147,10 @@ private:
     // lemlib::Pose LOADER_BL_WAY2 = lemlib::Pose(-48, 22, 139);
     lemlib::Pose LOADER_BL = lemlib::Pose(-40, 6, 180);
 
-    lemlib::Pose GOAL_BL = lemlib::Pose(-53, 40, 180);
+    //lemlib::Pose GOAL_BL = lemlib::Pose(-53, 40, 180);
 
     lemlib::Pose PARK_WAY = lemlib::Pose(-40, 15);
-    lemlib::Pose PARK = lemlib::Pose(10, 12, 90);
+    lemlib::Pose PARK = lemlib::Pose(10, 10, 90);
 
     int TIMEOUT_SUPER_SHORT = 500;
     int TIMEOUT_SHORT = 1000;
