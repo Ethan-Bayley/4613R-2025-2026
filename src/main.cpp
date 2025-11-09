@@ -20,7 +20,6 @@ Robot robot(controller);
  */
 void initialize() {
 	pros::lcd::initialize();
-
 	// while (true) {
 	// 			// print robot location to the brain screen
 	// 		pros::lcd::set_text(0, "X: " + std::to_string(chassis.getPose().x)); // x
@@ -29,6 +28,7 @@ void initialize() {
 	// 			// delay to save resources
 	// 		pros::delay(20);
 	// }
+
 
 	robot.addSubsystem(std::make_unique<Conveyer>());
 	robot.addSubsystem(std::make_unique<MatchLoad>());

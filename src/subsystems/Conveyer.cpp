@@ -1,5 +1,6 @@
 #include "subsystems/Conveyer.h"
 #include "commands/ButtonCommand.h"
+#include "pros/motors.h"
 #include <cstdio>
 #include <memory>
 
@@ -19,7 +20,7 @@ Conveyer::Conveyer(int bottomMotorPort, int topMotorPort, int pistonPort1, int p
 
 void Conveyer::setup()
 {
-  topMotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+  topMotor.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
   bottomMotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
   bottomMotor.set_reversed(true);
 }
@@ -110,7 +111,7 @@ void Conveyer::scoreLong()
 void Conveyer::scoreMiddle()
 {
   bottomMotor.move_voltage(12000);
-  topMotor.move_voltage(-9000);
+  topMotor.move_voltage(0);
   piston1.retract();
   piston2.extend();
 }
