@@ -6,12 +6,12 @@
 #include "subsystems/MatchLoad.h"
 #include "subsystems/Chassis.h"
 
-class StatesLongGoal : public Autonomous {
+class Wing : public Autonomous {
     Conveyer* conveyer;
     MatchLoad* matchLoad;
 
 public:
-    StatesLongGoal(Conveyer* conv, MatchLoad* ml)
+    Wing(Conveyer* conv, MatchLoad* ml)
         : conveyer(conv), matchLoad(ml) { }
 
     void run() override {

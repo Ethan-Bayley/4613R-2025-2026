@@ -8,6 +8,8 @@
 #include "subsystems/Descore.h"
 #include "autonomous/StatesAwp.h"
 #include <memory>
+#include "autonomous/Wing.h"
+#include "autonomous/StatesLongGoal.h"
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 Robot robot(controller);
@@ -68,7 +70,7 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	robot.runAuto<StatesSkills>(
+	robot.runAuto<StatesAwp>(
 		robot.getSubsystem<Conveyer>(),
 		robot.getSubsystem<MatchLoad>()
 	);
