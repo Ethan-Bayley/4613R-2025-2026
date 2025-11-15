@@ -19,7 +19,7 @@ void MatchLoad::registerHandlers(EventLoop &eventLoop)
   eventLoop.registerCommand(
     std::unique_ptr<Command>(new ButtonCommand(
       eventLoop.controller,
-      pros::E_CONTROLLER_DIGITAL_B,
+      pros::E_CONTROLLER_DIGITAL_DOWN,
       [this]() { toggle(); }
     ))
   );

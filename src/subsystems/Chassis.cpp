@@ -1,6 +1,6 @@
 #include "lemlib/api.hpp"
 
-pros::MotorGroup left_mg({-1, 2, -3}, pros::MotorGearset::blue);
+pros::MotorGroup left_mg({-4, 2, -3}, pros::MotorGearset::blue);
 pros::MotorGroup right_mg({8, -9, 10}, pros::MotorGearset::blue);
 
 pros::Imu imu(12);

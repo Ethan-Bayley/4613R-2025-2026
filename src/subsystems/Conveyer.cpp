@@ -21,7 +21,6 @@ void Conveyer::setup()
 {
   topMotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
   bottomMotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
-  topMotor.set_reversed(true);
   bottomMotor.set_reversed(true);
 }
 
@@ -63,7 +62,7 @@ void Conveyer::registerHandlers(EventLoop &eventLoop)
       eventLoop.controller,
       pros::E_CONTROLLER_DIGITAL_L2,
       [this]() { scoreMiddle(); },
-      [this]() { stow(); }
+      [this]() { stow();}
     ))
   );
 }
@@ -71,27 +70,27 @@ void Conveyer::registerHandlers(EventLoop &eventLoop)
 void Conveyer::intake()
 {
   bottomMotor.move_voltage(12000);
+  topMotor.move_voltage(0);
 }
 
 void Conveyer::outtake()
 {
   bottomMotor.move_voltage(-12000);
+  topMotor.move_voltage(0);
 }
 
 void Conveyer::stow()
 {
   bottomMotor.move_voltage(10000);
   topMotor.move_voltage(0);
-  piston1.extend();
   piston2.retract();
+  piston1.extend();
 }
 
 void Conveyer::stop()
 {
   bottomMotor.move_voltage(0);
   topMotor.move_voltage(0);
-  piston1.extend();
-  piston2.retract();
 }
 
 void Conveyer::scoreLong()
@@ -102,8 +101,8 @@ void Conveyer::scoreLong()
 
 void Conveyer::scoreMiddle()
 {
-  bottomMotor.move_velocity(12000);
-  topMotor.move_velocity(-9000);
+  bottomMotor.move_voltage(12000);
+  topMotor.move_voltage(-9000);
   piston1.retract();
   piston2.extend();
 }

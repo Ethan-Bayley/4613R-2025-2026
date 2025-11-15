@@ -19,7 +19,7 @@ void Descore::registerHandlers(EventLoop &eventLoop)
   eventLoop.registerCommand(
     std::unique_ptr<Command>(new ButtonCommand(
       eventLoop.controller,
-      pros::E_CONTROLLER_DIGITAL_A,
+      pros::E_CONTROLLER_DIGITAL_B,
       [this]() { toggle(); }
     ))
   );

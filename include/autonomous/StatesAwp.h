@@ -1,9 +1,9 @@
 #pragma once
 
 #include "autonomous/Autonomous.h"
+#include "pros/llemu.hpp"
 #include "subsystems/Conveyer.h"
 #include "subsystems/MatchLoad.h"
-#include "subsystems/Descore.h"
 #include "subsystems/Chassis.h"
 
 class StatesAwp : public Autonomous {
@@ -26,16 +26,16 @@ public:
         chassis.moveToPoint(LOADER_BR_WAY.x, LOADER_BR_WAY.y, TIMEOUT_SHORT);
         chassis.turnToHeading(-180, TIMEOUT_SUPER_SHORT);
         matchLoad->extend();
-        chassis.moveToPoint(LOADER_BR.x, LOADER_BR.y, TIMEOUT,{}
+        chassis.moveToPoint(LOADER_BR.x, LOADER_BR.y, TIMEOUT_SHORT,{}
         );
-        pros::delay(1000);
-        chassis.moveToPoint(GOAL_R.x, GOAL_R.y, TIMEOUT_SHORT,{
+        chassis.moveToPoint(GOAL_R.x, GOAL_R.y, 800,{
             .forwards = false
         });
-        //END OF RIGHT GOAL
+        pros::delay(500);
         matchLoad->retract();
         conveyer->scoreLong();
-        pros::delay(1000);
+        pros::delay(1500);
+        //END OF RIGHT GOAL
         conveyer->intake();
         chassis.swingToHeading(-45, lemlib::DriveSide::RIGHT, TIMEOUT_SHORT);
         chassis.moveToPoint(STACK_RR.x , STACK_RR.y, TIMEOUT_SHORT, {
@@ -53,8 +53,10 @@ public:
         });
         conveyer->scoreMiddle();
         chassis.turnToHeading(-137, TIMEOUT_SUPER_SHORT);
+
         //END OF MIDDLE GOAL
-        conveyer->intake();
+        pros::delay(500);
+        conveyer->stow();
         chassis.moveToPoint(GOAL_L_WAIT.x, GOAL_L_WAIT.y, TIMEOUT_SHORT);
         chassis.turnToHeading(-180, TIMEOUT_SUPER_SHORT);
         // chassis.moveToPoint(LOADER_BL.x, LOADER_BR.y, TIMEOUT_SHORT);
@@ -66,37 +68,18 @@ public:
     }
 
 private: 
-    lemlib::Pose STARTING_POS{23.5, 7, 90};
-    lemlib::Pose GOAL_L_WAIT{-53,24, -135};
-    lemlib::Pose STACK_RR{20,52,-135};
-    lemlib::Pose STACK_B_MIDPOINT{-16, 48, -90};
-    lemlib::Pose STACK_B{-24, 47, -90};
-    lemlib::Pose GOAL_MIDDLE{-14,57,-135};
+    const lemlib::Pose STARTING_POS{15, 24, 90};
+    const lemlib::Pose GOAL_L_WAIT{-53,24, -135};
+    const lemlib::Pose STACK_RR{20,52,-135};
+    const lemlib::Pose STACK_B_MIDPOINT{-16, 48, -90};
+    const lemlib::Pose STACK_B{-24, 47, -90};
+    const lemlib::Pose GOAL_MIDDLE{-14,60,-135};
 
-    lemlib::Pose LOADER_BR_WAY = lemlib::Pose(48, 24, 90);
-    lemlib::Pose LOADER_BR = lemlib::Pose(48, 13, -180);
+    const lemlib::Pose LOADER_BR_WAY {48, 24, 90};
+    const lemlib::Pose LOADER_BR = {48, 11, -180};
 
-    lemlib::Pose GOAL_R = lemlib::Pose(48, 44, -180);
-
-    lemlib::Pose LOADER_TR_WAY = lemlib::Pose(45, 30, -180);//drive forward
-    lemlib::Pose LOADER_TR_WAY1 = lemlib::Pose(30, 55, 20);//right turn
-    lemlib::Pose LOADER_TR_WAY2 = lemlib::Pose(33, 118, 41);//across the field 
-    lemlib::Pose LOADER_TR = lemlib::Pose(42, 138, 5);
-
-    lemlib::Pose GOAL_R1 = lemlib::Pose(44, 105, 0);
-
-    lemlib::Pose LOADER_TL_WAY = lemlib::Pose(44, 120, -90);
-    lemlib::Pose LOADER_TL_WAY1 = lemlib::Pose(-48, 120, -90);
-    lemlib::Pose LOADER_TL = lemlib::Pose(-55, 138, 0);
-
-    lemlib::Pose GOAL_L1 = lemlib::Pose(-55, 105, -90);
-
-    lemlib::Pose LOADER_BL_WAY = lemlib::Pose(-55, 115, 0);
-    lemlib::Pose LOADER_BL_WAY1 = lemlib::Pose(-45, 90, -160);
-    lemlib::Pose LOADER_BL_WAY2 = lemlib::Pose(-48, 22, 139);
-    lemlib::Pose LOADER_BL = lemlib::Pose(-55, 24, 180);
-
-    lemlib::Pose GOAL_L = lemlib::Pose(-53, 40, 180);
+    const lemlib::Pose GOAL_R = lemlib::Pose{47, 44, -180};
+    const lemlib::Pose GOAL_L = lemlib::Pose{-55, 40, 180};
 
     int TIMEOUT_SUPER_SHORT = 500;
     int TIMEOUT_SHORT = 1000;

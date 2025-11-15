@@ -1,4 +1,5 @@
 #include "main.h"
+#include "autonomous/StatesSkills.h"
 #include "lemlib/api.hpp" // IWYU pragma: keep
 #include "Robot.h"
 #include "commands/EventLoop.h"
@@ -19,6 +20,15 @@ Robot robot(controller);
  */
 void initialize() {
 	pros::lcd::initialize();
+
+	// while (true) {
+	// 			// print robot location to the brain screen
+	// 		pros::lcd::set_text(0, "X: " + std::to_string(chassis.getPose().x)); // x
+	// 		pros::lcd::set_text(1, "Y: " + std::to_string(chassis.getPose().y)); // y
+	// 		pros::lcd::set_text(2, "Theta: " + std::to_string(chassis.getPose().theta)); // heading
+	// 			// delay to save resources
+	// 		pros::delay(20);
+	// }
 
 	robot.addSubsystem(std::make_unique<Conveyer>());
 	robot.addSubsystem(std::make_unique<MatchLoad>());
@@ -58,12 +68,12 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	robot.runAuto<StatesAwp>(
+	robot.runAuto<StatesSkills>(
 		robot.getSubsystem<Conveyer>(),
 		robot.getSubsystem<MatchLoad>()
 	);
 }
-````
+
 /**
  * Runs the operator control code. This function will be started in its own task
  * with the default priority and stack size whenever the robot is enabled via
