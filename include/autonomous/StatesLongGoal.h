@@ -25,10 +25,13 @@ public:
         conveyer->intake();
         chassis.moveToPoint( STACK1.x, STACK1.y,  TIMEOUT, {
                 // .minSpeed = MIN_SPEED, 
-                .maxSpeed=80,
+                .maxSpeed=70,
                 .earlyExitRange = 4
             });
-        chassis.moveToPose(STACK2.x, STACK2.y, STACK2.theta, TIMEOUT);
+        chassis.turnToHeading(-75, TIMEOUT_SHORT);
+        chassis.moveToPoint(STACK2.x, STACK2.y, TIMEOUT_SHORT, {
+                .maxSpeed=70
+            });
         chassis.moveToPoint(GOAL_WAYPOINTS.x, GOAL_WAYPOINTS.y,TIMEOUT, {
                 .forwards = false,
                 .minSpeed = MIN_SPEED, 
@@ -38,7 +41,7 @@ public:
                 .forwards = false
             });
         conveyer->scoreLong();
-        pros::c::delay(2000);
+        pros::c::delay(1500);
         matchLoad->extend();
         conveyer->intake();
         chassis.moveToPoint(MATCHLOAD.x, MATCHLOAD.y,   TIMEOUT);
@@ -57,8 +60,10 @@ private:
     const lemlib::Pose GOAL{-58, 40, -180};
     const lemlib::Pose MATCHLOAD{GOAL.x, 8, -180};
 
+    const int TIMEOUT_SHORT = 1000;
     const int TIMEOUT = 2000;
     const int TIMEOUT_LONG = 3000;
     const float MIN_SPEED = 80;
+
 
 };

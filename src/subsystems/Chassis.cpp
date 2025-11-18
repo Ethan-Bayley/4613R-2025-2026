@@ -6,7 +6,7 @@ pros::MotorGroup right_mg({8, -9, 10}, pros::MotorGearset::blue);
 
 pros::Imu imu(12);
 pros::Rotation odometry(15);
-pros::Rotation odometryH(14);
+pros::Rotation odometryH(19);
 
 lemlib::Drivetrain LLdrivetrain(
 		&left_mg,
