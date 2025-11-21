@@ -1,15 +1,16 @@
 #include "main.h"
-#include "autonomous/StatesSkills.h"
 #include "lemlib/api.hpp" // IWYU pragma: keep
+#include <memory>
 #include "Robot.h"
 #include "commands/EventLoop.h"
 #include "subsystems/Conveyer.h"
 #include "subsystems/MatchLoad.h"
 #include "subsystems/Descore.h"
-#include "autonomous/StatesAwp.h"
-#include <memory>
 #include "autonomous/Wing.h"
+#include "autonomous/StatesSkills.h"
+#include "autonomous/StatesAwp.h"
 #include "autonomous/NatsLongGoal.h"
+#include "autonomous/NatsMLGoal.h"
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 Robot robot(controller);
@@ -70,7 +71,7 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	robot.runAuto<NatsLongGoal>(
+	robot.runAuto<NatsMLGoal>(
 		robot.getSubsystem<Conveyer>(),
 		robot.getSubsystem<MatchLoad>()
 	);
