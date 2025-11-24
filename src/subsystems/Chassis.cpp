@@ -23,7 +23,7 @@ lemlib::TrackingWheel vertical_tracking_wheel(
 lemlib::TrackingWheel horizontal_tracking_wheel(
 		&odometryH,
 		lemlib::Omniwheel::NEW_275,
-		0);
+		1.85);
 
 lemlib::OdomSensors sensors(
 		&vertical_tracking_wheel,

@@ -12,7 +12,7 @@ class NatsMLGoal : public Autonomous {
 
 public:
     NatsMLGoal(Conveyer* conv, MatchLoad* ml)
-        : conveyer(conv), matchLoad(ml) { }
+        : conveyer(conv), matchLoad(ml) { }//67
 
     void run() override {
         // Check subsystems are available
@@ -36,16 +36,22 @@ public:
             .forwards=false
         });
         chassis.turnToHeading(-130, TIMEOUT_SUPERSHORT);
-        chassis.moveToPoint(MIDDLEGOAL.x, MIDDLEGOAL.y, TIMEOUT, {
+        chassis.moveToPoint(MIDDLEGOAL.x, MIDDLEGOAL.y, TIMEOUT_SHORT, {
             .forwards=false
         });
         conveyer->scoreMiddle();
+        pros::delay(TIMEOUT_SHORT);
         chassis.moveToPoint(GOAL_WAY.x, GOAL_WAY.y, TIMEOUT);
         conveyer->stop();
         chassis.turnToHeading(180, TIMEOUT_SUPERSHORT);
+        chassis.moveToPoint(GOAL.x, GOAL.y, TIMEOUT, {
+            .forwards=false
+        });
+        conveyer->scoreLong();
+        pros::delay(500);
         matchLoad->extend();
         conveyer->intake();
-        chassis.moveToPoint(MATCHLOAD.x, MATCHLOAD.y,   TIMEOUT);
+        chassis.moveToPoint(MATCHLOAD.x, MATCHLOAD.y,   TIMEOUT_SHORT );
         pros::c::delay(700);
         chassis.moveToPoint(GOAL.x, GOAL.y, TIMEOUT_LONG,{
                 .forwards = false
@@ -56,15 +62,15 @@ public:
 
 private: 
     const lemlib::Pose STARTING_POS{-20.25, 16.25, 0};
-    const lemlib::Pose STACK1{-26, 50, -20};
+    const lemlib::Pose STACK1{-27, 50, -20};
     const lemlib::Pose STACK2{-47, 63, -60};
 
-    const lemlib::Pose MIDDLEGOAL_WAY{-24, 48, -60};
-    const lemlib::Pose MIDDLEGOAL{-17,58,-135};
+    const lemlib::Pose MIDDLEGOAL_WAY{-26, 48, -60};
+    const lemlib::Pose MIDDLEGOAL{-14,56,-135};
 
-    const lemlib::Pose GOAL_WAY{-5423, 24, -60};
-    const lemlib::Pose GOAL{-54, 39, 180};
-    const lemlib::Pose MATCHLOAD{GOAL.x, 5, -180};
+    const lemlib::Pose GOAL_WAY{-55, 24, -60};
+    const lemlib::Pose GOAL{-56, 39, 180};
+    const lemlib::Pose MATCHLOAD{GOAL.x, 8, -180};
 
     const int TIMEOUT_SUPERSHORT = 500;
     const int TIMEOUT_SHORT = 1000;

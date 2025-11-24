@@ -69,17 +69,21 @@ public:
 
 private: 
     const lemlib::Pose STARTING_POS{15, 24, 90};
-    const lemlib::Pose GOAL_L_WAIT{-53,24, -135};
+
+    const lemlib::Pose LOADER_BR_WAY {48, 24, 90};
+    const lemlib::Pose LOADER_BR = {48, 11, -180};
+    const lemlib::Pose GOAL_R = lemlib::Pose{47, 44, -180};
+ 
     const lemlib::Pose STACK_RR{20,52,-135};
     const lemlib::Pose STACK_B_MIDPOINT{-16, 48, -90};
     const lemlib::Pose STACK_B{-24, 47, -90};
     const lemlib::Pose GOAL_MIDDLE{-14,60,-135};
 
-    const lemlib::Pose LOADER_BR_WAY {48, 24, 90};
-    const lemlib::Pose LOADER_BR = {48, 11, -180};
 
-    const lemlib::Pose GOAL_R = lemlib::Pose{47, 44, -180};
+    const lemlib::Pose GOAL_L_WAIT{-53,24, -135};
     const lemlib::Pose GOAL_L = lemlib::Pose{-54, 40, 180};
+
+    
 
     int TIMEOUT_SUPER_SHORT = 500;
     int TIMEOUT_SHORT = 1000;
