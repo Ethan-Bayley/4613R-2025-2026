@@ -24,6 +24,7 @@ public:
   void stop();
   void scoreLong();
   void scoreMiddle();
+  void scoreMiddleAuto();
 
 private:
   static constexpr int DEFAULT_BOTTOM_PORT = 7;

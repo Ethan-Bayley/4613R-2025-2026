@@ -72,6 +72,8 @@ void Conveyer::intake()
 {
   bottomMotor.move_voltage(12000);
   topMotor.move_voltage(0);
+  piston2.retract();
+  piston1.extend();
 }
 
 void Conveyer::outtake()
@@ -103,6 +105,14 @@ void Conveyer::scoreLong()
 }
 
 void Conveyer::scoreMiddle()
+{
+  bottomMotor.move_voltage(12000);
+  topMotor.move_voltage(0);
+  piston1.retract();
+  piston2.extend();
+}
+
+void Conveyer::scoreMiddleAuto()
 {
   bottomMotor.move_voltage(12000);
   topMotor.move_voltage(0);
