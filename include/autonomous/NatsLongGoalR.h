@@ -6,12 +6,12 @@
 #include "subsystems/MatchLoad.h"
 #include "subsystems/Chassis.h"
 
-class NatsLongGoal : public Autonomous {
+class NatsLongGoalR : public Autonomous {
     Conveyer* conveyer;
     MatchLoad* matchLoad;
 
 public:
-    NatsLongGoal(Conveyer* conv, MatchLoad* ml)
+    NatsLongGoalR(Conveyer* conv, MatchLoad* ml)
         : conveyer(conv), matchLoad(ml) { }
 
     void run() override {
@@ -24,11 +24,10 @@ public:
         chassis.setPose(STARTING_POS);
         conveyer->intake();
         chassis.moveToPoint( STACK1.x, STACK1.y,  TIMEOUT, {
-                // .minSpeed = MIN_SPEED, 
-                .maxSpeed=60,
+                .maxSpeed=50,
                 .earlyExitRange = 4
             });
-        chassis.turnToHeading(-45, TIMEOUT_SUPERSHORT);
+        chassis.turnToHeading(48, TIMEOUT_SUPERSHORT);
         chassis.moveToPoint(STACK2.x, STACK2.y, 1300, {
                 .maxSpeed=70
             });
@@ -36,12 +35,12 @@ public:
             .forwards=false,
         });
         chassis.turnToHeading(0, 300);
-        conveyer->stow1();
+        conveyer->stop();
         chassis.moveToPoint(GOAL_WAYPOINTS.x, GOAL_WAYPOINTS.y, TIMEOUT, {
                 .forwards = false,
                 .minSpeed = MIN_SPEED, 
             });
-        chassis.turnToHeading(90, TIMEOUT_SHORT);
+        chassis.turnToHeading(-90, TIMEOUT_SHORT);
         chassis.moveToPoint(GOAL_WAY3.x, GOAL_WAY3.y, TIMEOUT_SHORT, {
             .forwards=false
         });
@@ -53,25 +52,25 @@ public:
         pros::c::delay(1500);
         matchLoad->extend();
         conveyer->intake();
-        chassis.moveToPoint(MATCHLOAD.x, MATCHLOAD.y,   TIMEOUT);
-        pros::c::delay(700);
+        chassis.moveToPoint(MATCHLOAD.x, MATCHLOAD.y,   1700);
         chassis.moveToPoint(GOAL1.x, GOAL1.y, TIMEOUT_LONG,{
                 .forwards = false
             });
         matchLoad->retract();
+        pros::c::delay(TIMEOUT-700);
         conveyer->scoreLong();
     }
 
 private: 
     const lemlib::Pose STARTING_POS{20.25, 16.25, 0};
-    const lemlib::Pose STACK1{26, 50, -20};
-    const lemlib::Pose STACK2{48, 63, -60};
+    const lemlib::Pose STACK1{27, 50, -20};
+    const lemlib::Pose STACK2{48, 61, -60};
     const lemlib::Pose GOAL_WAY{40, 50, -60};
     const lemlib::Pose GOAL_WAYPOINTS{40, 36, 0};
-    const lemlib::Pose GOAL_WAY3{52, 34};
+    const lemlib::Pose GOAL_WAY3{51, 34};
     const lemlib::Pose GOAL{52, 39, 180};
-    const lemlib::Pose GOAL1{53, 39, 180};
-    const lemlib::Pose MATCHLOAD{GOAL.x, 4, -180};
+    const lemlib::Pose GOAL1{55, 39, 180};
+    const lemlib::Pose MATCHLOAD{GOAL.x, 7, -180};
 
     const int TIMEOUT_SUPERSHORT = 500;
     const int TIMEOUT_SHORT = 1000;

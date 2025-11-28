@@ -10,6 +10,7 @@
 #include "autonomous/StatesSkills.h"
 #include "autonomous/StatesAwp.h"
 #include "autonomous/NatsLongGoal.h"
+#include "autonomous/NatsLongGoalR.h"
 #include "autonomous/NatsMLGoal.h"
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
@@ -71,7 +72,7 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	robot.runAuto<NatsMLGoal>(
+	robot.runAuto<NatsLongGoalR>(
 		robot.getSubsystem<Conveyer>(),
 		robot.getSubsystem<MatchLoad>()
 	);
