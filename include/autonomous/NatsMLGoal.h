@@ -36,7 +36,7 @@ public:
         conveyer->intake();
         chassis.moveToPoint( STACK1.x, STACK1.y,  TIMEOUT_SUPERSHORT, {
             });
-        chassis.turnToHeading(-45, TIMEOUT_SUPERSHORT);
+        chassis.turnToHeading(-47, TIMEOUT_SUPERSHORT);
         chassis.moveToPoint(STACK2.x, STACK2.y, 1200, {
                 .maxSpeed=70
             });
@@ -74,7 +74,7 @@ public:
 private: 
     const lemlib::Pose STARTING_POS{-20.25, 16.25, 0};
     const lemlib::Pose STACK1{-27, 50, -20};
-    const lemlib::Pose STACK2{-46, 64, -60};
+    const lemlib::Pose STACK2{-46, 61, -60};
 
     const lemlib::Pose MIDDLEGOAL_WAY{-24, 48, 135};
     const lemlib::Pose MIDDLEGOAL{-13.5, 55.5,-135};
