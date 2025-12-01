@@ -6,13 +6,13 @@
 #include "subsystems/Conveyer.h"
 #include "subsystems/MatchLoad.h"
 #include "subsystems/Descore.h"
-#include "autonomous/Wing.h"
 #include "autonomous/StatesSkills.h"
 #include "autonomous/StatesAwp.h"
 #include "autonomous/NatsLongGoal.h"
 #include "autonomous/NatsLongGoalR.h"
 #include "autonomous/NatsMLGoal.h"
 #include "autonomous/NatsMLGoal2.h"
+#include "autonomous/NatsSkills.h"
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 Robot robot(controller);
@@ -73,7 +73,7 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	robot.runAuto<NatsMLGoal2>(
+	robot.runAuto<NatsSkills>(
 		robot.getSubsystem<Conveyer>(),
 		robot.getSubsystem<MatchLoad>()
 	);
