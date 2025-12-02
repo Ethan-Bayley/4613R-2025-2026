@@ -49,15 +49,21 @@ public:
         chassis.moveToPoint(STACK_B.x, STACK_B.y, TIMEOUT,{
             .maxSpeed=60
         });
+        pros::delay(300);
+        matchLoad->extend();
+        pros::delay(400);
+        matchLoad->retract();
         chassis.turnToHeading(-135, TIMEOUT_SUPER_SHORT);
         chassis.moveToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y, TIMEOUT_SHORT,{
             .forwards = false
         });
-        conveyer->scoreMiddle();
-        chassis.turnToHeading(-137, TIMEOUT_SUPER_SHORT);
+        conveyer->outtake();
+        pros::delay(500);
+        conveyer->scoreMiddleAuto();
+        // chassis.turnToHeading(-137, TIMEOUT_SUPER_SHORT);
 
         //END OF MIDDLE GOAL
-        pros::delay(300);
+        pros::delay(1500);
         conveyer->stow();
         pros::delay(100);
         chassis.moveToPoint(LOADER_BL_WAY.x, LOADER_BL_WAY.y, TIMEOUT);
@@ -86,7 +92,7 @@ private:
     const lemlib::Pose STACK_RR{20,52,-135};
     const lemlib::Pose STACK_B_MIDPOINT{-16, 48, -90};
     const lemlib::Pose STACK_B{-23.5, 48, -90};
-    const lemlib::Pose GOAL_MIDDLE{-14,60,-135};
+    const lemlib::Pose GOAL_MIDDLE{-12,61,-135};
   
     const lemlib::Pose GOAL_L = lemlib::Pose(-53, 48, -180);
 
