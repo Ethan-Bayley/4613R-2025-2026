@@ -115,7 +115,7 @@ void Conveyer::scoreMiddle()
 void Conveyer::scoreMiddleAuto()
 {
   bottomMotor.move_voltage(12000);
-  topMotor.move_voltage(0);
+  topMotor.move_voltage(12000);
   piston1.retract();
   piston2.extend();
 }

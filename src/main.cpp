@@ -6,15 +6,13 @@
 #include "subsystems/Conveyer.h"
 #include "subsystems/MatchLoad.h"
 #include "subsystems/Descore.h"
-#include "autonomous/StatesSkills.h"
-#include "autonomous/StatesAwp.h"
-#include "autonomous/NatsLongGoal.h"
-#include "autonomous/NatsLongGoalR.h"
-#include "autonomous/NatsMLGoal.h"
-#include "autonomous/NatsMLGoal2.h"
-#include "autonomous/NatsSkills.h"
+#include "autonomous/nats/LongGoal.h"
+#include "autonomous/nats/LongGoalR.h"
+#include "autonomous/nats/MLGoal.h"
+#include "autonomous/nats/MLGoal2.h"
+#include "autonomous/nats/Skills.h"
 #include "subsystems/Park.h"
-#include "autonomous/NatsAWP.h"
+#include "autonomous/nats/AWP.h"
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 Robot robot(controller);
