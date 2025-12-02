@@ -13,6 +13,8 @@
 #include "autonomous/NatsMLGoal.h"
 #include "autonomous/NatsMLGoal2.h"
 #include "autonomous/NatsSkills.h"
+#include "subsystems/Park.h"
+#include "autonomous/NatsAWP.h"
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 Robot robot(controller);
@@ -38,6 +40,7 @@ void initialize() {
 	robot.addSubsystem(std::make_unique<Conveyer>());
 	robot.addSubsystem(std::make_unique<MatchLoad>());
 	robot.addSubsystem(std::make_unique<Descore>());
+	robot.addSubsystem(std::make_unique<Park>());
 
 	robot.setup();
 	robot.registerCommands();
@@ -73,7 +76,7 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	robot.runAuto<NatsSkills>(
+	robot.runAuto<NatsAWP>(
 		robot.getSubsystem<Conveyer>(),
 		robot.getSubsystem<MatchLoad>()
 	);

@@ -38,7 +38,7 @@ public:
         conveyer->stop();
 
         chassis.moveToPoint(LOADER_BL_WAY.x, LOADER_BL_WAY.y, TIMEOUT_SHORT);
-        chassis.turnToHeading(-90, TIMEOUT_SHORT);
+        chassis.turnToHeading(-87, TIMEOUT_SHORT);
         chassis.moveToPoint(LOADER_MID.x, LOADER_MID.y, TIMEOUT);
 
         chassis.moveToPoint(LOADER_BL_WAY1.x, LOADER_BL_WAY1.y, TIMEOUT, {
@@ -52,16 +52,16 @@ public:
         //chassis.moveToPoint(GOAL_L.x, GOAL_R.y, TIMEOUT);
         // conveyer->scoreLong();
         // pros::delay(2000);
+        //matchLoad->retract();
         
         // chassis.moveToPoint(PARK_WAY.x, PARK_WAY.y, TIMEOUT, {
         //   .forwards=false
         // });
-        // chassis.turnToHeading(110, TIMEOUT_SUPER_SHORT);
-        // matchLoad->retract();
+        //chassis.turnToHeading(110, TIMEOUT_SHORT);
+        //chassis.moveToPoint(PARK_MID.x, PARK_MID.y, TIMEOUT);
+        //chassis.turnToHeading(100, TIMEOUT_SHORT);
 
-        // chassis.moveToPoint(PARK.x, PARK.y, TIMEOUT, {
-        //   .maxSpeed=127
-        // });
+        // chassis.moveToPoint(PARK.x, PARK.y, TIMEOUT);
       }
 
 private: 
@@ -70,15 +70,16 @@ private:
     lemlib::Pose LOADER_BR_WAY = lemlib::Pose(49.3, 24, 90);
     lemlib::Pose LOADER_BR = lemlib::Pose(49.3, 11, -180);
 
-    lemlib::Pose GOAL_R = lemlib::Pose(47, 48, -180);
+    lemlib::Pose GOAL_R = lemlib::Pose(48, 48, -180);
     lemlib::Pose GOAL_L = lemlib::Pose(-53, 48, -180);
 
-    lemlib::Pose LOADER_BL_WAY = lemlib::Pose(47, 35, 90);
-    Lemlib::Pose LOADER_MID = lemblib::Pose (0, 34, 90);
-    lemlib::Pose LOADER_BL_WAY1 = lemlib::Pose(-53, 33, -160);
-    lemlib::Pose LOADER_BL = lemlib::Pose(-53, 12, 180);
+    lemlib::Pose LOADER_BL_WAY = lemlib::Pose(47, 33, 90);
+    lemlib::Pose LOADER_MID = lemlib::Pose (0, 32, 90);
+    lemlib::Pose LOADER_BL_WAY1 = lemlib::Pose(-53, 31, -160);
+    lemlib::Pose LOADER_BL = lemlib::Pose(-53, 10, 180);
 
     lemlib::Pose PARK_WAY = lemlib::Pose(-53, 33, 180);
+    lemlib::Pose PARK_MID = lemlib::Pose(-20, 15, 90);
     lemlib::Pose PARK = lemlib::Pose(10, 10, 90);
 
     int TIMEOUT_SUPER_SHORT = 500;

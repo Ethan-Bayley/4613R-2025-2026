@@ -4,10 +4,10 @@
 #include "Subsystem.h"
 #include "pros/adi.hpp"
 
-class Descore : public Subsystem {
+class Park : public Subsystem {
   public:
-    Descore();
-    Descore(int pistonPort);
+    Park();
+    Park(int pistonPort);
 
     void setup() override;
     void registerHandlers(EventLoop &eventLoop) override;
@@ -15,7 +15,7 @@ class Descore : public Subsystem {
     void toggle();
 
   private:
-  static constexpr int DEFAULT_PISTON_PORT = 'D';
+  static constexpr int DEFAULT_PISTON_PORT = 'B';
 
   pros::adi::Pneumatics piston;
 };
