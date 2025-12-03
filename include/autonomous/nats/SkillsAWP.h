@@ -72,7 +72,7 @@ public:
         chassis.turnToHeading(-180, TIMEOUT_SUPER_SHORT);
         matchLoad->extend();
         chassis.moveToPoint(LOADER_BL.x, LOADER_BL.y, TIMEOUT_SHORT);
-        pros::delay(TIMEOUT);
+        pros::delay(TIMEOUT_LONG);
         chassis.moveToPoint(GOAL_L.x, GOAL_L.y, TIMEOUT, {
             .forwards=false,
             .maxSpeed=100

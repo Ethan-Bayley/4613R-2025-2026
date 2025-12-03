@@ -79,7 +79,7 @@ void Conveyer::intake()
 void Conveyer::outtake()
 {
   bottomMotor.move_voltage(-12000);
-  topMotor.move_voltage(0);
+  topMotor.move_voltage(-12000);
 }
 
 void Conveyer::stow()
