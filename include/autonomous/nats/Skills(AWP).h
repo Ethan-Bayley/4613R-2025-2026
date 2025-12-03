@@ -5,14 +5,16 @@
 #include "subsystems/Conveyer.h"
 #include "subsystems/MatchLoad.h"
 #include "subsystems/Chassis.h"
+#include "subsystems/Park.h"
 
-class NatsAWP : public Autonomous {
+class SkillsAWP : public Autonomous {
     Conveyer* conveyer;
     MatchLoad* matchLoad;
+    Park* park;
 
 public:
-    NatsAWP(Conveyer* conv, MatchLoad* ml)
-        : conveyer(conv), matchLoad(ml) { }
+    SkillsAWP(Conveyer* conv, MatchLoad* ml, Park* pk)
+        : conveyer(conv), matchLoad(ml), park(pk) { }
 
     void run() override {
         // Check subsystems are available
@@ -70,15 +72,19 @@ public:
 
         chassis.turnToHeading(-180, TIMEOUT_SUPER_SHORT);
 
-        
-
-
 
         chassis.moveToPoint(GOAL_L.x, GOAL_L.y, TIMEOUT_SHORT, {
             .forwards=false
         });
         pros::delay(1000);
         conveyer->scoreLong();
+
+        chassis.moveToPoint(PARK_WAY.x, PARK_WAY.y, TIMEOUT);
+        chassis.turnToHeading(90, TIMEOUT_SHORT);
+        chassis.moveToPoint(PARK_MID.x, PARK_MID.y, TIMEOUT);
+        chassis.turnToHeading(180, TIMEOUT_SHORT);
+        chassis.moveToPoint(PARK.x, PARK.y, TIMEOUT);
+        park->toggle();
 
     }
 
@@ -105,8 +111,8 @@ private:
      const lemlib::Pose LOADER_BL = lemlib::Pose(-53, 10, 180);
 
      const lemlib::Pose PARK_WAY = lemlib::Pose(-53, 33, 180);
-     const lemlib::Pose PARK_MID = lemlib::Pose(-20, 15, 90);
-     const lemlib::Pose PARK = lemlib::Pose(10, 10, 90);
+     const lemlib::Pose PARK_MID = lemlib::Pose(0, 33, 90);
+     const lemlib::Pose PARK = lemlib::Pose(10, 20, 90);
 
 
 

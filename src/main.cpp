@@ -1,8 +1,10 @@
 #include "main.h"
+#include "autonomous/nats/AWP.h"
 #include "lemlib/api.hpp" // IWYU pragma: keep
 #include <memory>
 #include "Robot.h"
 #include "commands/EventLoop.h"
+#include "pros/misc.h"
 #include "subsystems/Conveyer.h"
 #include "subsystems/MatchLoad.h"
 #include "subsystems/Descore.h"
@@ -12,7 +14,7 @@
 #include "autonomous/nats/MLGoal2.h"
 #include "autonomous/nats/Skills.h"
 #include "subsystems/Park.h"
-#include "autonomous/nats/AWP.h"
+#include "autonomous/nats/SkillsAWP.h"
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 Robot robot(controller);
@@ -74,9 +76,10 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	robot.runAuto<NatsAWP>(
+	robot.runAuto<NatsSkillsAWP>(
 		robot.getSubsystem<Conveyer>(),
-		robot.getSubsystem<MatchLoad>()
+		robot.getSubsystem<MatchLoad>(),
+		robot.getSubsystem<Park>()
 	);
 }
 
@@ -94,6 +97,7 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+	controller.rumble("---");
 	while (true) {
 		auto start_time = pros::millis();
 

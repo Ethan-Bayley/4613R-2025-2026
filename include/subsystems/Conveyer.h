@@ -30,7 +30,7 @@ private:
   static constexpr int DEFAULT_BOTTOM_PORT = 7;
   static constexpr int DEFAULT_TOP_PORT = 20;
   static constexpr int DEFAULT_PISTON_1_PORT = 'A';
-  static constexpr int DEFAULT_PISTON_2_PORT = 'B';
+  static constexpr int DEFAULT_PISTON_2_PORT = 'H';
 
   pros::Motor topMotor;
   pros::Motor bottomMotor;
