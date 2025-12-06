@@ -96,7 +96,7 @@ private:
 
     const lemlib::Pose STACK_B_MIDPOINT{-16, 48, -90};
     const lemlib::Pose STACK_B{-23.5, 48, -90};
-    const lemlib::Pose GOAL_MIDDLE{-15,60,-135};
+    const lemlib::Pose GOAL_MIDDLE{-16,60,-135};
 
 
     const lemlib::Pose GOAL_L_WAIT{-50,24, -135};

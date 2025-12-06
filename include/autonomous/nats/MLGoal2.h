@@ -28,19 +28,19 @@ public:
         chassis.moveToPoint( STACK1.x, STACK1.y,  1300, {
                 .maxSpeed=60,
             });
-        pros::delay(500);
+        pros::delay(800);
         matchLoad->extend();
         pros::delay(400);
         matchLoad->retract();
-        chassis.turnToHeading(-128, TIMEOUT_SHORT);
+        chassis.turnToHeading(-128, 400);
         chassis.moveToPoint(MIDDLEGOAL.x, MIDDLEGOAL.y,  500, {
             .forwards=false
         });
 
-        chassis.turnToHeading(-138, TIMEOUT_SUPERSHORT);
+        chassis.turnToHeading(-138, TIMEOUT_SHORT);
         pros::delay(100);
         conveyer->scoreMiddleAuto();
-        pros::delay(300);
+        pros::delay(500);
         conveyer->stow();
         pros::delay(100);
 
@@ -50,26 +50,26 @@ public:
         chassis.turnToHeading(180, TIMEOUT_SUPERSHORT);
         conveyer->intake();
         matchLoad->extend();
-        chassis.moveToPoint(MATCHLOAD.x, MATCHLOAD.y, TIMEOUT_SHORT);
+        chassis.moveToPoint(MATCHLOAD.x, MATCHLOAD.y, 1100);
         chassis.moveToPoint(GOAL.x, GOAL.y, TIMEOUT_SHORT, {
             .forwards=false
         });
+        pros::delay(400);
         conveyer->scoreLong();
-        pros::delay(TIMEOUT_SHORT);
+        pros::delay(TIMEOUT);
         conveyer->stop();
         matchLoad->retract();
         
         chassis.moveToPoint(GOAL_WAY.x, GOAL_WAY.y, TIMEOUT_SHORT);
-        pros::delay(400);
-        conveyer->scoreLong();
         pros::delay(TIMEOUT_SHORT);
-        conveyer->stop();
+        descore->toggle();
         chassis.turnToHeading(130, TIMEOUT_SHORT);
         chassis.moveToPoint(CZ1.x, CZ1.y, TIMEOUT_SHORT, {
             .forwards=false
         });
         descore->toggle();
         chassis.turnToHeading(180, TIMEOUT_SUPERSHORT);
+
         chassis.moveToPoint(CONTROLZONE.x, CONTROLZONE.y, TIMEOUT, {
             .forwards=false,
             .maxSpeed=60
@@ -84,11 +84,11 @@ private:
     const lemlib::Pose MIDDLEGOAL{-15, 56,-135};
 
     const lemlib::Pose GOAL_WAY{-51, 25, -60};
-    const lemlib::Pose GOAL{-52, 39, 180};
+    const lemlib::Pose GOAL{-53, 39, 180};
     const lemlib::Pose MATCHLOAD{-51, 8, 180};
 
-    const lemlib::Pose CZ1{-63, 39, 150};
-    const lemlib::Pose CONTROLZONE{-63, 48, 180};
+    const lemlib::Pose CZ1{-66, 38, 150};
+    const lemlib::Pose CONTROLZONE{-66, 55, 180};
 
     const int TIMEOUT_SUPERSHORT = 500;
     const int TIMEOUT_SHORT = 1000;

@@ -77,11 +77,11 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	robot.runAuto<NatsSkillsAWP>(
+	robot.runAuto<NatsMLGoal2>(
 		robot.getSubsystem<Conveyer>(),
 		robot.getSubsystem<MatchLoad>(),
-		// robot.getSubsystem<Descore>()
-		robot.getSubsystem<Park>()
+		robot.getSubsystem<Descore>()
+		// robot.getSubsystem<Park>()
 	);
 }
 
