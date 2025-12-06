@@ -51,6 +51,7 @@ public:
         conveyer->intake();
         matchLoad->extend();
         chassis.moveToPoint(MATCHLOAD.x, MATCHLOAD.y, 1100);
+        pros::delay(100);
         chassis.moveToPoint(GOAL.x, GOAL.y, TIMEOUT_SHORT, {
             .forwards=false
         });
@@ -88,7 +89,7 @@ private:
     const lemlib::Pose MATCHLOAD{-51, 8, 180};
 
     const lemlib::Pose CZ1{-66, 38, 150};
-    const lemlib::Pose CONTROLZONE{-66, 55, 180};
+    const lemlib::Pose CONTROLZONE{-66, 56, 180};
 
     const int TIMEOUT_SUPERSHORT = 500;
     const int TIMEOUT_SHORT = 1000;

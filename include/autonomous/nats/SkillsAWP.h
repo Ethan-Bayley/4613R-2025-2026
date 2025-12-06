@@ -29,7 +29,7 @@ public:
         chassis.turnToHeading(-180, TIMEOUT_SUPER_SHORT);
         matchLoad->extend();
         chassis.moveToPoint(LOADER_BR.x, LOADER_BR.y, TIMEOUT_SHORT);
-        pros::delay(TIMEOUT);
+        pros::delay(2100);
         chassis.moveToPoint(GOAL_R.x, GOAL_R.y, TIMEOUT,{
             .forwards = false,
             .maxSpeed=100
