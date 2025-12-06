@@ -63,7 +63,9 @@ public:
         conveyer->scoreMiddleAuto();
 
         //END OF MIDDLE GOAL
-        pros::delay(TIMEOUT);
+        pros::delay(500);
+        conveyer->scoreMiddle();
+        pros::delay(1500);
         conveyer->stow();
         pros::delay(100);
 
@@ -104,22 +106,20 @@ private:
     const lemlib::Pose STACK_B{-23.5, 48, -90};
     const lemlib::Pose GOAL_MIDDLE{-16,60,-135};
 
-    const lemlib::Pose GOAL_L_WAIT{-52,24, -135};
-    const lemlib::Pose GOAL_L = lemlib::Pose(-52, 48, -180);
+    const lemlib::Pose GOAL_L_WAIT{-50,24, -135};
+    const lemlib::Pose GOAL_L = lemlib::Pose(-51, 47, -180);
 
     const lemlib::Pose GOAL_R = lemlib::Pose(48, 48, -180);
 
 
     const lemlib::Pose LOADER_BL_WAY = lemlib::Pose(47, 33, 90);
     const lemlib::Pose LOADER_MID = lemlib::Pose (0, 32, 90);
-    const lemlib::Pose LOADER_BL_WAY1 = lemlib::Pose(-53, 31, -160);
-    const lemlib::Pose LOADER_BL = lemlib::Pose(-51, 6, 180);
+    const lemlib::Pose LOADER_BL_WAY1 = lemlib::Pose(-49, 31, -160);
+    const lemlib::Pose LOADER_BL = lemlib::Pose(-49, 6, 180);
 
      const lemlib::Pose PARK_WAY = lemlib::Pose(-51, 33, 180);
      const lemlib::Pose PARK_MID = lemlib::Pose(-3, 33, 90);
      const lemlib::Pose PARK = lemlib::Pose(-3, 16, 90);
-
-    
 
     int TIMEOUT_SUPER_SHORT = 500;
     int TIMEOUT_SHORT = 1000;

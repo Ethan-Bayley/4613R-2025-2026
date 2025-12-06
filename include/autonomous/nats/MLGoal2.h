@@ -37,7 +37,6 @@ public:
             .forwards=false
         });
 
-        
         chassis.turnToHeading(-138, TIMEOUT_SUPERSHORT);
         pros::delay(100);
         conveyer->scoreMiddleAuto();
@@ -64,14 +63,17 @@ public:
         pros::delay(400);
         conveyer->scoreLong();
         pros::delay(TIMEOUT_SHORT);
+        conveyer->stop();
         chassis.turnToHeading(130, TIMEOUT_SHORT);
         chassis.moveToPoint(CZ1.x, CZ1.y, TIMEOUT_SHORT, {
             .forwards=false
         });
-        chassis.moveToPoint(CONTROLZONE.x, CONTROLZONE.y, TIMEOUT, {
-            .forwards=false
-        });
         descore->toggle();
+        chassis.turnToHeading(180, TIMEOUT_SUPERSHORT);
+        chassis.moveToPoint(CONTROLZONE.x, CONTROLZONE.y, TIMEOUT, {
+            .forwards=false,
+            .maxSpeed=60
+        });
     }
 
 private: 
@@ -86,7 +88,6 @@ private:
     const lemlib::Pose MATCHLOAD{-51, 8, 180};
 
     const lemlib::Pose CZ1{-63, 39, 150};
-
     const lemlib::Pose CONTROLZONE{-63, 48, 180};
 
     const int TIMEOUT_SUPERSHORT = 500;

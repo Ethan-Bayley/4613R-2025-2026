@@ -36,7 +36,7 @@ public:
             .forwards=false,
         });
         chassis.turnToHeading(0, 300);
-        conveyer->stow1();
+        conveyer->stop();
         chassis.moveToPoint(GOAL_WAYPOINTS.x, GOAL_WAYPOINTS.y, TIMEOUT, {
                 .forwards = false,
                 .minSpeed = MIN_SPEED, 
