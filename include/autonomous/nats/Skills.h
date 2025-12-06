@@ -4,6 +4,7 @@
 #include "lemlib/chassis/chassis.hpp"
 #include "lemlib/pose.hpp"
 #include "subsystems/Conveyer.h"
+#include "subsystems/Descore.h"
 #include "subsystems/MatchLoad.h"
 #include "subsystems/Chassis.h"
 #include <cmath>
@@ -11,9 +12,10 @@
 class NatsSkills : public Autonomous {
     Conveyer* conveyer;
     MatchLoad* matchLoad;
+    Descore* descore;
 
 public:
-    NatsSkills(Conveyer* conv, MatchLoad* ml)
+    NatsSkills(Conveyer* conv, MatchLoad* ml, Descore* descore)
         : conveyer(conv), matchLoad(ml) { }
 
     void run() override {
@@ -81,6 +83,9 @@ private:
     lemlib::Pose PARK_WAY = lemlib::Pose(-53, 33, 180);
     lemlib::Pose PARK_MID = lemlib::Pose(-20, 15, 90);
     lemlib::Pose PARK = lemlib::Pose(10, 10, 90);
+
+    lemlib::Pose CZ1{-66, 38, 150};
+    lemlib::Pose CONTROLZONE{-66, 56, 180};
 
     int TIMEOUT_SUPER_SHORT = 500;
     int TIMEOUT_SHORT = 1000;

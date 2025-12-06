@@ -104,6 +104,12 @@ void Conveyer::scoreLong()
   topMotor.move_velocity(1200);
 }
 
+void Conveyer::scoreSlow()
+{
+  bottomMotor.move_velocity(800);
+  topMotor.move_velocity(400);
+}
+
 void Conveyer::scoreMiddle()
 {
   bottomMotor.move_voltage(12000);

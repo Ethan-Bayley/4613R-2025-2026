@@ -36,15 +36,29 @@ public:
         });
         pros::delay(500);
         matchLoad->retract();
-        conveyer->scoreLong();
-        pros::delay(TIMEOUT);
+        // conveyer->scoreLong();
+        conveyer->scoreSlow();
+        pros::delay(4000);
         //END OF RIGHT GOAL
         conveyer->intake();
+
+
+        chassis.moveToPoint(GOAL_R.x, GOAL_R.y - 10, TIMEOUT_SHORT, {
+            .maxSpeed=80
+        });
+
+        chassis.moveToPoint(GOAL_R.x, GOAL_R.y, TIMEOUT, {
+            .forwards=false,
+            .maxSpeed=60,
+            .minSpeed=60
+        });
+        
         chassis.swingToHeading(-45, lemlib::DriveSide::RIGHT, 900);
         chassis.moveToPoint(STACK_RR.x , STACK_RR.y, TIMEOUT_SHORT, {
             .maxSpeed = 50
         });
-        pros::delay(500);
+
+        // pros::delay(500);
         // matchLoad->extend();
         pros::delay(400);
         pros::delay(TIMEOUT_SHORT);
@@ -68,7 +82,7 @@ public:
         conveyer->scoreMiddle();
         pros::delay(1500);
         conveyer->stow();
-        pros::delay(100);
+        pros::delay(200);
 
 
         chassis.moveToPoint(GOAL_L_WAIT.x, GOAL_L_WAIT.y, TIMEOUT_SHORT);
@@ -82,7 +96,19 @@ public:
         });
         matchLoad->retract();
         pros::delay(1000);
-        conveyer->scoreLong();
+        // conveyer->scoreLong();
+        conveyer->scoreSlow();
+        pros::delay(2000);
+
+        chassis.moveToPoint(GOAL_L.x, GOAL_L.y -10, TIMEOUT, {
+            .maxSpeed=80,
+        });
+        chassis.moveToPoint(GOAL_L.x, GOAL_L.y, TIMEOUT, {
+            .forwards=false,
+            .maxSpeed=80,
+            .minSpeed=60
+        });
+
         pros::delay(TIMEOUT);
 
         chassis.moveToPoint(PARK_WAY.x, PARK_WAY.y, TIMEOUT);
@@ -122,6 +148,10 @@ private:
      const lemlib::Pose PARK_MID = lemlib::Pose(-3, 33, 90);
      const lemlib::Pose PARK = lemlib::Pose(-3, 16, 90);
 
+    const lemlib::Pose HIT_LEFT = lemlib::Pose(-52, 38, -180);
+    const lemlib::Pose HIT_RIGHT = lemlib::Pose(48, 39, -180);
+    
+
     int TIMEOUT_SUPER_SHORT = 500;
     int TIMEOUT_SHORT = 1000;
     int TIMEOUT = 2000;
@@ -129,3 +159,6 @@ private:
     float MIN_SPEED = 80;
     float LEAD = 0.8;
 };
+
+
+
