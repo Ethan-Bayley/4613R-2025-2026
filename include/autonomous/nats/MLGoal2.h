@@ -66,7 +66,7 @@ public:
 
         pros::delay(TIMEOUT_SHORT);
         descore->toggle();
-        chassis.turnToHeading(130, TIMEOUT_SHORT);
+        chassis.turnToHeading(130, TIMEOUT_SUPERSHORT);
         chassis.moveToPoint(CZ1.x, CZ1.y, TIMEOUT_SHORT, {
             .forwards=false
         });
@@ -86,7 +86,9 @@ private:
     const lemlib::Pose STACK1{-28, 50, -20};
 
     const lemlib::Pose MIDDLEGOAL_WAY{-24, 48, 135};
-    const lemlib::Pose MIDDLEGOAL{-14, 56,-135};
+
+
+    const lemlib::Pose MIDDLEGOAL{-14, 55.5,-135};
 
     const lemlib::Pose GOAL_WAY{-51, 25, -60};
     const lemlib::Pose GOAL{-53, 39, 180};
