@@ -32,7 +32,13 @@ public:
         matchLoad->extend();
         pros::delay(400);
         matchLoad->retract();
-        chassis.turnToHeading(-128, 400);
+
+        chassis.moveToPoint(MIDDLEGOAL_WAY2.x, MIDDLEGOAL_WAY2.y, TIMEOUT_SHORT, {
+            .forwards = false
+        });
+
+        // chassis.turnToHeading(-128, 400);
+        chassis.turnToHeading(-135, 400);
         chassis.moveToPoint(MIDDLEGOAL.x, MIDDLEGOAL.y,  500, {
             .forwards=false
         });
@@ -52,7 +58,7 @@ public:
         matchLoad->extend();
         chassis.moveToPoint(MATCHLOAD.x, MATCHLOAD.y, 1100);
         pros::delay(100);
-        chassis.moveToPoint(GOAL.x, GOAL.y, TIMEOUT_SHORT, {
+        chassis.moveToPoint(GOAL.x, GOAL.y, 1500, {
             .forwards=false
         });
         pros::delay(400);
@@ -77,7 +83,7 @@ public:
             .forwards=false,
             .maxSpeed=60
         });
-        pros::delay(2500);
+        pros::delay(2000);
         descore->toggle();
     }
 
@@ -87,8 +93,8 @@ private:
 
     const lemlib::Pose MIDDLEGOAL_WAY{-24, 48, 135};
 
-
-    const lemlib::Pose MIDDLEGOAL{-14, 55.5,-135};
+    const lemlib::Pose MIDDLEGOAL_WAY2 {-23.3, 46.6, -135};
+    const lemlib::Pose MIDDLEGOAL{-12, 55.5,-135};
 
     const lemlib::Pose GOAL_WAY{-51, 25, -60};
     const lemlib::Pose GOAL{-53, 39, 180};
