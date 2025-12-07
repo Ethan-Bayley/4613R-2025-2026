@@ -33,7 +33,7 @@ public:
         pros::delay(400);
         matchLoad->retract();
 
-        chassis.moveToPoint(MIDDLEGOAL_WAY2.x, MIDDLEGOAL_WAY2.y, TIMEOUT_SHORT, {
+        chassis.moveToPoint(MIDDLEGOAL_WAY2.x, MIDDLEGOAL_WAY2.y, TIMEOUT_SUPERSHORT, {
             .forwards = false
         });
 
