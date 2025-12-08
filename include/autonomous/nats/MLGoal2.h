@@ -57,7 +57,7 @@ public:
         conveyer->intake();
         matchLoad->extend();
         chassis.moveToPoint(MATCHLOAD.x, MATCHLOAD.y, 1100);
-        pros::delay(100);
+        pros::delay(150);
         chassis.moveToPoint(GOAL.x, GOAL.y, 1500, {
             .forwards=false
         });
@@ -94,11 +94,11 @@ private:
     const lemlib::Pose MIDDLEGOAL_WAY{-24, 48, 135};
 
     const lemlib::Pose MIDDLEGOAL_WAY2 {-23.3, 46.6, -135};
-    const lemlib::Pose MIDDLEGOAL{-12, 55.5,-135};
+    const lemlib::Pose MIDDLEGOAL{-10, 57.5,-135};
 
     const lemlib::Pose GOAL_WAY{-51, 25, -60};
     const lemlib::Pose GOAL{-53, 39, 180};
-    const lemlib::Pose MATCHLOAD{-51, 7, 180};
+    const lemlib::Pose MATCHLOAD{-51, 6, 180};
 
     const lemlib::Pose CZ{-51, 25, -60};
     const lemlib::Pose CZ1{-65, 38, 150};
