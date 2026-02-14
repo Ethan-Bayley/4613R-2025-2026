@@ -1,21 +1,9 @@
 #include "main.h"
-#include "autonomous/nats/AWP.h"
 #include "lemlib/api.hpp" // IWYU pragma: keep
 #include <memory>
 #include "Robot.h"
 #include "commands/EventLoop.h"
 #include "pros/misc.h"
-#include "subsystems/Conveyer.h"
-#include "subsystems/MatchLoad.h"
-#include "subsystems/Descore.h"
-#include "subsystems/Park.h"
-
-#include "autonomous/nats/LongGoal.h"
-#include "autonomous/nats/LongGoalR.h"
-#include "autonomous/nats/MLGoal.h"
-#include "autonomous/nats/MLGoal2.h"
-#include "autonomous/nats/Skills.h"
-#include "autonomous/nats/SkillsAWP.h"
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 Robot robot(controller);
@@ -28,11 +16,6 @@ Robot robot(controller);
  */
 void initialize() {
 	pros::lcd::initialize();
-
-	robot.addSubsystem(std::make_unique<Conveyer>());
-	robot.addSubsystem(std::make_unique<MatchLoad>());
-	robot.addSubsystem(std::make_unique<Descore>());
-	robot.addSubsystem(std::make_unique<Park>());
 
 	robot.setup();
 	robot.registerCommands();
@@ -68,12 +51,6 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	robot.runAuto<NatsMLGoal2>(
-		robot.getSubsystem<Conveyer>(),
-		robot.getSubsystem<MatchLoad>(),
-		// robot.getSubsystem<Park>()
-		robot.getSubsystem<Descore>()
-	);
 }
 
 /**

@@ -1,7 +1,6 @@
 #include "Robot.h"
 #include "subsystems/Chassis.h" // Chassis isn't registered in main, but instead initialised and managed by lemlib
 #include "commands/EventLoop.h"
-#include "subsystems/Conveyer.h"
 
 Robot::Robot(pros::Controller &controller)
     : controller(controller), eventLoop(controller) {
