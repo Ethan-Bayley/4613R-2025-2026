@@ -18,7 +18,7 @@ class MatchLoad : public Subsystem {
 
   private:
   static constexpr int DEFAULT_PISTON_1_PORT = 'F';
-  static constexpr int DEFAULT_PISTON_2_PORT = 'B';
+  static constexpr int DEFAULT_PISTON_2_PORT = 'H';
 
   bool isRetracted;
 

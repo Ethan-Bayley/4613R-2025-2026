@@ -1,13 +1,21 @@
 #include "main.h"
-#include "autonomous/StatesSkills.h"
+#include "autonomous/nats/AWP.h"
 #include "lemlib/api.hpp" // IWYU pragma: keep
+#include <memory>
 #include "Robot.h"
 #include "commands/EventLoop.h"
+#include "pros/misc.h"
 #include "subsystems/Conveyer.h"
 #include "subsystems/MatchLoad.h"
 #include "subsystems/Descore.h"
-#include "autonomous/StatesAwp.h"
-#include <memory>
+#include "subsystems/Park.h"
+
+#include "autonomous/nats/LongGoal.h"
+#include "autonomous/nats/LongGoalR.h"
+#include "autonomous/nats/MLGoal.h"
+#include "autonomous/nats/MLGoal2.h"
+#include "autonomous/nats/Skills.h"
+#include "autonomous/nats/SkillsAWP.h"
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 Robot robot(controller);
@@ -21,18 +29,10 @@ Robot robot(controller);
 void initialize() {
 	pros::lcd::initialize();
 
-	// while (true) {
-	// 			// print robot location to the brain screen
-	// 		pros::lcd::set_text(0, "X: " + std::to_string(chassis.getPose().x)); // x
-	// 		pros::lcd::set_text(1, "Y: " + std::to_string(chassis.getPose().y)); // y
-	// 		pros::lcd::set_text(2, "Theta: " + std::to_string(chassis.getPose().theta)); // heading
-	// 			// delay to save resources
-	// 		pros::delay(20);
-	// }
-
 	robot.addSubsystem(std::make_unique<Conveyer>());
 	robot.addSubsystem(std::make_unique<MatchLoad>());
 	robot.addSubsystem(std::make_unique<Descore>());
+	robot.addSubsystem(std::make_unique<Park>());
 
 	robot.setup();
 	robot.registerCommands();
@@ -68,9 +68,11 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	robot.runAuto<StatesSkills>(
+	robot.runAuto<NatsMLGoal2>(
 		robot.getSubsystem<Conveyer>(),
-		robot.getSubsystem<MatchLoad>()
+		robot.getSubsystem<MatchLoad>(),
+		// robot.getSubsystem<Park>()
+		robot.getSubsystem<Descore>()
 	);
 }
 
@@ -88,6 +90,7 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+	controller.rumble("---");
 	while (true) {
 		auto start_time = pros::millis();
 

@@ -1,25 +1,26 @@
 #include "subsystems/Conveyer.h"
 #include "commands/ButtonCommand.h"
+#include "pros/motors.h"
 #include <cstdio>
 #include <memory>
 
 Conveyer::Conveyer() : topMotor(DEFAULT_TOP_PORT, pros::MotorGearset::blue),
                        bottomMotor(DEFAULT_BOTTOM_PORT, pros::MotorGearset::blue),
-                       piston1(DEFAULT_PISTON_1_PORT, true),
-                       piston2(DEFAULT_PISTON_2_PORT, false)
+                       piston1( DEFAULT_PISTON_2_PORT, true),
+                       piston2(DEFAULT_PISTON_1_PORT,  false)
 {
 }
 
 Conveyer::Conveyer(int bottomMotorPort, int topMotorPort, int pistonPort1, int pistonPort2) : topMotor(topMotorPort, pros::MotorGearset::blue),
                                                                                               bottomMotor(bottomMotorPort, pros::MotorGearset::blue),
-                                                                                              piston1(pistonPort1, true),
-                                                                                              piston2(pistonPort2, false)
+                                                                                              piston1(pistonPort1, false),
+                                                                                              piston2(pistonPort2, true)
 {
 }
 
 void Conveyer::setup()
 {
-  topMotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+  topMotor.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
   bottomMotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
   bottomMotor.set_reversed(true);
 }
@@ -32,7 +33,7 @@ void Conveyer::registerHandlers(EventLoop &eventLoop)
       eventLoop.controller,
       pros::E_CONTROLLER_DIGITAL_R1,
       [this]() { intake(); },
-      [this]() { stow(); }
+      [this]() { stop(); }
     ))
   );
 
@@ -42,7 +43,7 @@ void Conveyer::registerHandlers(EventLoop &eventLoop)
       eventLoop.controller,
       pros::E_CONTROLLER_DIGITAL_R2,
       [this]() { outtake(); },
-      [this]() { stow(); }
+      [this]() { stop(); }
     ))
   );
 
@@ -52,7 +53,7 @@ void Conveyer::registerHandlers(EventLoop &eventLoop)
       eventLoop.controller,
       pros::E_CONTROLLER_DIGITAL_L1,
       [this]() { scoreLong(); },
-      [this]() { stow(); }
+      [this]() { stop(); }
     ))
   );
 
@@ -62,7 +63,7 @@ void Conveyer::registerHandlers(EventLoop &eventLoop)
       eventLoop.controller,
       pros::E_CONTROLLER_DIGITAL_L2,
       [this]() { scoreMiddle(); },
-      [this]() { stow();}
+      [this]() { stop();}
     ))
   );
 }
@@ -71,12 +72,14 @@ void Conveyer::intake()
 {
   bottomMotor.move_voltage(12000);
   topMotor.move_voltage(0);
+  piston2.retract();
+  piston1.extend();
 }
 
 void Conveyer::outtake()
 {
   bottomMotor.move_voltage(-12000);
-  topMotor.move_voltage(0);
+  topMotor.move_voltage(-12000);
 }
 
 void Conveyer::stow()
@@ -91,6 +94,8 @@ void Conveyer::stop()
 {
   bottomMotor.move_voltage(0);
   topMotor.move_voltage(0);
+  piston2.retract();
+  piston1.extend();
 }
 
 void Conveyer::scoreLong()
@@ -99,10 +104,24 @@ void Conveyer::scoreLong()
   topMotor.move_velocity(1200);
 }
 
+void Conveyer::scoreSlow()
+{
+  bottomMotor.move_velocity(800);
+  topMotor.move_velocity(400);
+}
+
 void Conveyer::scoreMiddle()
 {
   bottomMotor.move_voltage(12000);
-  topMotor.move_voltage(-9000);
+  topMotor.move_voltage(0);
+  piston1.retract();
+  piston2.extend();
+}
+
+void Conveyer::scoreMiddleAuto()
+{
+  bottomMotor.move_voltage(12000);
+  topMotor.move_voltage(12000);
   piston1.retract();
   piston2.extend();
 }

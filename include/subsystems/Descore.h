@@ -15,7 +15,7 @@ class Descore : public Subsystem {
     void toggle();
 
   private:
-  static constexpr int DEFAULT_PISTON_PORT = 'E';
+  static constexpr int DEFAULT_PISTON_PORT = 'D';
 
   pros::adi::Pneumatics piston;
 };
