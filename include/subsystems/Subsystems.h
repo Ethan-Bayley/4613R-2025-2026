@@ -2,9 +2,9 @@
 
 #include "commands/EventLoop.h"
 
-class Subsystem {
+class Subsystems {
 public:
-  virtual ~Subsystem() = default;
+  virtual ~Subsystems() = default;
 
   // Lifecycle functions are required
   virtual void setup() = 0;
