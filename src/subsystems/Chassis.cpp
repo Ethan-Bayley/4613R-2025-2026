@@ -1,12 +1,12 @@
 #include "lemlib/api.hpp"
 #include "lemlib/chassis/trackingWheel.hpp"
 
-pros::MotorGroup left_mg({4, -2, -3}, pros::MotorGearset::blue);
-pros::MotorGroup right_mg({-7, 8, 9}, pros::MotorGearset::blue);
+pros::MotorGroup left_mg({-4, 2, -3}, pros::MotorGearset::blue);
+pros::MotorGroup right_mg({8, -9, 10}, pros::MotorGearset::blue);
 
 pros::Imu imu(12);
-pros::Rotation odometry(10);
-pros::Rotation odometryH(6);
+pros::Rotation odometry(15);
+pros::Rotation odometryH(19);
 
 lemlib::Drivetrain LLdrivetrain(
 		&left_mg,
@@ -72,7 +72,6 @@ lemlib::ExpoDriveCurve steer_curve(
 		1.019 // expo curve gain
 );
 
-
 lemlib::Chassis chassis(
 		LLdrivetrain,
 		lateral_controller,
@@ -80,5 +79,3 @@ lemlib::Chassis chassis(
 		sensors,
 		&throttle_curve,
 		&steer_curve);
-
-

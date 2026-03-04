@@ -15,8 +15,6 @@ void Robot::setup() {
 
 void Robot::addSubsystem(std::unique_ptr<Subsystem> subsystem) {
   robotSubsystems.push_back(std::move(subsystem));
-
-
 }
 
 void Robot::registerCommands() {
@@ -34,5 +32,4 @@ void Robot::update() {
   int throttle = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	int turn = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X) * 0.8;
 	chassis.arcade(throttle, turn);
-
 }

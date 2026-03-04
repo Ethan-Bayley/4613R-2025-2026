@@ -75,14 +75,9 @@ void autonomous() {}
  */
 
 void opcontrol() {
-<<<<<<< Updated upstream
-  while (true) {}
-}
-=======
     while(true) {
         
 
 		robot.update();
     }
 }
->>>>>>> Stashed changes
