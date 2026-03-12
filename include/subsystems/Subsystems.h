@@ -4,12 +4,9 @@
 
 class Subsystems {
 public:
-  virtual ~Subsystems() = default;
+    virtual ~Subsystems() = default;
 
-  // Lifecycle functions are required
-  virtual void setup() = 0;
-
-  // By default, we aren't required to register handlers
-  virtual void registerHandlers(EventLoop &eventLoop) { };
+    virtual void setup() = 0;
+    virtual void registerHandlers(EventLoop &eventLoop) { }
+    virtual void update() { }  // <-- add this
 };
-

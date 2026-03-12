@@ -16,10 +16,10 @@ Robot robot(controller);
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	pros::lcd::initialize();
-
-	robot.setup();
-	robot.registerCommands();
+    pros::lcd::initialize();
+    robot.addSubsystem(std::make_unique<Passthrough>());
+    robot.setup();
+    robot.registerCommands();
 }
 
 /**

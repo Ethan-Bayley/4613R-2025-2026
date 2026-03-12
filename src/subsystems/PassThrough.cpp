@@ -1,91 +1,112 @@
-
 #include "pros/motors.h"
 #include "subsystems/Passthrough.h"
 
-
-
-Passthrough::Passthrough() : 
+Passthrough::Passthrough() :
     intakeMotor(INTAKE_MOTOR_PORT, pros::MotorGearset::blue),
     midGoalMotor(MIDGOAL_MOTOR_PORT, pros::MotorGearset::blue),
     longGoalMotor(LONGGOAL_MOTOR_PORT, pros::MotorGearset::blue)
-
 {
 }
 
-void Passthrough::registerHandlers(EventLoop &eventLoop)
-{
-  // Intake
-  eventLoop.registerCommand(
-    std::unique_ptr<Command>(new ButtonCommand(
-      eventLoop.controller,
-      pros::E_CONTROLLER_DIGITAL_R1,
-      [this]() { intake(); },
-      [this]() { stop(); }
-    ))
-  );
-
-
-  // Outtake
-  eventLoop.registerCommand(
-    std::unique_ptr<Command>(new ButtonCommand(
-      eventLoop.controller,
-      pros::E_CONTROLLER_DIGITAL_R2,
-      [this]() { outtake(); },
-      [this]() { stop(); }
-    ))
-  );
-
-  // Score Long
-  eventLoop.registerCommand(
-    std::unique_ptr<Command>(new ButtonCommand(
-      eventLoop.controller,
-      pros::E_CONTROLLER_DIGITAL_L1,
-      [this]() { scoreLong(); },
-      [this]() { stop(); }
-    ))
-  );
-
-  // Score Middle
-  eventLoop.registerCommand(
-    std::unique_ptr<Command>(new ButtonCommand(
-      eventLoop.controller,
-      pros::E_CONTROLLER_DIGITAL_L2,
-      [this]() { scoreMiddle(); },
-      [this]() { stop();}
-    ))
-  );
-
-
+void Passthrough::setup() {
 }
 
+void Passthrough::registerHandlers(EventLoop &eventLoop) {
+    // Intake
+    eventLoop.registerCommand(
+        std::unique_ptr<Command>(new ButtonCommand(
+            eventLoop.controller,
+            pros::E_CONTROLLER_DIGITAL_R1,
+            [this]() { setState(State::INTAKE); },
+            [this]() { setState(State::IDLE); }
+        ))
+    );
 
+    // Outtake
+    eventLoop.registerCommand(
+        std::unique_ptr<Command>(new ButtonCommand(
+            eventLoop.controller,
+            pros::E_CONTROLLER_DIGITAL_R2,
+            [this]() { setState(State::OUTTAKE); },
+            [this]() { setState(State::IDLE); }
+        ))
+    );
 
-void Passthrough::intake(){
-    intakeMotor.move_voltage(12000);
+    // Score Long
+    eventLoop.registerCommand(
+        std::unique_ptr<Command>(new ButtonCommand(
+            eventLoop.controller,
+            pros::E_CONTROLLER_DIGITAL_L1,
+            [this]() { setState(State::SCORE_LONG); },
+            [this]() { setState(State::IDLE); }
+        ))
+    );
+
+    // Score Middle
+    eventLoop.registerCommand(
+        std::unique_ptr<Command>(new ButtonCommand(
+            eventLoop.controller,
+            pros::E_CONTROLLER_DIGITAL_L2,
+            [this]() { setState(State::SCORE_MIDDLE); },
+            [this]() { setState(State::IDLE); }
+        ))
+    );
 }
 
-void Passthrough::outtake(){
-    intakeMotor.move_voltage(-12000);
+void Passthrough::setState(State newState) {
+    currentState = newState;
 }
 
-void Passthrough::stop(){
-    intakeMotor.move_voltage(0);
+void Passthrough::update() {
+    switch (currentState) {
+        case State::IDLE:
+            intakeMotor.move_voltage(0);
+            midGoalMotor.move_voltage(0);
+            longGoalMotor.move_voltage(0);
+            break;
+
+        case State::INTAKE:
+            intakeMotor.move_voltage(12000);
+            midGoalMotor.move_voltage(0);
+            longGoalMotor.move_voltage(0);
+            break;
+
+        case State::OUTTAKE:
+            intakeMotor.move_voltage(-12000);
+            midGoalMotor.move_voltage(0);
+            longGoalMotor.move_voltage(0);
+            break;
+
+        case State::SCORE_MIDDLE:
+            intakeMotor.move_voltage(12000);
+            midGoalMotor.move_voltage(12000);
+            longGoalMotor.move_voltage(0);
+            break;
+
+        case State::SCORE_LONG:
+            intakeMotor.move_voltage(12000);
+            midGoalMotor.move_voltage(0);
+            longGoalMotor.move_voltage(12000);
+            break;
+    }
 }
 
-void Passthrough::scoreMiddle(){
-    intakeMotor.move_voltage(12000);
-    midGoalMotor.move_voltage(12000);
+void Passthrough::intake() {
+    setState(State::INTAKE);
 }
 
-void Passthrough::scoreLong(){
-    intakeMotor.move_voltage(12000);
-    longGoalMotor.move_voltage(12000);
+void Passthrough::outtake() {
+    setState(State::OUTTAKE);
 }
 
-void Passthrough::update(){
-
+void Passthrough::stop() {
+    setState(State::IDLE);
 }
 
-void Passthrough::setState(){
+void Passthrough::scoreMiddle() {
+    setState(State::SCORE_MIDDLE);
+}
 
+void Passthrough::scoreLong() {
+    setState(State::SCORE_LONG);
 }
