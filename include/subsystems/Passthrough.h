@@ -12,18 +12,19 @@ class Passthrough : public Subsystems {
     void setup() override;
     void registerHandlers(EventLoop &eventLoop) override;
 
-
     void intake();
     void outtake();
     void scoreMiddle();
     void scoreLong();
     void stop();
+    void update();
+    void setState();
 
 
 private:
-  static constexpr int INTAKE_MOTOR_PORT = 7;
+  static constexpr int INTAKE_MOTOR_PORT = 19;
   static constexpr int MIDGOAL_MOTOR_PORT = 20;
-  static constexpr int LONGGOAL_MOTOR_PORT = 12;
+  static constexpr int LONGGOAL_MOTOR_PORT = 11;
 
   pros::Motor intakeMotor;
   pros::Motor midGoalMotor;

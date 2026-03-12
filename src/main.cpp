@@ -4,9 +4,10 @@
 #include "Robot.h"
 #include "commands/EventLoop.h"
 #include "pros/misc.h"
+#include "subsystems/Passthrough.h"
 
-pros::Controller controller(pros::E_CONTROLLER_MASTER);
-Robot robot(controller);
+pros::Controller controller(pros::E_CONTROLLER_MASTER); 
+Robot robot(controller); 
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.

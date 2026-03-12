@@ -2,7 +2,7 @@
 
 #include "commands/EventLoop.h"
 #include "lemlib/api.hpp" // IWYU pragma: keep
-#include "subsystems/Subsystem.h"
+#include "subsystems/Subsystems.h"
 #include <vector>
 #include <memory>
 #include <utility>
@@ -14,7 +14,7 @@ class Robot {
 
     void setup();
 
-    void addSubsystem(std::unique_ptr<Subsystem> subsystem);
+    void addSubsystem(std::unique_ptr<Subsystems> subsystem);
     void registerCommands();
     void update();
 
@@ -39,5 +39,5 @@ class Robot {
   private:
     pros::Controller &controller;
     EventLoop eventLoop;
-    std::vector<std::unique_ptr<Subsystem>> robotSubsystems;
+    std::vector<std::unique_ptr<Subsystems>> robotSubsystems;
 };

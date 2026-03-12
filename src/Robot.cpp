@@ -13,7 +13,7 @@ void Robot::setup() {
   }
 }
 
-void Robot::addSubsystem(std::unique_ptr<Subsystem> subsystem) {
+void Robot::addSubsystem(std::unique_ptr<Subsystems> subsystem) {
   robotSubsystems.push_back(std::move(subsystem));
 }
 
