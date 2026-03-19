@@ -6,8 +6,8 @@ class Matchload : Subsystem {
         Matchload matchload();
         Matchload matchload(int pistonPort);
 
-        void out();
-        void in();
+        void extend();
+        void retract();
 
         
         void setup() override; 
