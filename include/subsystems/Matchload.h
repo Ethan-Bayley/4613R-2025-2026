@@ -14,8 +14,10 @@ class Matchload : Subsystem {
         void registerHandlers(EventLoop &eventLoop) override;
 
     private:
-        pros::adi::Pneumatics pneumatic;
+        pros::adi::Pneumatics piston1;
         int DEFAULT_PISTON_PORT = 5;
+
+          
 
 
 };

@@ -3,13 +3,11 @@
 #include <memory>
 
 MatchLoad::MatchLoad() : piston1(DEFAULT_PISTON_1_PORT, false),
-                         piston2(DEFAULT_PISTON_2_PORT, true),
                          isRetracted(false)
 {
 }
 
 MatchLoad::MatchLoad(int pistonPort1, int pistonPort2) : piston1(pistonPort1, false),
-                                                         piston2(pistonPort2, true), 
                                                          isRetracted(false)
 {
 }
