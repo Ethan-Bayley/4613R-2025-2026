@@ -2,7 +2,7 @@
 #include "lemlib/chassis/trackingWheel.hpp"
 
 pros::MotorGroup left_mg({-11, -12, 14}, pros::MotorGearset::blue);
-pros::MotorGroup right_mg({-17, 18, -19}, pros::MotorGearset::blue);
+pros::MotorGroup right_mg({-17, 18, 19}, pros::MotorGearset::blue);
 
 pros::Imu imu(12);
 pros::Rotation odometry(15);
