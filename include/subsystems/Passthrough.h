@@ -31,7 +31,7 @@ public:                          // <-- constructors were missing this
 
 private:
     static constexpr int INTAKE_MOTOR_PORT = 19;
-    static constexpr int MIDGOAL_MOTOR_PORT = 18;
+    static constexpr int MIDGOAL_MOTOR_PORT = -18;
     static constexpr int LONGGOAL_MOTOR_PORT = 11;
 
     pros::Motor intakeMotor;

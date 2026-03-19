@@ -67,25 +67,25 @@ void Passthrough::update() {
 
         case State::INTAKE:
             intakeMotor.move_voltage(12000);
-            midGoalMotor.move_voltage(0);
+            midGoalMotor.move_voltage(12000);
             longGoalMotor.move_voltage(0);
             break;
 
         case State::OUTTAKE:
             intakeMotor.move_voltage(-12000);
-            midGoalMotor.move_voltage(0);
-            longGoalMotor.move_voltage(0);
+            midGoalMotor.move_voltage(-12000);
+            longGoalMotor.move_voltage(-12000);
             break;
 
         case State::SCORE_MIDDLE:
             intakeMotor.move_voltage(12000);
             midGoalMotor.move_voltage(12000);
-            longGoalMotor.move_voltage(0);
+            longGoalMotor.move_voltage(-12000);
             break;
 
         case State::SCORE_LONG:
             intakeMotor.move_voltage(12000);
-            midGoalMotor.move_voltage(0);
+            midGoalMotor.move_voltage(12000);
             longGoalMotor.move_voltage(12000);
             break;
     }
