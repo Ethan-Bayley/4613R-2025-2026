@@ -2,7 +2,6 @@
 #include "lemlib/api.hpp" // IWYU pragma: keep
 #include <memory>
 #include "Robot.h"
-#include "commands/EventLoop.h"
 #include "pros/misc.h"
 #include "subsystems/Passthrough.h"
 
@@ -17,6 +16,8 @@ Robot robot(controller);
  */
 void initialize() {
 	pros::lcd::initialize();
+
+	robot.addSubsystem(std::make_unique<Passthrough>());
 
 	robot.setup();
 	robot.registerCommands();

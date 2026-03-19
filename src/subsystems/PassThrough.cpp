@@ -12,6 +12,16 @@ Passthrough::Passthrough() :
 {
 }
 
+Passthrough::Passthrough(int intakeMotorPort, int midGoalMotorPort, int longGoalMotorPort) :
+    intakeMotor(intakeMotorPort, pros::MotorGearset::blue),
+    midGoalMotor(midGoalMotorPort, pros::MotorGearset::blue),
+    longGoalMotor(longGoalMotorPort, pros::MotorGearset::blue)
+
+{}
+
+void Passthrough::setup() {
+}
+
 void Passthrough::registerHandlers(EventLoop &eventLoop)
 {
   // Intake
@@ -66,18 +76,24 @@ void Passthrough::intake(){
 
 void Passthrough::outtake(){
     intakeMotor.move_voltage(-12000);
+    midGoalMotor.move_voltage(-12000);
+    longGoalMotor.move_voltage(-12000);
 }
 
 void Passthrough::stop(){
     intakeMotor.move_voltage(0);
+    longGoalMotor.move_voltage(0);
+    midGoalMotor.move_voltage(0);
 }
 
 void Passthrough::scoreMiddle(){
     intakeMotor.move_voltage(12000);
-    midGoalMotor.move_voltage(12000);
+    midGoalMotor.move_voltage(-12000);
+    longGoalMotor.move_voltage(12000);
 }
 
 void Passthrough::scoreLong(){
     intakeMotor.move_voltage(12000);
+    midGoalMotor.move_voltage(12000);
     longGoalMotor.move_voltage(12000);
 }

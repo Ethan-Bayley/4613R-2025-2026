@@ -4,10 +4,10 @@
 
 class Passthrough : public Subsystems {
 
+public:
     Passthrough();
     Passthrough(
-        int intakeMotorPort, int midGoalMotorPort, int longGoalMotorPort,
-        int matchLoaderPistonPort, int lWingPistonPort, int rWingPistonPort, int odomPistonPort);
+        int intakeMotorPort, int midGoalMotorPort, int longGoalMotorPort);
 
     void setup() override;
     void registerHandlers(EventLoop &eventLoop) override;
@@ -21,13 +21,11 @@ class Passthrough : public Subsystems {
 
 
 private:
-  static constexpr int INTAKE_MOTOR_PORT = 7;
-  static constexpr int MIDGOAL_MOTOR_PORT = 20;
-  static constexpr int LONGGOAL_MOTOR_PORT = 12;
+  static constexpr int INTAKE_MOTOR_PORT = 19;
+  static constexpr int MIDGOAL_MOTOR_PORT = -18;
+  static constexpr int LONGGOAL_MOTOR_PORT = 11;
 
   pros::Motor intakeMotor;
   pros::Motor midGoalMotor;
   pros::Motor longGoalMotor;
-
-
 };
