@@ -81,11 +81,3 @@ void Passthrough::scoreLong(){
     intakeMotor.move_voltage(12000);
     longGoalMotor.move_voltage(12000);
 }
-
-void Passthrough::update(){
-
-}
-
-void Passthrough::setState(){
-
-}
