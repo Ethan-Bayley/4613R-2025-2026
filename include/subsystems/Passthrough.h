@@ -30,9 +30,15 @@ public:                          // <-- constructors were missing this
     void setState(State newState);
 
 private:
-    static constexpr int INTAKE_MOTOR_PORT = 19;
-    static constexpr int MIDGOAL_MOTOR_PORT = -18;
-    static constexpr int LONGGOAL_MOTOR_PORT = 11;
+//prototype ports
+    // static constexpr int INTAKE_MOTOR_PORT = 19;
+    // static constexpr int MIDGOAL_MOTOR_PORT = -18;
+    // static constexpr int LONGGOAL_MOTOR_PORT = 11;
+
+    //new robot ports
+    static constexpr int INTAKE_MOTOR_PORT = -3;
+    static constexpr int MIDGOAL_MOTOR_PORT = -9;
+    static constexpr int LONGGOAL_MOTOR_PORT = 2;
 
     pros::Motor intakeMotor;
     pros::Motor midGoalMotor;

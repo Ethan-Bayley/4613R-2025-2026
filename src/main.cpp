@@ -3,8 +3,10 @@
 #include <memory>
 #include "Robot.h"
 #include "commands/EventLoop.h"
+#include "pros/imu.hpp"
 #include "pros/misc.h"
 #include "subsystems/Passthrough.h"
+#include "subsystems/Chassis.h"
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER); 
 Robot robot(controller); 
@@ -17,6 +19,13 @@ Robot robot(controller);
  */
 void initialize() {
     pros::lcd::initialize();
+    
+    imu.reset(true);  // blocks until IMU finishes calibrating (~3 seconds)
+    pros::lcd::print(0, "IMU done: %.2f", imu.get_heading());
+    
+    chassis.calibrate();  // starts LemLib odometry task
+    pros::lcd::print(1, "Chassis ready");
+    
     robot.addSubsystem(std::make_unique<Passthrough>());
     robot.setup();
     robot.registerCommands();
@@ -68,16 +77,12 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-	controller.rumble("---");
-	while (true) {
-		auto start_time = pros::millis();
-
-		// Subsysytems
-		robot.update();
-
-		pros::c::task_delay_until(&start_time, 10);
-	}
-
-
-
+    controller.rumble(".");
+    
+    chassis.setPose(0, 0, 0);
+    pros::delay(100);  // small delay to let pose set
+    
+    pros::lcd::print(0, "Before turn: %.2f", chassis.getPose().theta);
+    chassis.turnToHeading(90, 3000, {}, true);  // true = blocking
+    pros::lcd::print(0, "After turn: %.2f", chassis.getPose().theta);
 }
