@@ -84,22 +84,22 @@ void opcontrol() {
 
   const lemlib::Pose STARTING_POS{15.25, 24, 90};
 
-  const lemlib::Pose LOADER_BR_WAY = lemlib::Pose(47, 24, 90);
-  const lemlib::Pose LOADER_BR = lemlib::Pose(49.3, 11, -180);
+  const lemlib::Pose LOADER_BR_WAY = lemlib::Pose(48, 24, 90);
+  const lemlib::Pose LOADER_BR = lemlib::Pose(48, 11, -180);
 
   const lemlib::Pose STACK_RR{19.5, 48, -135};
   const lemlib::Pose STACK_B_MIDPOINT{-16, 46, -90};
   const lemlib::Pose STACK_B{-23.5, 48, -90};
-  const lemlib::Pose GOAL_MIDDLE{-16, 59, -135};
+  const lemlib::Pose GOAL_MIDDLE{-10, 56, -135};
 
   const lemlib::Pose GOAL_L_WAIT{-50, 24, -135};
   const lemlib::Pose GOAL_L = lemlib::Pose(-52, 47, -180);
 
-  const lemlib::Pose GOAL_R = lemlib::Pose(49.3, 48, -180);
+  const lemlib::Pose GOAL_R = lemlib::Pose(48, 48, -180);
 
-  const lemlib::Pose LOADER_BL_WAY = lemlib::Pose(47, 33, 90);
+  const lemlib::Pose LOADER_BL_WAY = lemlib::Pose(-33,17, 90);
   const lemlib::Pose LOADER_MID = lemlib::Pose(0, 32, 90);
-  const lemlib::Pose LOADER_BL_WAY1 = lemlib::Pose(-49, 31, -160);
+  const lemlib::Pose LOADER_BL_WAY1 = lemlib::Pose(-49, 30, -160);
   const lemlib::Pose LOADER_BL = lemlib::Pose(-48, 6, 180);
 
   const lemlib::Pose PARK_WAY = lemlib::Pose(-51, 33, 180);
@@ -133,16 +133,23 @@ void opcontrol() {
   // END OF RIGHT GOAL
   
 
-  chassis.moveToPoint(GOAL_R.x, GOAL_R.y - 10, TIMEOUT_SHORT, {.maxSpeed = 80});
+  chassis.moveToPoint(GOAL_R.x, GOAL_R.y - 13, TIMEOUT_SHORT, {.maxSpeed = 80});
 
   //chassis.moveToPoint(GOAL_R.x, GOAL_R.y, TIMEOUT,
                       //{.forwards = false, .maxSpeed = 60, .minSpeed = 60});
   chassis.turnToHeading(-60, 900);
   chassis.moveToPose(STACK_RR.x, STACK_RR.y, 270, TIMEOUT_SHORT, {.maxSpeed = 127, .minSpeed = 50});
 
-  chassis.moveToPoint(STACK_B_MIDPOINT.x, STACK_B_MIDPOINT.y, TIMEOUT_SHORT);
-  chassis.moveToPoint(STACK_B.x, STACK_B.y, 1000, {.maxSpeed = 50});
-  //chassis.turnToHeading(-135, TIMEOUT_SUPER_SHORT);
-  //chassis.moveToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y, TIMEOUT_SHORT,
-                      //{.forwards = false});
+  chassis.moveToPoint(STACK_B_MIDPOINT.x, STACK_B_MIDPOINT.y, 500);
+  chassis.moveToPoint(STACK_B.x, STACK_B.y, 1000, {.maxSpeed = 127});
+  chassis.turnToHeading(-135, TIMEOUT_SUPER_SHORT);
+  chassis.moveToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y, 2000, {.forwards = false, .maxSpeed = 50});
+
+
+  chassis.moveToPoint(LOADER_BL_WAY1.x, LOADER_BL_WAY1.y, TIMEOUT_SHORT);
+  chassis.turnToHeading(10, TIMEOUT_SUPER_SHORT);
+
+  
+
+
 }
