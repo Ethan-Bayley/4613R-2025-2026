@@ -36,9 +36,9 @@ lemlib::OdomSensors sensors(
 
 // lateral PID controller
 lemlib::ControllerSettings lateral_controller(
-		10, // proportional gain (kP)
+		6.5, // proportional gain (kP)
 		0,	 // integral gain (kI)
-		1,	 // derivative gain (kD)
+		0,	 // derivative gain (kD)
 		0,	 // anti windup
 		0,	 // small error range, in inches
 		0,	 // small error range timeout, in milliseconds

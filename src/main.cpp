@@ -95,7 +95,7 @@ void opcontrol() {
   const lemlib::Pose GOAL_L_WAIT{-50, 24, -135};
   const lemlib::Pose GOAL_L = lemlib::Pose(-52, 47, -180);
 
-  const lemlib::Pose GOAL_R = lemlib::Pose(48, 48, -180);
+  const lemlib::Pose GOAL_R = lemlib::Pose(49.3, 48, -180);
 
   const lemlib::Pose LOADER_BL_WAY = lemlib::Pose(47, 33, 90);
   const lemlib::Pose LOADER_MID = lemlib::Pose(0, 32, 90);
