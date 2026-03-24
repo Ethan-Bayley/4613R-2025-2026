@@ -84,10 +84,10 @@ void opcontrol() {
 
   const lemlib::Pose STARTING_POS{15.25, 24, 90};
 
-  const lemlib::Pose LOADER_BR_WAY = lemlib::Pose(49.3, 24, 90);
+  const lemlib::Pose LOADER_BR_WAY = lemlib::Pose(47, 24, 90);
   const lemlib::Pose LOADER_BR = lemlib::Pose(49.3, 11, -180);
 
-  const lemlib::Pose STACK_RR{19.5, 52, -135};
+  const lemlib::Pose STACK_RR{19.5, 48, -135};
   const lemlib::Pose STACK_B_MIDPOINT{-16, 46, -90};
   const lemlib::Pose STACK_B{-23.5, 48, -90};
   const lemlib::Pose GOAL_MIDDLE{-16, 59, -135};
@@ -135,21 +135,14 @@ void opcontrol() {
 
   chassis.moveToPoint(GOAL_R.x, GOAL_R.y - 10, TIMEOUT_SHORT, {.maxSpeed = 80});
 
-  chassis.moveToPoint(GOAL_R.x, GOAL_R.y, TIMEOUT,
-                      {.forwards = false, .maxSpeed = 60, .minSpeed = 60});
+  //chassis.moveToPoint(GOAL_R.x, GOAL_R.y, TIMEOUT,
+                      //{.forwards = false, .maxSpeed = 60, .minSpeed = 60});
+  chassis.turnToHeading(-60, 900);
+  chassis.moveToPose(STACK_RR.x, STACK_RR.y, 270, TIMEOUT_SHORT, {.maxSpeed = 127, .minSpeed = 50});
 
-  chassis.swingToHeading(-45, lemlib::DriveSide::RIGHT, 900);
-  chassis.moveToPoint(STACK_RR.x, STACK_RR.y, TIMEOUT_SHORT, {.maxSpeed = 50});
-
-  // pros::delay(500);
-  // 
-  pros::delay(400);
-  pros::delay(TIMEOUT_SHORT);
-  // 
-  chassis.turnToHeading(-90, TIMEOUT_SUPER_SHORT);
   chassis.moveToPoint(STACK_B_MIDPOINT.x, STACK_B_MIDPOINT.y, TIMEOUT_SHORT);
-  chassis.moveToPoint(STACK_B.x, STACK_B.y, 800, {.maxSpeed = 50});
-  chassis.turnToHeading(-135, TIMEOUT_SUPER_SHORT);
-  chassis.moveToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y, TIMEOUT_SHORT,
-                      {.forwards = false});
+  chassis.moveToPoint(STACK_B.x, STACK_B.y, 1000, {.maxSpeed = 50});
+  //chassis.turnToHeading(-135, TIMEOUT_SUPER_SHORT);
+  //chassis.moveToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y, TIMEOUT_SHORT,
+                      //{.forwards = false});
 }
