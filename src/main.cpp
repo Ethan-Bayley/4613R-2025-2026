@@ -30,6 +30,17 @@ void initialize() {
   robot.addSubsystem(std::make_unique<Passthrough>());
   robot.setup();
   robot.registerCommands();
+
+  pros::Task screen_task([&]() {
+        while (true) {
+            // print robot location to the brain screen
+            pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
+            pros::lcd::print(1, "Y: %f", chassis.getPose().y); // y
+            pros::lcd::print(2, "Theta: %f", chassis.getPose().theta); // heading
+            // delay to save resources
+            pros::delay(20);
+        }
+    });
 }
 
 /**
@@ -79,40 +90,63 @@ void autonomous() {}
 void opcontrol() {
   controller.rumble(".");
 
-  chassis.setPose(0, 0, 0);
+  const lemlib::Pose STARTING_POS_AWP{15.25, 24, 90};
+  const lemlib::Pose STARTING_POS_LONG_PUSH{17, 22, 15};
+
+  const lemlib::Pose LOADER_BR_WAY = lemlib::Pose(48, 24, 90);
+  const lemlib::Pose LOADER_BR = lemlib::Pose(48, 11, -180);
+
+  const lemlib::Pose STACK_RR{19.5, 48, -135};
+  const lemlib::Pose STACK_B{-23.5, 48, -90};
+  const lemlib::Pose GOAL_MIDDLE{-10, 56, -135};
+
+  const lemlib::Pose GOAL_L = lemlib::Pose(-47, 47, -180);
+
+  const lemlib::Pose GOAL_R = lemlib::Pose(48, 48, -180);
+
+  const lemlib::Pose LOADER_BL_WAY = lemlib::Pose(-33,17, 90);
+  const lemlib::Pose LOADER_MID = lemlib::Pose(0, 32, 90);
+  const lemlib::Pose LOADER_BL_WAY1 = lemlib::Pose(-41, 30, -160);
+  const lemlib::Pose LOADER_BL = lemlib::Pose(-41, 6, 180);
+
+  const lemlib::Pose PARK_WAY = lemlib::Pose(-51, 33, 180);
+  const lemlib::Pose PARK_MID = lemlib::Pose(-3, 33, 90);
+  const lemlib::Pose PARK = lemlib::Pose(-3, 16, 90);
+
+  const lemlib::Pose HIT_LEFT = lemlib::Pose(-52, 38, -180);
+  const lemlib::Pose HIT_RIGHT = lemlib::Pose(48, 39, -180);
+
+  
+  const lemlib::Pose UNDER_GOAL_R = lemlib::Pose(40, 55, 60);
+
+  int TIMEOUT_SUPER_SHORT = 500;
+  int TIMEOUT_SHORT = 1000;
+  int TIMEOUT = 2000;
+  int TIMEOUT_LONG = 3000;
+  float MIN_SPEED = 80;
+  float LEAD = 0.8;
+
+
+  //slow long goal
+  chassis.setPose(STARTING_POS_LONG_PUSH);
+  
+  chassis.moveToPoint(STACK_RR.x, STACK_RR.y, TIMEOUT);
+  chassis.turnToHeading(60, 500);
+
+
+  chassis.moveToPoint(UNDER_GOAL_R.x, UNDER_GOAL_R.y, 1500);
+  chassis.moveToPoint(STACK_RR.x, STACK_RR.y, TIMEOUT_SHORT, {.forwards = false, .minSpeed = 80, .earlyExitRange = 8});
+  chassis.moveToPoint(LOADER_BR_WAY.x, LOADER_BR_WAY.y, TIMEOUT_SHORT);
+
+  chassis.turnToHeading(180, 900);
+  chassis.moveToPoint(LOADER_BR.x, LOADER_BR.y, TIMEOUT_SHORT);
+
+  chassis.moveToPose(GOAL_R.x, GOAL_R.y, 180, TIMEOUT, {.forwards = false});
+
+  //solo awp:
   pros::delay(100); // small delay to let pose set
 
-  // const lemlib::Pose STARTING_POS{15.25, 24, 90};
-
-  // const lemlib::Pose LOADER_BR_WAY = lemlib::Pose(48, 24, 90);
-  // const lemlib::Pose LOADER_BR = lemlib::Pose(48, 11, -180);
-
-  // const lemlib::Pose STACK_RR{19.5, 48, -135};
-  // const lemlib::Pose STACK_B{-23.5, 48, -90};
-  // const lemlib::Pose GOAL_MIDDLE{-10, 56, -135};
-
-  // const lemlib::Pose GOAL_L = lemlib::Pose(-47, 47, -180);
-
-  // const lemlib::Pose GOAL_R = lemlib::Pose(48, 48, -180);
-
-  // const lemlib::Pose LOADER_BL_WAY = lemlib::Pose(-33,17, 90);
-  // const lemlib::Pose LOADER_MID = lemlib::Pose(0, 32, 90);
-  // const lemlib::Pose LOADER_BL_WAY1 = lemlib::Pose(-41, 30, -160);
-  // const lemlib::Pose LOADER_BL = lemlib::Pose(-41, 6, 180);
-
-  // const lemlib::Pose PARK_WAY = lemlib::Pose(-51, 33, 180);
-  // const lemlib::Pose PARK_MID = lemlib::Pose(-3, 33, 90);
-  // const lemlib::Pose PARK = lemlib::Pose(-3, 16, 90);
-
-  // const lemlib::Pose HIT_LEFT = lemlib::Pose(-52, 38, -180);
-  // const lemlib::Pose HIT_RIGHT = lemlib::Pose(48, 39, -180);
-
-  // int TIMEOUT_SUPER_SHORT = 500;
-  // int TIMEOUT_SHORT = 1000;
-  // int TIMEOUT = 2000;
-  // int TIMEOUT_LONG = 3000;
-  // float MIN_SPEED = 80;
-  // float LEAD = 0.8;
+  
 
   // chassis.setPose(STARTING_POS);
   
@@ -129,8 +163,6 @@ void opcontrol() {
   
   // pros::delay(4000);
   // // END OF RIGHT GOAL
-  
-
   // chassis.moveToPoint(GOAL_R.x, GOAL_R.y - 13, TIMEOUT_SHORT, {.maxSpeed = 80});
 
   // //chassis.moveToPoint(GOAL_R.x, GOAL_R.y, TIMEOUT,
