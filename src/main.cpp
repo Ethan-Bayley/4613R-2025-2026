@@ -30,17 +30,6 @@ void initialize() {
   robot.addSubsystem(std::make_unique<Passthrough>());
   robot.setup();
   robot.registerCommands();
-
-  pros::Task screen_task([&]() {
-        while (true) {
-            // print robot location to the brain screen
-            pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
-            pros::lcd::print(1, "Y: %f", chassis.getPose().y); // y
-            pros::lcd::print(2, "Theta: %f", chassis.getPose().theta); // heading
-            // delay to save resources
-            pros::delay(20);
-        }
-    });
 }
 
 /**
@@ -90,8 +79,9 @@ void autonomous() {}
 void opcontrol() {
   controller.rumble(".");
 
-  const lemlib::Pose STARTING_POS_AWP{15.25, 24, 90};
-  const lemlib::Pose STARTING_POS_LONG_PUSH{17, 22, 15};
+  chassis.setPose(0, 0, 0);
+
+  const lemlib::Pose STARTING_POS{15.25, 24, 90};
 
   const lemlib::Pose LOADER_BR_WAY = lemlib::Pose(48, 24, 90);
   const lemlib::Pose LOADER_BR = lemlib::Pose(48, 11, -180);
@@ -116,9 +106,6 @@ void opcontrol() {
   const lemlib::Pose HIT_LEFT = lemlib::Pose(-52, 38, -180);
   const lemlib::Pose HIT_RIGHT = lemlib::Pose(48, 39, -180);
 
-  
-  const lemlib::Pose UNDER_GOAL_R = lemlib::Pose(40, 55, 60);
-
   int TIMEOUT_SUPER_SHORT = 500;
   int TIMEOUT_SHORT = 1000;
   int TIMEOUT = 2000;
@@ -126,64 +113,44 @@ void opcontrol() {
   float MIN_SPEED = 80;
   float LEAD = 0.8;
 
-
-  //slow long goal
-  chassis.setPose(STARTING_POS_LONG_PUSH);
+  chassis.setPose(STARTING_POS);
   
-  chassis.moveToPoint(STACK_RR.x, STACK_RR.y, TIMEOUT);
-  chassis.turnToHeading(60, 500);
-
-
-  chassis.moveToPoint(UNDER_GOAL_R.x, UNDER_GOAL_R.y, 1500);
-  chassis.moveToPoint(STACK_RR.x, STACK_RR.y, TIMEOUT_SHORT, {.forwards = false, .minSpeed = 80, .earlyExitRange = 8});
   chassis.moveToPoint(LOADER_BR_WAY.x, LOADER_BR_WAY.y, TIMEOUT_SHORT);
-
-  chassis.turnToHeading(180, 900);
+  chassis.turnToHeading(-180, TIMEOUT_SUPER_SHORT);
+  
   chassis.moveToPoint(LOADER_BR.x, LOADER_BR.y, TIMEOUT_SHORT);
-
-  chassis.moveToPose(GOAL_R.x, GOAL_R.y, 180, TIMEOUT, {.forwards = false});
-
-  //solo awp:
-  pros::delay(100); // small delay to let pose set
-
+  pros::delay(2100);
+  chassis.moveToPoint(GOAL_R.x, GOAL_R.y, TIMEOUT,
+                      {.forwards = false, .maxSpeed = 100});
+  pros::delay(500);
+  
+  // 
+  
+  pros::delay(4000);
+  // END OF RIGHT GOAL
   
 
-  // chassis.setPose(STARTING_POS);
-  
-  // chassis.moveToPoint(LOADER_BR_WAY.x, LOADER_BR_WAY.y, TIMEOUT_SHORT);
-  // chassis.turnToHeading(-180, TIMEOUT_SUPER_SHORT);
-  
-  // chassis.moveToPoint(LOADER_BR.x, LOADER_BR.y, TIMEOUT_SHORT);
-  // pros::delay(2100);
-  // chassis.moveToPoint(GOAL_R.x, GOAL_R.y, TIMEOUT,
-  //                     {.forwards = false, .maxSpeed = 100});
-  // pros::delay(500);
-  
-  // // 
-  
-  // pros::delay(4000);
-  // // END OF RIGHT GOAL
-  // chassis.moveToPoint(GOAL_R.x, GOAL_R.y - 13, TIMEOUT_SHORT, {.maxSpeed = 80});
+  chassis.moveToPoint(GOAL_R.x, GOAL_R.y - 13, TIMEOUT_SHORT, {.maxSpeed = 80});
 
-  // //chassis.moveToPoint(GOAL_R.x, GOAL_R.y, TIMEOUT,
-  //                     //{.forwards = false, .maxSpeed = 60, .minSpeed = 60});
-  // chassis.turnToHeading(-60, 900);
-  // chassis.moveToPose(STACK_RR.x, STACK_RR.y, 270, TIMEOUT_SHORT, {.maxSpeed = 127, .minSpeed = 50, .earlyExitRange = 8});
-  // chassis.moveToPoint(STACK_B.x, STACK_B.y, 1500, {.maxSpeed = 127});
-  // chassis.turnToHeading(-135, TIMEOUT_SUPER_SHORT);
-  // chassis.moveToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y, 2000, {.forwards = false, .maxSpeed = 50});
+  //chassis.moveToPoint(GOAL_R.x, GOAL_R.y, TIMEOUT,
+                      //{.forwards = false, .maxSpeed = 60, .minSpeed = 60});
+  chassis.turnToHeading(-60, 900);
+  chassis.moveToPose(STACK_RR.x, STACK_RR.y, 270, TIMEOUT_SHORT, {.maxSpeed = 127, .minSpeed = 50, .earlyExitRange = 8});
+  chassis.moveToPoint(STACK_B.x, STACK_B.y, 1500, {.maxSpeed = 127});
+  chassis.turnToHeading(-135, TIMEOUT_SUPER_SHORT);
+  chassis.moveToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y, 2000, {.forwards = false, .maxSpeed = 50});
 
 
-  // chassis.moveToPoint(LOADER_BL_WAY1.x, LOADER_BL_WAY1.y - 10, 3000);
-  // chassis.turnToHeading(180, 500);
-  // chassis.moveToPoint(LOADER_BL.x, LOADER_BL.y, TIMEOUT_SHORT);
-  // chassis.moveToPoint(GOAL_L.x, GOAL_L.y, TIMEOUT_SHORT, {.forwards = false});
-  while (true) {
-		auto start_time = pros::millis();
+  chassis.moveToPoint(LOADER_BL_WAY1.x, LOADER_BL_WAY1.y - 10, 3000);
+  chassis.turnToHeading(180, 500);
+  chassis.moveToPoint(LOADER_BL.x, LOADER_BL.y, TIMEOUT_SHORT);
+  chassis.moveToPoint(GOAL_L.x, GOAL_L.y, TIMEOUT_SHORT, {.forwards = false});
+  // while (true) {
+	// 	auto start_time = pros::millis();
 
-		// Subsysytems
-		robot.update();
+	// 	// Subsysytems
+	// 	robot.update();
 
-		pros::c::task_delay_until(&start_time, 10);
-	}
+	// 	pros::c::task_delay_until(&start_time, 10);
+	// }
 }
