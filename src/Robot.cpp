@@ -9,6 +9,7 @@ Robot::Robot(pros::Controller &controller)
 
 void Robot::setup() {
     chassis.calibrate();
+
     for (auto& subsystem : robotSubsystems) {
         subsystem->setup();
     }
@@ -25,6 +26,7 @@ void Robot::registerCommands() {
 }
 
 void Robot::update() {
+
     // Process button presses -> sets subsystem states
     eventLoop.update();
 

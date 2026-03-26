@@ -1864,5 +1864,4 @@ void drawImage() {
   pros::screen::fill_rect(135, 227, 135, 227);
   pros::screen::fill_rect(136, 228, 138, 228);
   pros::screen::fill_rect(144, 227, 144, 228);
-  pros::screen::fill_rect(140, 229, 143, 229);
-}
+  pros::screen::fill_rect(140, 229, 143, 229);}
