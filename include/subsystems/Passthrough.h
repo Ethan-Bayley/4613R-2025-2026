@@ -16,7 +16,7 @@ public:                          // <-- constructors were missing this
     Passthrough();
     Passthrough(
         int intakeMotorPort, int midGoalMotorPort, int longGoalMotorPort,
-        int matchLoaderPistonPort, int lWingPistonPort, int rWingPistonPort, int odomPistonPort);
+        int HOOD_PORT);
 
     void setup() override;
     void registerHandlers(EventLoop &eventLoop) override;
@@ -39,10 +39,12 @@ private:
     static constexpr int INTAKE_MOTOR_PORT = -3;
     static constexpr int MIDGOAL_MOTOR_PORT = -9;
     static constexpr int LONGGOAL_MOTOR_PORT = 2;
+    static constexpr int HOOD_PORT = 'H';
 
     pros::Motor intakeMotor;
     pros::Motor midGoalMotor;
     pros::Motor longGoalMotor;
+    pros::adi::Pneumatics hood;
 
     State currentState = State::IDLE;
 };

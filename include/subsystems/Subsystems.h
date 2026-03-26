@@ -8,5 +8,5 @@ public:
 
     virtual void setup() = 0;
     virtual void registerHandlers(EventLoop &eventLoop) { }
-    virtual void update() { }  // <-- add this
+    virtual void update() { }
 };

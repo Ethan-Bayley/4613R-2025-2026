@@ -1,6 +1,7 @@
 #include "Robot.h"
 #include "subsystems/Chassis.h"
 #include "commands/EventLoop.h"
+#include "subsystems/Hood.h"
 
 Robot::Robot(pros::Controller &controller)
     : controller(controller), eventLoop(controller) {

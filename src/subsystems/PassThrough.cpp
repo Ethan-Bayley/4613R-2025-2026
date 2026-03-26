@@ -1,12 +1,13 @@
 #include "pros/motors.h"
 #include "subsystems/Passthrough.h"
+#include "Subsystems/Hood.h"
 
 Passthrough::Passthrough() :
     intakeMotor(INTAKE_MOTOR_PORT, pros::MotorGearset::blue),
     midGoalMotor(MIDGOAL_MOTOR_PORT, pros::MotorGearset::blue),
-    longGoalMotor(LONGGOAL_MOTOR_PORT, pros::MotorGearset::blue)
-{
-}
+    longGoalMotor(LONGGOAL_MOTOR_PORT, pros::MotorGearset::blue),
+    hood(HOOD_PORT, false)
+{ }
 
 void Passthrough::setup() {
 }
@@ -63,30 +64,35 @@ void Passthrough::update() {
             intakeMotor.move_voltage(0);
             midGoalMotor.move_voltage(0);
             longGoalMotor.move_voltage(0);
+            hood.retract();
             break;
 
         case State::INTAKE:
             intakeMotor.move_voltage(12000);
             midGoalMotor.move_voltage(12000);
-            longGoalMotor.move_voltage(0);
+            longGoalMotor.move_voltage(3000);
+            hood.retract();
             break;
 
         case State::OUTTAKE:
             intakeMotor.move_voltage(-12000);
             midGoalMotor.move_voltage(-12000);
             longGoalMotor.move_voltage(-12000);
+            hood.retract();
             break;
 
         case State::SCORE_MIDDLE:
             intakeMotor.move_voltage(12000);
             midGoalMotor.move_voltage(12000);
             longGoalMotor.move_voltage(-12000);
+            hood.extend();
             break;
 
         case State::SCORE_LONG:
             intakeMotor.move_voltage(12000);
             midGoalMotor.move_voltage(12000);
             longGoalMotor.move_voltage(12000);
+            hood.extend();
             break;
     }
 }
