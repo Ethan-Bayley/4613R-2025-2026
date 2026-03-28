@@ -38,16 +38,14 @@ public:
 
 		pros::delay(2000);
 		// END OF RIGHT GOAL
-
-		// Pull back slightly and intake
 		chassis.moveToPoint(RIGHT_GOAL.x, RIGHT_GOAL.y - 13, TIMEOUT_SHORT,
 							{.maxSpeed = 80});
 		passthrough->intake();
 
-		// Navigate to right side triball stack
+		// Navigate to right side BLOCK stack
 		chassis.turnToHeading(-60, 900);
-		chassis.turnToPoint(RIGHT_TRIBALL_STACK.x, RIGHT_TRIBALL_STACK.y, TIMEOUT_SHORT);
-		chassis.moveToPose(RIGHT_TRIBALL_STACK.x, RIGHT_TRIBALL_STACK.y, 270, TIMEOUT_SHORT,
+		chassis.turnToPoint(RIGHT_BLOCK_STACK.x, RIGHT_BLOCK_STACK.y, TIMEOUT_SHORT);
+		chassis.moveToPose(RIGHT_BLOCK_STACK.x, RIGHT_BLOCK_STACK.y, 270, TIMEOUT_SHORT,
 						   {.maxSpeed = 127, .minSpeed = 50, .earlyExitRange = 4});
 
 		matchLoad->extend();
@@ -58,8 +56,7 @@ public:
       pros::delay(500);
       matchLoad->extend(); });
 
-		// Push centre triball stack into middle goal
-		chassis.moveToPoint(CENTRE_TRIBALL_STACK.x, CENTRE_TRIBALL_STACK.y, 1500, {.maxSpeed = 127});
+		chassis.moveToPoint(LEFT_BLOCK_STACK.x, LEFT_BLOCK_STACK.y, 1500, {.maxSpeed = 127});
 		matchLoad->extend();
 		chassis.turnToHeading(-135, TIMEOUT_SUPER_SHORT);
 		chassis.moveToPoint(UPPER_MIDDLE_GOAL.x, UPPER_MIDDLE_GOAL.y, 2000,
@@ -91,15 +88,15 @@ private:
 	const lemlib::Pose UPPER_MIDDLE_GOAL = lemlib::Pose(-8, 56, -135);
 	const lemlib::Pose LOWER_MIDDLE_GOAL = lemlib::Pose(8, 56, 135);
 
-	// Triball stacks
-	const lemlib::Pose RIGHT_TRIBALL_STACK = lemlib::Pose(19.5, 48, -135);
-	const lemlib::Pose CENTRE_TRIBALL_STACK = lemlib::Pose(-23.5, 48, -90);
+	// BLOCK stacks
+	const lemlib::Pose RIGHT_BLOCK_STACK = lemlib::Pose(19.5, 48, -135);
+	const lemlib::Pose LEFT_BLOCK_STACK = lemlib::Pose(-23.5, 48, -90);
 
 	// Left side loader zone
 	const lemlib::Pose LEFT_LOADER_APPROACH = lemlib::Pose(-41, 30, -160);
 	const lemlib::Pose LEFT_LOADER = lemlib::Pose(-41, 6, 180);
 
-	// Unused waypoints (kept for future use)
+	// Unused waypoints
 	const lemlib::Pose LEFT_LOADER_SIDE_APPROACH = lemlib::Pose(-33, 17, 90);
 	const lemlib::Pose CENTRE_APPROACH = lemlib::Pose(0, 32, 90);
 	const lemlib::Pose PARK_APPROACH_SIDE = lemlib::Pose(-51, 33, 180);
