@@ -8,7 +8,7 @@ Passthrough::Passthrough()
     : prerollerMotor(PREROLLER_MOTOR_PORT, pros::MotorGearset::blue),
       middleMotor(MIDDLE_MOTOR_PORT, pros::MotorGearset::blue),
       topMotor(TOP_MOTOR_PORT, pros::MotorGearset::blue),
-      hood(HOOD_PORT, false) {}
+      hood(HOOD_PORT) {}
 
 void Passthrough::setup() {}
 

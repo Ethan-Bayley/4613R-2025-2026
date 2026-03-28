@@ -1,18 +1,18 @@
 #pragma once
 
 #include "autonomous/Autonomous.h"
-#include "subsystems/Chassis.h"
-#include "subsystems/MatchLoad.h"
 #include "subsystems/Passthrough.h"
+#include "subsystems/Pneumatic.h"
+#include "subsystems/Chassis.h"
 #include <cmath>
 
 class WorldsAWP : public Autonomous
 {
 	Passthrough *passthrough;
-	MatchLoad *matchLoad;
+	SingleActingPneumatic *matchLoad;
 
 public:
-	WorldsAWP(Passthrough *passthrough, MatchLoad *ml)
+	WorldsAWP(Passthrough *passthrough, SingleActingPneumatic *ml)
 		: passthrough(passthrough), matchLoad(ml) {}
 
 	void run() override
@@ -34,7 +34,6 @@ public:
 
 		passthrough->scoreLong();
 		matchLoad->retract();
-		matchLoad->retract();
 
 		pros::delay(2000);
 		// END OF RIGHT GOAL
@@ -53,10 +52,10 @@ public:
 		matchLoad->extend();
 		pros::Task retractMatchloadTask([&]()
 										{
-      pros::delay(200);
-      matchLoad->retract();
-      pros::delay(500);
-      matchLoad->extend(); });
+			pros::delay(200);
+			matchLoad->retract();
+			pros::delay(500);
+			matchLoad->extend(); });
 
 		// Push centre triball stack into middle goal
 		chassis.moveToPoint(CENTRE_TRIBALL_STACK.x, CENTRE_TRIBALL_STACK.y, 1500, {.maxSpeed = 127});

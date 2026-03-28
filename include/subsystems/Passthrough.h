@@ -1,11 +1,13 @@
 #pragma once
 #include "Subsystems.h"
+#include "subsystems/Pneumatic.h"
 #include "pros/motors.hpp"
-#include "pros/adi.hpp"
 
-class Passthrough : public Subsystems {
-public:                          // <-- constructors were missing this
-    enum class State {
+class Passthrough : public Subsystems
+{
+public:
+    enum class State
+    {
         IDLE,
         INTAKE,
         OUTTAKE,
@@ -15,9 +17,7 @@ public:                          // <-- constructors were missing this
     };
 
     Passthrough();
-    Passthrough(
-        int prerollerMotorPort, int middleMotorPort, int topMotorPort,
-        int HOOD_PORT);
+    Passthrough(int prerollerMotorPort, int middleMotorPort, int topMotorPort, int hoodPort);
 
     void setup() override;
     void registerHandlers(EventLoop &eventLoop) override;
@@ -32,12 +32,12 @@ public:                          // <-- constructors were missing this
     void setState(State newState);
 
 private:
-//prototype ports    
-    // static constexpr int PREROLLER_MOTOR_PORT = 19;
-    // static constexpr int MIDDLE_MOTOR_PORT = -18;
-    // static constexpr int TOP_MOTOR_PORT = 11;
+    //Prototype ports
+    //  static constexpr int PREROLLER_MOTOR_PORT = 19;
+    //  static constexpr int MIDDLE_MOTOR_PORT = -18;
+    //  static constexpr int TOP_MOTOR_PORT = 11;
 
-    //new robot ports
+    //New ports for comp bot
     static constexpr int PREROLLER_MOTOR_PORT = -3;
     static constexpr int MIDDLE_MOTOR_PORT = -9;
     static constexpr int TOP_MOTOR_PORT = 2;
@@ -46,7 +46,7 @@ private:
     pros::Motor prerollerMotor;
     pros::Motor middleMotor;
     pros::Motor topMotor;
-    pros::adi::Pneumatics hood;
+    SingleActingPneumatic hood; // swapped from pros::adi::Pneumatics
 
     State currentState = State::IDLE;
 };
