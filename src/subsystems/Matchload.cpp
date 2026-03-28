@@ -8,19 +8,18 @@ MatchLoad::MatchLoad() : piston(DEFAULT_PISTON_PORT, false),
 }
 
 MatchLoad::MatchLoad(int pistonPort) : piston(pistonPort, false),
-                                                         isRetracted(false)
+                                       isRetracted(false)
 {
 }
 
 void MatchLoad::registerHandlers(EventLoop &eventLoop)
 {
   eventLoop.registerCommand(
-    std::unique_ptr<Command>(new ButtonCommand(
-      eventLoop.controller,
-      pros::E_CONTROLLER_DIGITAL_DOWN,
-      [this]() { toggle(); }
-    ))
-  );
+      std::unique_ptr<Command>(new ButtonCommand(
+          eventLoop.controller,
+          pros::E_CONTROLLER_DIGITAL_DOWN,
+          [this]()
+          { toggle(); })));
 }
 
 void MatchLoad::setup()
@@ -36,12 +35,14 @@ void MatchLoad::extend()
 
 void MatchLoad::toggle()
 {
-  if (isRetracted) {
+  if (isRetracted)
+  {
     extend();
-  } else {
+  }
+  else
+  {
     retract();
   }
-
 }
 
 void MatchLoad::retract()

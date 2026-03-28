@@ -1,6 +1,5 @@
 #include "commands/ButtonCommand.h"
 #include <cstdio>
-#include "main.h"
 
 ButtonCommand::ButtonCommand(
   pros::Controller &controller,

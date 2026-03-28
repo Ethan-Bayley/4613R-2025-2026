@@ -3,24 +3,23 @@
 #include <memory>
 
 Hood::Hood() : piston(DEFAULT_PISTON_PORT, false),
-                         isRetracted(false)
+               isRetracted(false)
 {
 }
 
 Hood::Hood(int pistonPort) : piston(pistonPort, false),
-                                                         isRetracted(false)
+                             isRetracted(false)
 {
 }
 
 void Hood::registerHandlers(EventLoop &eventLoop)
 {
   eventLoop.registerCommand(
-    std::unique_ptr<Command>(new ButtonCommand(
-      eventLoop.controller,
-      pros::E_CONTROLLER_DIGITAL_DOWN,
-      [this]() { toggle(); }
-    ))
-  );
+      std::unique_ptr<Command>(new ButtonCommand(
+          eventLoop.controller,
+          pros::E_CONTROLLER_DIGITAL_DOWN,
+          [this]()
+          { toggle(); })));
 }
 
 void Hood::setup()
@@ -36,12 +35,14 @@ void Hood::extend()
 
 void Hood::toggle()
 {
-  if (isRetracted) {
+  if (isRetracted)
+  {
     extend();
-  } else {
+  }
+  else
+  {
     retract();
   }
-
 }
 
 void Hood::retract()

@@ -19,13 +19,9 @@ Robot robot(controller);
 
 void initialize()
 {
-	pros::lcd::initialize();
-
-	imu.reset(true); // blocks until IMU finishes calibrating (~3 seconds)
-	pros::lcd::print(0, "IMU done: %.2f", imu.get_heading());
+	imu.reset(true);
 
 	chassis.calibrate(); // starts LemLib odometry task
-	pros::lcd::print(1, "Chassis ready");
 
 	robot.addSubsystem(std::make_unique<Passthrough>());
 	robot.addSubsystem(std::make_unique<MatchLoad>());
@@ -39,9 +35,10 @@ void initialize()
 						   {
     while (true) {
       // print robot location to the brain screen
-      pros::lcd::print(0, "X: %f", chassis.getPose().x);         // x
-      pros::lcd::print(1, "Y: %f", chassis.getPose().y);         // y
-      pros::lcd::print(2, "Theta: %f", chassis.getPose().theta); // heading
+	  
+	controller.set_text(0, 0, "X: " + std::to_string(chassis.getPose().x));
+	controller.set_text(1, 0, "Y: " + std::to_string(chassis.getPose().y));
+	controller.set_text(2, 0, "Theta: " + std::to_string(chassis.getPose().theta));
       robot.update();
       // delay to save resources
       pros::delay(20);
