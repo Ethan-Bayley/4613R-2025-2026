@@ -10,12 +10,13 @@ public:                          // <-- constructors were missing this
         INTAKE,
         OUTTAKE,
         SCORE_MIDDLE,
+        SCORE_LOW,
         SCORE_LONG
     };
 
     Passthrough();
     Passthrough(
-        int intakeMotorPort, int midGoalMotorPort, int longGoalMotorPort,
+        int prerollerMotorPort, int middleMotorPort, int topMotorPort,
         int HOOD_PORT);
 
     void setup() override;
@@ -25,25 +26,26 @@ public:                          // <-- constructors were missing this
     void intake();
     void outtake();
     void scoreMiddle();
+    void scoreLow();
     void scoreLong();
     void stop();
     void setState(State newState);
 
 private:
-//prototype ports
-    // static constexpr int INTAKE_MOTOR_PORT = 19;
-    // static constexpr int MIDGOAL_MOTOR_PORT = -18;
-    // static constexpr int LONGGOAL_MOTOR_PORT = 11;
+//prototype ports    
+    // static constexpr int PREROLLER_MOTOR_PORT = 19;
+    // static constexpr int MIDDLE_MOTOR_PORT = -18;
+    // static constexpr int TOP_MOTOR_PORT = 11;
 
     //new robot ports
-    static constexpr int INTAKE_MOTOR_PORT = -3;
-    static constexpr int MIDGOAL_MOTOR_PORT = -9;
-    static constexpr int LONGGOAL_MOTOR_PORT = 2;
+    static constexpr int PREROLLER_MOTOR_PORT = -3;
+    static constexpr int MIDDLE_MOTOR_PORT = -9;
+    static constexpr int TOP_MOTOR_PORT = 2;
     static constexpr int HOOD_PORT = 'H';
 
-    pros::Motor intakeMotor;
-    pros::Motor midGoalMotor;
-    pros::Motor longGoalMotor;
+    pros::Motor prerollerMotor;
+    pros::Motor middleMotor;
+    pros::Motor topMotor;
     pros::adi::Pneumatics hood;
 
     State currentState = State::IDLE;
