@@ -2,19 +2,18 @@
 
 #include "autonomous/Autonomous.h"
 #include "pros/llemu.hpp"
-#include "subsystems/Conveyer.h"
+#include "subsystems/Passthrough.h"
 #include "subsystems/MatchLoad.h"
 #include "subsystems/Chassis.h"
 #include "subsystems/Park.h"
 
 class SkillsAWP : public Autonomous {
-    Conveyer* conveyer;
+    Passthrough* passthrough;
     MatchLoad* matchLoad;
-    Park* park;
 
 public:
-    SkillsAWP(Conveyer* conv, MatchLoad* ml, Park* pk)
-        : conveyer(conv), matchLoad(ml), park(pk) { }
+    SkillsAWP(Conveyer* conv, MatchLoad* ml)
+        : conveyer(conv), matchLoad(ml) { }
 
     void run() override {
         // Check subsystems are available
@@ -79,12 +78,12 @@ public:
         pros::delay(1000);
         conveyer->scoreLong();
 
-        chassis.moveToPoint(PARK_WAY.x, PARK_WAY.y, TIMEOUT);
-        chassis.turnToHeading(90, TIMEOUT_SHORT);
-        chassis.moveToPoint(PARK_MID.x, PARK_MID.y, TIMEOUT);
-        chassis.turnToHeading(180, TIMEOUT_SHORT);
-        chassis.moveToPoint(PARK.x, PARK.y, TIMEOUT);
-        park->toggle();
+        // chassis.moveToPoint(PARK_WAY.x, PARK_WAY.y, TIMEOUT);
+        // chassis.turnToHeading(90, TIMEOUT_SHORT);
+        // chassis.moveToPoint(PARK_MID.x, PARK_MID.y, TIMEOUT);
+        // chassis.turnToHeading(180, TIMEOUT_SHORT);
+        // chassis.moveToPoint(PARK.x, PARK.y, TIMEOUT);
+        // park->toggle();
 
     }
 

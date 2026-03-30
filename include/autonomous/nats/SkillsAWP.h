@@ -2,23 +2,22 @@
 
 #include "autonomous/Autonomous.h"
 #include "pros/llemu.hpp"
-#include "subsystems/Conveyer.h"
+#include "subsystems/Passthrough.h"
 #include "subsystems/MatchLoad.h"
 #include "subsystems/Chassis.h"
 #include "subsystems/Park.h"
 
 class NatsSkillsAWP : public Autonomous {
-    Conveyer* conveyer;
+    Passthrough* passthrough;
     MatchLoad* matchLoad;
-    Park* park;
 
 public:
-    NatsSkillsAWP(Conveyer* conv, MatchLoad* ml, Park* pk)
-        : conveyer(conv), matchLoad(ml), park(pk) { }
+    NatsSkillsAWP(Passthrough* pst, MatchLoad* ml)
+        : passthrough(pst), matchLoad(ml) { }
  
     void run() override {
         // Check subsystems are available
-        if (!conveyer || !matchLoad) {
+        if (!passthrough || !matchLoad) {
             pros::lcd::print(0, "ERROR: Missing subsystems!");
             return;
         }
@@ -111,13 +110,13 @@ public:
 
         pros::delay(TIMEOUT);
 
-        chassis.moveToPoint(PARK_WAY.x, PARK_WAY.y, TIMEOUT);
-        chassis.turnToHeading(90, TIMEOUT_SHORT);
-        chassis.moveToPoint(PARK_MID.x, PARK_MID.y, TIMEOUT);
-        chassis.turnToHeading(180, TIMEOUT_SHORT);
-        chassis.moveToPoint(PARK.x, PARK.y, TIMEOUT);
-        pros::delay(TIMEOUT);
-        park->toggle();
+        // chassis.moveToPoint(PARK_WAY.x, PARK_WAY.y, TIMEOUT);
+        // chassis.turnToHeading(90, TIMEOUT_SHORT);
+        // chassis.moveToPoint(PARK_MID.x, PARK_MID.y, TIMEOUT);
+        // chassis.turnToHeading(180, TIMEOUT_SHORT);
+        // chassis.moveToPoint(PARK.x, PARK.y, TIMEOUT);
+        // pros::delay(TIMEOUT);
+        // park->toggle();
 
     }
 
