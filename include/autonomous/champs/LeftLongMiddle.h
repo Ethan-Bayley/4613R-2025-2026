@@ -5,7 +5,7 @@
 #include "subsystems/Chassis.h"
 
 
-class StatesAwp : public Autonomous {
+class ChampsLeftLongMiddle : public Autonomous {
 
 
 public:
@@ -13,11 +13,11 @@ public:
 
     void run() override {
         chassis.setPose(STARTING_POS);
-        chassis.moveToPoint(LOADER_BR_WAY.x, LOADER_BR_WAY.y, TIMEOUT_SHORT);
+        chassis.moveToPoint(LOADER_BL_WAY.x, LOADER_BL_WAY.y, TIMEOUT_SHORT);
         chassis.turnToHeading(-180, TIMEOUT_SUPER_SHORT);
-        chassis.moveToPoint(LOADER_BR.x, LOADER_BR.y, TIMEOUT_SHORT,{}
+        chassis.moveToPoint(LOADER_BL.x, LOADER_BL.y, TIMEOUT_SHORT,{}
         );
-        chassis.moveToPoint(GOAL_R.x, GOAL_R.y, 800,{
+        chassis.moveToPoint(GOAL_L.x, GOAL_L.y, 800,{
             .forwards = false
         });
         pros::delay(1500);

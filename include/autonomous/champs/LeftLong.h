@@ -4,26 +4,25 @@
 #include "pros/llemu.hpp"
 #include "subsystems/Chassis.h"
 
-class StatesAwp : public Autonomous {
+class ChampsLeftlong : public Autonomous {
 
 public:
 
     void run() override {
 
         chassis.setPose(0, 0, 0);
-        pros::delay(100); // small delay to let pose set
+        pros::delay(100);
 
         chassis.setPose(STARTING_POS);
-        // chassis.setPose(STARTING_POS);
+        
 
-        chassis.moveToPoint(LOADER_BR_WAY.x, LOADER_BR_WAY.y, TIMEOUT_SHORT);
+        chassis.moveToPoint(LOADER_BL_WAY.x, LOADER_BL_WAY.y, TIMEOUT_SHORT);
         chassis.turnToHeading(-180, TIMEOUT_SUPER_SHORT);
-        // chassis.moveToPoint(LOADER_BR_WAY.x, LOADER_BR_WAY.y, TIMEOUT_SHORT);
-        // chassis.turnToHeading(-180, TIMEOUT_SUPER_SHORT);
+        
 
-        chassis.moveToPoint(LOADER_BR.x, LOADER_BR.y, TIMEOUT_SHORT);
+        chassis.moveToPoint(LOADER_BL.x, LOADER_BL.y, TIMEOUT_SHORT);
         pros::delay(2100);
-        chassis.moveToPoint(GOAL_R.x, GOAL_R.y, TIMEOUT,
+        chassis.moveToPoint(GOAL_L.x, GOAL_L.y, TIMEOUT,
                       {.forwards = false, .maxSpeed = 100});
         chassis.moveToPoint(GOAL_QUICK.x, GOAL_QUICK.y, TIMEOUT_SHORT, {.maxSpeed = 80});
         chassis.turnToHeading(45, 900);

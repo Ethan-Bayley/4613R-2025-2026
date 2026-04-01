@@ -6,8 +6,8 @@ class Wing : Subsystem {
         Wing wing();
         Wing wing(int pistonPort);
 
-        void out();
-        void in();
+        void extend();
+        void retract();
 
         
         void setup() override; 

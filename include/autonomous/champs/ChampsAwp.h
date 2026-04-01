@@ -3,9 +3,12 @@
 #include "autonomous/Autonomous.h"
 #include "pros/llemu.hpp"
 #include "subsystems/Chassis.h"
+#include "subsystems/Matchload.h"
 
 
-class StatesAwp : public Autonomous {
+
+
+class ChampsAwpAwp : public Autonomous {
 
 public:
 
@@ -13,13 +16,14 @@ public:
         chassis.setPose(STARTING_POS);
   
         chassis.moveToPoint(LOADER_BR_WAY.x, LOADER_BR_WAY.y, TIMEOUT_SHORT);
+        matchload->extend();
         chassis.turnToHeading(-180, TIMEOUT_SUPER_SHORT);
   
         chassis.moveToPoint(LOADER_BR.x, LOADER_BR.y, TIMEOUT_SHORT);
         pros::delay(2100);
         chassis.moveToPoint(GOAL_R.x, GOAL_R.y, TIMEOUT,
                       {.forwards = false, .maxSpeed = 100});
-        pros::delay(500);
+        matchload->retract();                      
   
         pros::delay(4000);
         // END OF RIGHT GOAL
@@ -27,6 +31,9 @@ public:
         chassis.moveToPoint(GOAL_R.x, GOAL_R.y - 13, TIMEOUT_SHORT, {.maxSpeed = 80});
         chassis.turnToHeading(-60, 900);
         chassis.moveToPose(STACK_RR.x, STACK_RR.y, 270, TIMEOUT_SHORT, {.maxSpeed = 127, .minSpeed = 50, .earlyExitRange = 8});
+        matchload->extend();
+        matchload->retract();
+
         chassis.moveToPoint(STACK_B.x, STACK_B.y, 1500, {.maxSpeed = 127});
         chassis.turnToHeading(-135, TIMEOUT_SUPER_SHORT);
         chassis.moveToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y, 2000, {.forwards = false, .maxSpeed = 50});

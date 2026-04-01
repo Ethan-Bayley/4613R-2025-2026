@@ -1,5 +1,5 @@
 #include "subsystems/Matchload.h"
 
-MatchLoad::MatchLoad() : matchload_piston()
+public: Matchload::Matchload() : matchload_piston()
 
 
