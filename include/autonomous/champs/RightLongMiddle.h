@@ -13,23 +13,8 @@ public:
 
     void run() override {
         chassis.setPose(0, 0, 0);
-        pros::delay(100);
-
         chassis.setPose(STARTING_POS);
-        
 
-        chassis.moveToPoint(LOADER_BR_WAY.x, LOADER_BR_WAY.y, TIMEOUT_SHORT);
-        chassis.turnToHeading(-180, TIMEOUT_SUPER_SHORT);
-        
-
-        chassis.moveToPoint(LOADER_BR.x, LOADER_BR.y, TIMEOUT_SHORT);
-        pros::delay(2100);
-        chassis.moveToPoint(GOAL_R.x, GOAL_R.y, TIMEOUT,
-                      {.forwards = false, .maxSpeed = 100});
-        chassis.moveToPoint(GOAL_QUICK.x, GOAL_QUICK.y, TIMEOUT_SHORT, {.maxSpeed = 80});
-        chassis.turnToHeading(45, 900);
-        pros::delay(500);
-        chassis.moveToPoint(LOADER_BL_WAY1.x, LOADER_BL_WAY1.y, TIMEOUT_SHORT, {.maxSpeed = 80});
  
     }
 

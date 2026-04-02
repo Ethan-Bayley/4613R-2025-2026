@@ -16,14 +16,13 @@ public:
         chassis.setPose(STARTING_POS);
   
         chassis.moveToPoint(LOADER_BR_WAY.x, LOADER_BR_WAY.y, TIMEOUT_SHORT);
-        matchload->extend();
+
         chassis.turnToHeading(-180, TIMEOUT_SUPER_SHORT);
   
         chassis.moveToPoint(LOADER_BR.x, LOADER_BR.y, TIMEOUT_SHORT);
         pros::delay(2100);
         chassis.moveToPoint(GOAL_R.x, GOAL_R.y, TIMEOUT,
-                      {.forwards = false, .maxSpeed = 100});
-        matchload->retract();                      
+                      {.forwards = false, .maxSpeed = 100});                    
   
         pros::delay(4000);
         // END OF RIGHT GOAL
@@ -31,8 +30,7 @@ public:
         chassis.moveToPoint(GOAL_R.x, GOAL_R.y - 13, TIMEOUT_SHORT, {.maxSpeed = 80});
         chassis.turnToHeading(-60, 900);
         chassis.moveToPose(STACK_RR.x, STACK_RR.y, 270, TIMEOUT_SHORT, {.maxSpeed = 127, .minSpeed = 50, .earlyExitRange = 8});
-        matchload->extend();
-        matchload->retract();
+
 
         chassis.moveToPoint(STACK_B.x, STACK_B.y, 1500, {.maxSpeed = 127});
         chassis.turnToHeading(-135, TIMEOUT_SUPER_SHORT);
@@ -61,10 +59,6 @@ private:
     const lemlib::Pose LOADER_MID = lemlib::Pose(0, 32, 90);
     const lemlib::Pose LOADER_BL_WAY1 = lemlib::Pose(-41, 30, -160);
     const lemlib::Pose LOADER_BL = lemlib::Pose(-41, 6, 180);
-
-    const lemlib::Pose PARK_WAY = lemlib::Pose(-51, 33, 180);
-    const lemlib::Pose PARK_MID = lemlib::Pose(-3, 33, 90);
-    const lemlib::Pose PARK = lemlib::Pose(-3, 16, 90);
 
     const lemlib::Pose HIT_LEFT = lemlib::Pose(-52, 38, -180);
     const lemlib::Pose HIT_RIGHT = lemlib::Pose(48, 39, -180);

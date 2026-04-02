@@ -4,18 +4,19 @@
 #include "pros/llemu.hpp"
 #include "subsystems/Chassis.h"
 
-class ChampsLeftlong : public Autonomous {
+
+class ChampsLeftLong : public Autonomous {
+
 
 public:
 
-    void run() override {
 
+    void run() override {
         chassis.setPose(0, 0, 0);
         pros::delay(100);
 
         chassis.setPose(STARTING_POS);
         
-
         chassis.moveToPoint(LOADER_BL_WAY.x, LOADER_BL_WAY.y, TIMEOUT_SHORT);
         chassis.turnToHeading(-180, TIMEOUT_SUPER_SHORT);
         
@@ -25,18 +26,23 @@ public:
         chassis.moveToPoint(GOAL_L.x, GOAL_L.y, TIMEOUT,
                       {.forwards = false, .maxSpeed = 100});
         chassis.moveToPoint(GOAL_QUICK.x, GOAL_QUICK.y, TIMEOUT_SHORT, {.maxSpeed = 80});
-        chassis.turnToHeading(45, 900);
+        chassis.turnToHeading(-45, 900);
         pros::delay(500);
-        chassis.moveToPoint(LOADER_BL_WAY1.x, LOADER_BL_WAY1.y, TIMEOUT_SHORT, {.maxSpeed = 80});
+        chassis.moveToPoint(WING_LEFT.x, WING_LEFT.y, TIMEOUT_SHORT, {.maxSpeed = 80});
+        
     }
 
-private:
-    const lemlib::Pose GOAL_QUICK = lemlib::Pose(38, 30, 90);
-    const lemlib::Pose STARTING_POS{15.25, 24, 90};
-    // const lemlib::Pose STARTING_POS{15.25, 24, 90};
 
-    const lemlib::Pose LOADER_BR_WAY = lemlib::Pose(48, 24, 90);
-    const lemlib::Pose LOADER_BR = lemlib::Pose(48, 11, -180);
+
+private: 
+    const lemlib::Pose WING_LEFT = lemlib::Pose(-38, 40, -90);
+
+
+    const lemlib::Pose GOAL_QUICK = lemlib::Pose(-38, 30, -90);
+    const lemlib::Pose STARTING_POS{-15.25, 24, -90};
+
+    const lemlib::Pose LOADER_BL_WAY = lemlib::Pose(-48, 24, -90);
+    const lemlib::Pose LOADER_BL = lemlib::Pose(-48, 11, -180);
 
     const lemlib::Pose STACK_RR{19.5, 48, -135};
     const lemlib::Pose STACK_B_MIDPOINT{-16, 46, -90};
@@ -47,10 +53,10 @@ private:
     const lemlib::Pose GOAL_L = lemlib::Pose(-52, 47, -180);
     const lemlib::Pose GOAL_R = lemlib::Pose(48, 48, -180);
 
-    const lemlib::Pose LOADER_BL_WAY = lemlib::Pose(-33, 17, 90);
+    const lemlib::Pose LOADER_BR_WAY = lemlib::Pose(48, 17, 90);
     const lemlib::Pose LOADER_MID = lemlib::Pose(0, 32, 90);
-    const lemlib::Pose LOADER_BL_WAY1 = lemlib::Pose(-49, 30, -160);
-    const lemlib::Pose LOADER_BL = lemlib::Pose(-48, 6, 180);
+    const lemlib::Pose LOADER_BR_WAY1 = lemlib::Pose(49, 30, 160);
+    const lemlib::Pose LOADER_BR = lemlib::Pose(48, 6, 180);
 
     const lemlib::Pose PARK_WAY = lemlib::Pose(-51, 33, 180);
     const lemlib::Pose PARK_MID = lemlib::Pose(-3, 33, 90);
