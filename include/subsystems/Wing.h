@@ -1,21 +1,21 @@
+#pragma once 
+
+#include "subsystems/Subsystems.h"
+#include "commands/EventLoop.h"
 #include "pros/adi.hpp"
-#include "Subsystem.h"
 
-class Wing : Subsystem {
-    public: 
-        Wing wing();
-        Wing wing(int pistonPort);
+class Wing : public Subsystems {
+  public:
+    Wing();
+    Wing(int pistonPort);
 
-        void extend();
-        void retract();
+    void setup() override;
+    void registerHandlers(EventLoop &eventLoop) override;
 
-        
-        void setup() override; 
-        void registerHandlers(EventLoop &eventLoop) override;
+    void toggle();
 
-    private:
-        pros::adi::Pneumatics pneumatic;
-        int DEFAULT_PISTON_PORT = 5;
+  private:
+  static constexpr int DEFAULT_PISTON_PORT = 'D';
 
-
+  pros::adi::Pneumatics piston;
 };

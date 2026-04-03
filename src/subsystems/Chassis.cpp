@@ -1,14 +1,14 @@
 #include "lemlib/api.hpp"
 #include "lemlib/chassis/trackingWheel.hpp"
 
-pros::MotorGroup left_mg({4, -2, -3}, pros::MotorGearset::blue);
-pros::MotorGroup right_mg({8, 9, -7}, pros::MotorGearset::blue);
+pros::MotorGroup left_mg({-11, -12, 14}, pros::MotorGearset::blue);
+pros::MotorGroup right_mg({19, 18, -17}, pros::MotorGearset::blue);
 
-pros::Imu imu(12);
-pros::Rotation odometry(15);
-pros::Rotation odometryH(19);
+pros::Imu imu(8);
+// pros::Rotation odometry(15);
+// pros::Rotation odometryH(19);
 
-lemlib::Drivetrain LLdrivetrain(
+lemlib::Drivetrain drivetrain(
 		&left_mg,
 		&right_mg,
 		12,
@@ -16,19 +16,21 @@ lemlib::Drivetrain LLdrivetrain(
 		400,
 		0);
 
-lemlib::TrackingWheel vertical_tracking_wheel(
-		&odometry,
-		lemlib::Omniwheel::NEW_2,
-		0.4);
-lemlib::TrackingWheel horizontal_tracking_wheel(
-		&odometryH,
-		lemlib::Omniwheel::NEW_275,
-		1.85);
+// lemlib::TrackingWheel vertical_tracking_wheel(
+// 		&odometry,
+// 		lemlib::Omniwheel::NEW_2,
+// 		0.4);
+// lemlib::TrackingWheel horizontal_tracking_wheel(
+// 		&odometryH,
+// 		lemlib::Omniwheel::NEW_275,
+// 		1.85);
 
 lemlib::OdomSensors sensors(
-		&vertical_tracking_wheel,
+		// &vertical_tracking_wheel,
 		nullptr,
-		&horizontal_tracking_wheel,
+		nullptr,
+		// &horizontal_tracking_wheel,
+		nullptr,
 		nullptr,
 		&imu);
 
@@ -73,7 +75,7 @@ lemlib::ExpoDriveCurve steer_curve(
 );
 
 lemlib::Chassis chassis(
-		LLdrivetrain,
+		drivetrain,
 		lateral_controller,
 		angular_controller,
 		sensors,

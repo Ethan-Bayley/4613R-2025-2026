@@ -1,21 +1,23 @@
+#include "commands/EventLoop.h"
+#include "Subsystems.h"
 #include "pros/adi.hpp"
-#include "Subsystem.h"
 
-class Matchload : Subsystem {
-    public: 
-        Matchload matchload();
-        Matchload matchload(int pistonPort);
+class MatchLoad : public Subsystems {
+  public:
+    MatchLoad();
+    MatchLoad(int DEFAULT_PISTON_PORT);
 
-        void extend();
-        void retract();
+    void setup() override;
+    void registerHandlers(EventLoop &eventLoop) override;
 
-        
-        void setup() override; 
-        void registerHandlers(EventLoop &eventLoop) override;
+    void extend();
+    void retract();
+    void toggle();
 
-    private:
-        pros::adi::Pneumatics pneumatic;
-        int DEFAULT_PISTON_PORT = 5;
+  private:
+  static constexpr int DEFAULT_PISTON_PORT = 'G';
 
+  bool isRetracted;
 
+  pros::adi::Pneumatics piston;
 };
