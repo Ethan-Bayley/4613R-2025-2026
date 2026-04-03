@@ -13,7 +13,21 @@ public:
 
     void run() override {
         chassis.setPose(0, 0, 0);
-        chassis.setPose(STARTING_POS);
+        chassis.setPose(STARTING_POS_LONG_PUSH);
+  
+        chassis.moveToPoint(STACK_RR.x, STACK_RR.y, TIMEOUT);
+        chassis.turnToHeading(60, 500);
+
+        
+        chassis.moveToPoint(UNDER_GOAL_R.x, UNDER_GOAL_R.y, 1500);
+        chassis.moveToPoint(STACK_RR.x, STACK_RR.y, TIMEOUT_SHORT, {.forwards = false, .minSpeed = 80, .earlyExitRange = 8});
+        chassis.moveToPoint(LOADER_BR_WAY.x, LOADER_BR_WAY.y, TIMEOUT_SHORT);
+
+        chassis.turnToHeading(180, 900);
+        chassis.moveToPoint(LOADER_BR.x, LOADER_BR.y, TIMEOUT_SHORT);
+
+        chassis.moveToPose(GOAL_R.x, GOAL_R.y, 180, TIMEOUT, {.forwards = false});
+
 
  
     }
@@ -21,6 +35,8 @@ public:
 
 
 private: 
+    const lemlib::Pose STARTING_POS_LONG_PUSH{17, 22, 15};
+    const lemlib::Pose UNDER_GOAL_R = lemlib::Pose(40, 55, 60);
     
     const lemlib::Pose GOAL_QUICK = lemlib::Pose(38, 30, 90);
     const lemlib::Pose STARTING_POS{15.25, 24, 90};
