@@ -11,38 +11,39 @@
 #include "subsystems/Passthrough.h"
 #include "subsystems/Wing.h"
 #include <memory>
+#include <string>
 
 #include "autonomous/AWP.h"
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 Robot robot(controller);
 
-void initialize()
-{
-	imu.reset(true);
+void initialize() {
+  imu.reset(true);
 
-	chassis.calibrate(); // starts LemLib odometry task
+  chassis.calibrate(); // starts LemLib odometry task
 
-	robot.addSubsystem(std::make_unique<Passthrough>());
-	robot.addSubsystem(std::make_unique<MatchLoad>());
-	robot.addSubsystem(std::make_unique<Wing>());
-	robot.setup();
-	robot.registerCommands();
+  robot.addSubsystem(std::make_unique<Passthrough>());
+  robot.addSubsystem(std::make_unique<MatchLoad>());
+  robot.addSubsystem(std::make_unique<Wing>());
+  robot.setup();
+  robot.registerCommands();
 
-	drawImage();
+  drawImage();
 
-	pros::Task screen_task([&]()
-						   {
+  pros::Task screen_task([&]() {
     while (true) {
       // print robot location to the brain screen
-	  
-	controller.set_text(0, 0, "X: " + std::to_string(chassis.getPose().x));
-	controller.set_text(1, 0, "Y: " + std::to_string(chassis.getPose().y));
-	controller.set_text(2, 0, "Theta: " + std::to_string(chassis.getPose().theta));
+
+      controller.set_text(0, 0, "X: " + std::to_string(chassis.getPose().x));
+      controller.set_text(1, 0, "Y: " + std::to_string(chassis.getPose().y));
+      controller.set_text(2, 0,
+                          "Theta: " + std::to_string(chassis.getPose().theta));
       robot.update();
       // delay to save resources
       pros::delay(20);
-    } });
+    }
+  });
 }
 
 void disabled() {}
@@ -51,20 +52,29 @@ void competition_initialize() {}
 
 void autonomous() {}
 
-void opcontrol()
-{
-	controller.rumble(".");
+void opcontrol() {
+  controller.rumble(".");
 
-	chassis.setPose(0, 0, 0);
-	robot.runAuto<WorldsAWP>(robot.getSubsystem<Passthrough>(),
-							 robot.getSubsystem<MatchLoad>());
+  chassis.setPose(0, 0, 0);
+  // robot.runAuto<WorldsAWP>(robot.getSubsystem<Passthrough>(),
+  // 						 robot.getSubsystem<MatchLoad>());
 
-	// while (true) {
-	// 	auto start_time = pros::millis();
+  while (true) {
+    auto start_time = pros::millis();
 
-	// 	// Subsysytems
-	// 	robot.update();
+    // Subsysytems
+    robot.update();
+    if (robot.getSubsystem<Passthrough>()->getColourSorting() == 1) {
+      controller.set_text(
+          1, 1,
+          std::to_string(
+              robot.getSubsystem<Passthrough>()->getColourSorting()));
+    }
+	
+	if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)) {
+		controller.clear();
+	}
 
-	// 	pros::c::task_delay_until(&start_time, 10);
-	// }
+    pros::c::task_delay_until(&start_time, 10);
+  }
 }
