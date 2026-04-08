@@ -15,7 +15,7 @@ class Wing : public Subsystems {
     void toggle();
 
   private:
-  static constexpr int DEFAULT_PISTON_PORT = 'D';
+  static constexpr int DEFAULT_PISTON_PORT = 'F';
 
   pros::adi::Pneumatics piston;
 };

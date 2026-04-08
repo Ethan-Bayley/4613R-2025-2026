@@ -12,8 +12,6 @@
 #include "subsystems/Wing.h"
 #include <memory>
 
-#include "autonomous/AWP.h"
-
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 Robot robot(controller);
 

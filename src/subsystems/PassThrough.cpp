@@ -1,98 +1,297 @@
 #include "subsystems/Passthrough.h"
-
-#include "Subsystems/Hood.h"
+#include "commands/ButtonCommand.h"
+#include "pros/distance.hpp"
+#include "pros/misc.h"
 #include "pros/motors.h"
+#include "pros/rtos.hpp"
+#include <memory>
 
+// ── Constructors
+// ──────────────────────────────────────────────────────────────
 
 Passthrough::Passthrough()
     : prerollerMotor(PREROLLER_MOTOR_PORT, pros::MotorGearset::blue),
       middleMotor(MIDDLE_MOTOR_PORT, pros::MotorGearset::blue),
       topMotor(TOP_MOTOR_PORT, pros::MotorGearset::blue),
-      hood(HOOD_PORT, false) {}
+      hood(HOOD_PORT, false), distance(DISTANCE_PORT), optical(OPTICAL_PORT) {}
 
-void Passthrough::setup() {}
+Passthrough::Passthrough(int prerollerPort, int middlePort, int topPort,
+                         int hoodPort, int distancePort, int opticalPort)
+    : prerollerMotor(prerollerPort, pros::MotorGearset::blue),
+      middleMotor(middlePort, pros::MotorGearset::blue),
+      topMotor(topPort, pros::MotorGearset::blue), hood(hoodPort, false),
+      distance(DISTANCE_PORT), optical(OPTICAL_PORT) {}
 
-void Passthrough::registerHandlers(EventLoop& eventLoop) {
-	// Intake
-	eventLoop.registerCommand(std::unique_ptr<Command>(new ButtonCommand(
-	    eventLoop.controller, pros::E_CONTROLLER_DIGITAL_R1, [this]() { setState(State::INTAKE); },
-	    [this]() { setState(State::IDLE); })));
+// ── Setup
+// ─────────────────────────────────────────────────────────────────────
 
-	// Outtake
-	eventLoop.registerCommand(std::unique_ptr<Command>(new ButtonCommand(
-	    eventLoop.controller, pros::E_CONTROLLER_DIGITAL_R2, [this]() { setState(State::OUTTAKE); },
-	    [this]() { setState(State::IDLE); })));
+void Passthrough::setup() { optical.set_led_pwm(100); }
 
-	// Score Long
-	eventLoop.registerCommand(std::unique_ptr<Command>(new ButtonCommand(
-	    eventLoop.controller, pros::E_CONTROLLER_DIGITAL_L1,
-	    [this]() { setState(State::SCORE_LONG); }, [this]() { setState(State::IDLE); })));
+// ── Handlers
+// ──────────────────────────────────────────────────────────────────
 
-	// Score Middle
-	eventLoop.registerCommand(std::unique_ptr<Command>(new ButtonCommand(
-	    eventLoop.controller, pros::E_CONTROLLER_DIGITAL_L2,
-	    [this]() { setState(State::SCORE_MIDDLE); }, [this]() { setState(State::IDLE); })));
+void Passthrough::registerHandlers(EventLoop &eventLoop) {
+  // Intake
+  eventLoop.registerCommand(std::unique_ptr<Command>(new ButtonCommand(
+      eventLoop.controller, pros::E_CONTROLLER_DIGITAL_R1,
+      [this]() { setState(State::INTAKE); },
+      [this]() { setState(State::IDLE); })));
 
-	// Score Low
-	eventLoop.registerCommand(std::unique_ptr<Command>(new ButtonCommand(
-	    eventLoop.controller, pros::E_CONTROLLER_DIGITAL_LEFT,
-	    [this]() { setState(State::SCORE_LOW); }, [this]() { setState(State::IDLE); })));
+  // Outtake
+  eventLoop.registerCommand(std::unique_ptr<Command>(new ButtonCommand(
+      eventLoop.controller, pros::E_CONTROLLER_DIGITAL_R2,
+      [this]() { setState(State::OUTTAKE); },
+      [this]() { setState(State::IDLE); })));
+
+  // Score Long
+  eventLoop.registerCommand(std::unique_ptr<Command>(new ButtonCommand(
+      eventLoop.controller, pros::E_CONTROLLER_DIGITAL_L1,
+      [this]() { setState(State::SCORE_LONG); },
+      [this]() { setState(State::IDLE); })));
+
+  // Score Middle
+  eventLoop.registerCommand(std::unique_ptr<Command>(new ButtonCommand(
+      eventLoop.controller, pros::E_CONTROLLER_DIGITAL_L2,
+      [this]() { setState(State::SCORE_MIDDLE); },
+      [this]() { setState(State::IDLE); })));
+
+  // Score Low
+  eventLoop.registerCommand(std::unique_ptr<Command>(new ButtonCommand(
+      eventLoop.controller, pros::E_CONTROLLER_DIGITAL_LEFT,
+      [this]() { setState(State::SCORE_LOW); },
+      [this]() { setState(State::IDLE); })));
 }
 
-void Passthrough::setState(State newState) { currentState = newState; }
+// ── State
+// ─────────────────────────────────────────────────────────────────────
+
+void Passthrough::setState(State newState) {
+  currentState = newState;
+  prerollerStallStart = 0;
+  middleStallStart = 0;
+  topStallStart = 0;
+}
+
+// ── Antistall
+// ───────────────────────────────────────────────────────────────── If motor
+// current exceeds threshold, reverse it for STALL_REVERSE_MS. Passing voltage=0
+// always stops the motor with no stall check.
+
+void Passthrough::moveMotor(pros::Motor &motor, int voltage, int stallMa,
+                            uint32_t &stallStart) {
+  uint32_t now = pros::millis();
+
+  // If currently in a stall reverse, keep reversing until timer expires
+  if (stallStart != 0) {
+    if ((now - stallStart) < (uint32_t)STALL_REVERSE_MS) {
+      motor.move_voltage(-12000);
+      return;
+    }
+    stallStart = 0; // reverse done, resume normal
+  }
+
+  if (voltage == 0) {
+    motor.move_voltage(0);
+    return;
+  }
+
+  // Detect stall: high current AND low velocity
+  bool highCurrent = motor.get_current_draw() > stallMa;
+  bool lowVelocity = std::abs(motor.get_actual_velocity()) < 10;
+
+  if (highCurrent && lowVelocity) {
+    stallStart = now;
+    motor.move_voltage(-12000);
+    return;
+  }
+
+  motor.move_voltage(voltage);
+}
+
+void Passthrough::lockMotor(pros::Motor &motor, int voltage, int stallMa,
+                            uint32_t &stallStart) {
+  uint32_t now = pros::millis();
+
+  // Locked: stay stopped until caller passes voltage=0
+  if (stallStart != 0) {
+    motor.move_voltage(3000);
+    return;
+  }
+
+  if (voltage == 0) {
+    stallStart = 0; // reset lock so motor can run again next time
+    motor.move_voltage(3000);
+    return;
+  }
+
+  bool highCurrent = motor.get_current_draw() > stallMa;
+  bool lowVelocity = std::abs(motor.get_actual_velocity()) < 10;
+
+  if (highCurrent && lowVelocity) {
+    stallStart = now;
+    motor.move_voltage(3000);
+    return;
+  }
+
+  motor.move_voltage(voltage);
+}
+
+void Passthrough::pulseMotor(pros::Motor &motor, int voltage, int stallMa,
+                             uint32_t &pulseStart) {
+  uint32_t now = pros::millis();
+
+  if (pulseStart != 0) {
+    uint32_t elapsed = (now - pulseStart) % 500;
+    if (elapsed < 250) {
+      motor.move_voltage(voltage); // ON phase
+    } else {
+      motor.move_voltage(0); // OFF phase
+    }
+    return;
+  }
+
+  if (voltage == 0) {
+    pulseStart = 0;
+    motor.move_voltage(0);
+    return;
+  }
+
+  bool highCurrent = motor.get_current_draw() > stallMa;
+  bool lowVelocity = std::abs(motor.get_actual_velocity()) < 10;
+
+  if (highCurrent && lowVelocity) {
+    pulseStart = now;
+    motor.move_voltage(voltage);
+    return;
+  }
+
+  motor.move_voltage(voltage);
+}
+
+bool Passthrough::isWrongColour() {
+  double brightness = optical.get_brightness(); // 0.0-1.0 in PROS 3
+  pros::c::optical_rgb_s rgb = optical.get_rgb();
+  //   if (optical.get_proximity() < 100) {
+  Colour ballColour = Colour::RED;
+  if (rgb.red > rgb.blue && rgb.red > rgb.green) {
+    ballColour = Colour::RED;
+  }
+  if (rgb.blue > rgb.red && rgb.blue > rgb.green) {
+    ballColour = Colour::BLUE;
+  }
+  if (currentTeam == ballColour) {
+    return false;
+  } else {
+    return true;
+  }
+  //   } else {
+  return false;
+  //   }
+}
+
+// ── Update
+// ────────────────────────────────────────────────────────────────────
 
 void Passthrough::update() {
-	switch (currentState) {
-		case State::IDLE:
-			prerollerMotor.move_voltage(0);
-			middleMotor.move_voltage(0);
-			topMotor.move_voltage(0);
-			hood.retract();
-			break;
+  if (distance.get_distance() < 50 && !distanceBlocked) {
+    distanceBlocked = true;
+    distanceBlockedTime = pros::millis();
+  } else if (distance.get_distance() > 50 && distanceBlocked) {
+    distanceBlocked = false;
+    distanceBlockedTime = 0;
+  }
 
-		case State::INTAKE:
-			prerollerMotor.move_voltage(12000);
-			middleMotor.move_voltage(12000);
-			topMotor.move_voltage(3000);
-			hood.retract();
-			break;
+  bool wrongColour = isWrongColour();
+  if (wrongColour) {
+    colourSortState = 1;
+    colourSortTime = pros::millis();
+  }
+  if (!wrongColour && pros::millis() - colourSortTime > 250 &&
+      colourSortState != 0) {
+    colourSortState = 0;
+    colourSortTime = 0;
+  }
 
-		case State::OUTTAKE:
-			prerollerMotor.move_voltage(-12000);
-			middleMotor.move_voltage(-12000);
-			topMotor.move_voltage(-12000);
-			break;
+  switch (currentState) {
+  case State::IDLE:
+    moveMotor(prerollerMotor, 0, PREROLLER_STALL_MA, prerollerStallStart);
+    moveMotor(middleMotor, 0, MIDDLE_STALL_MA, middleStallStart);
+    moveMotor(topMotor, 0, TOP_STALL_MA, topStallStart);
+    hood.retract();
+    break;
 
-		case State::SCORE_MIDDLE:
-			prerollerMotor.move_voltage(12000);
-			middleMotor.move_voltage(12000);
-			topMotor.move_voltage(-12000);
-			hood.retract();
-			break;
+  case State::INTAKE:
+    pulseMotor(prerollerMotor, 12000, PREROLLER_STALL_MA, prerollerStallStart);
 
-    case State::SCORE_LOW:
-			prerollerMotor.move_voltage(3000);
-			middleMotor.move_voltage(12000);
-			topMotor.move_voltage(-12000);
-			break;
+    if (pros::millis() - distanceBlockedTime > 250 && distanceBlocked) {
+      middleMotor.move_voltage(0);
+    } else {
+      middleMotor.move_voltage(12000);
+    }
 
-		case State::SCORE_LONG:
-			prerollerMotor.move_voltage(12000);
-			middleMotor.move_voltage(12000);
-			topMotor.move_voltage(12000);
-			hood.extend();
-			break;
-	}
+    if (topStallStart != 0) {
+      // Top is locked — skip colour sort, just hold the lock
+      lockMotor(topMotor, 3000, TOP_STALL_MA, topStallStart);
+    } else if (colourSortState == 1) {
+      moveMotor(topMotor, -12000, TOP_STALL_MA, topStallStart);
+    } else {
+      lockMotor(topMotor, 3000, TOP_STALL_MA, topStallStart);
+    }
+    hood.retract();
+    break;
+
+  case State::OUTTAKE:
+    // No antistall on outtake -- high current is expected
+    prerollerMotor.move_voltage(-12000);
+    middleMotor.move_voltage(-12000);
+    topMotor.move_voltage(-12000);
+    break;
+
+  case State::SCORE_MIDDLE:
+    if (colourSortState == 1) {
+      moveMotor(prerollerMotor, 6000, PREROLLER_STALL_MA, prerollerStallStart);
+      moveMotor(middleMotor, 6000, MIDDLE_STALL_MA, middleStallStart);
+      moveMotor(topMotor, 12000, TOP_STALL_MA, topStallStart);
+    } else {
+
+      moveMotor(prerollerMotor, 12000, PREROLLER_STALL_MA, prerollerStallStart);
+      moveMotor(middleMotor, 12000, MIDDLE_STALL_MA, middleStallStart);
+      moveMotor(topMotor, -12000, TOP_STALL_MA, topStallStart);
+    }
+    hood.retract();
+    break;
+
+  case State::SCORE_LOW:
+    moveMotor(prerollerMotor, 3000, PREROLLER_STALL_MA, prerollerStallStart);
+    moveMotor(middleMotor, 12000, MIDDLE_STALL_MA, middleStallStart);
+    moveMotor(topMotor, -12000, TOP_STALL_MA, topStallStart);
+    break;
+
+  case State::SCORE_LONG:
+    if (colourSortState == 1) {
+      moveMotor(prerollerMotor, 6000, PREROLLER_STALL_MA, prerollerStallStart);
+      moveMotor(middleMotor, 6000, MIDDLE_STALL_MA, middleStallStart);
+      moveMotor(topMotor, -12000, TOP_STALL_MA, topStallStart);
+    } else {
+
+      moveMotor(prerollerMotor, 12000, PREROLLER_STALL_MA, prerollerStallStart);
+      moveMotor(middleMotor, 12000, MIDDLE_STALL_MA, middleStallStart);
+      moveMotor(topMotor, 12000, TOP_STALL_MA, topStallStart);
+    }
+
+    hood.extend();
+    break;
+  }
 }
 
+int Passthrough::getColourSorting() { return colourSortState; }
+
+// ── Public helpers
+// ────────────────────────────────────────────────────────────
+
 void Passthrough::intake() { setState(State::INTAKE); }
-
 void Passthrough::outtake() { setState(State::OUTTAKE); }
-
 void Passthrough::stop() { setState(State::IDLE); }
-
 void Passthrough::scoreMiddle() { setState(State::SCORE_MIDDLE); }
-
 void Passthrough::scoreLow() { setState(State::SCORE_LOW); }
-
 void Passthrough::scoreLong() { setState(State::SCORE_LONG); }
