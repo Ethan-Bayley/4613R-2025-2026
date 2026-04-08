@@ -252,6 +252,14 @@ void Passthrough::update() {
     hood.retract();
     break;
 
+  case State::INTAKE_PREROLLER:
+
+    moveMotor(prerollerMotor, 12000, PREROLLER_STALL_MA, prerollerStallStart);
+    moveMotor(middleMotor, 0, MIDDLE_STALL_MA, middleStallStart);
+    topMotor.move_voltage(0);
+    hood.retract();
+    break;
+
   case State::OUTTAKE:
     // No antistall on outtake -- high current is expected
     prerollerMotor.move_voltage(-12000);
