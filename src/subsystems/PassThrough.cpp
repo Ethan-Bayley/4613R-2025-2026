@@ -293,14 +293,10 @@ void Passthrough::update() {
                 prerollerStallStart);
       moveMotor(middleMotor, -12000, MIDDLE_STALL_MA, middleStallStart);
       moveMotor(topMotor, -12000, TOP_STALL_MA, topStallStart);
-    } else if (colourSortState == 1) {
-      moveMotor(prerollerMotor, 6000, PREROLLER_STALL_MA, prerollerStallStart);
-      moveMotor(middleMotor, 6000, MIDDLE_STALL_MA, middleStallStart);
-      moveMotor(topMotor, 12000, TOP_STALL_MA, topStallStart);
     } else {
       moveMotor(prerollerMotor, 12000, PREROLLER_STALL_MA, prerollerStallStart);
-      moveMotor(middleMotor, 9000, MIDDLE_STALL_MA, middleStallStart);
-      moveMotor(topMotor, -2000, TOP_STALL_MA, topStallStart);
+      moveMotor(middleMotor, 6000, MIDDLE_STALL_MA, middleStallStart);
+      moveMotor(topMotor, -1000, TOP_STALL_MA, topStallStart);
     }
     hood.retract();
     break;

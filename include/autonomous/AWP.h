@@ -21,9 +21,9 @@ public:
     chassis.moveToPoint(PUSH.x, PUSH.y, 500,
                         {.forwards = false, .minSpeed = 80});
 
-    passthrough->intake();
+    passthrough->intakePreroller();
 
-    chassis.moveToPoint(LOADER_BR_WAY.x, LOADER_BR_WAY.y, TIMEOUT);
+    chassis.moveToPoint(LOADER_BR_WAY.x, LOADER_BR_WAY.y, 1500);
     matchLoad->extend();
 
     chassis.turnToHeading(-180, TIMEOUT_SUPER_SHORT);
@@ -34,14 +34,12 @@ public:
     // pros::Task hoodRaise([&]() {
     //   pros::delay(250);
     // });
+    passthrough->scoreLongNoColour();
     chassis.moveToPoint(GOAL_R.x, GOAL_R.y, 750,
                         {.forwards = false, .minSpeed = 127}, true);
     pros::delay(850);
-    passthrough->scoreLongNoColour();
     matchLoad->retract();
     chassis.moveToPoint(GOAL_R.x, GOAL_R.y, 1250, {.forwards = false});
-
-    passthrough->hoodRaised();
 
     // END OF RIGHT GOAL
 
@@ -84,17 +82,18 @@ public:
 
     passthrough->intake();
 
-    chassis.moveToPoint(LOADER_BL_WAY.x, LOADER_BL_WAY.y, 2000);
+    chassis.moveToPoint(LOADER_BL_WAY.x, LOADER_BL_WAY.y, 1000);
     
     chassis.turnToHeading(180, 500);
-    chassis.moveToPoint(LOADER_BL.x, LOADER_BL.y, 1500);
+    chassis.moveToPoint(LOADER_BL.x, LOADER_BL.y, 1000);
     pros::delay(250);
 
     passthrough->hoodRaised();
     chassis.moveToPoint(GOAL_L.x, GOAL_L.y, TIMEOUT_SHORT,
                         {.forwards = false, .minSpeed = 127});
     passthrough->scoreLong();
-    chassis.moveToPoint(GOAL_L.x, GOAL_L.y - 2, 2000, {.forwards = false});
+    chassis.moveToPoint(GOAL_L.x, GOAL_L.y - 2, 1000, {.forwards = false});
+    passthrough->stop();
   }
 
 private:
@@ -103,7 +102,7 @@ private:
 
   const lemlib::Pose PUSH{-3, 26, 90};
 
-  const lemlib::Pose STACK_RR{19.5, 49, -135};
+  const lemlib::Pose STACK_RR{21, 49, -135};
   const lemlib::Pose STACK_B{-23.5, 46, -90};
   const lemlib::Pose GOAL_MIDDLE{0, 60, -135};
 
