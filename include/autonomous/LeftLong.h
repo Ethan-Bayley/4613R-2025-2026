@@ -14,7 +14,6 @@ public:
     void run() override {
         chassis.setPose(0, 0, 0);
         pros::delay(100);
-
         chassis.setPose(STARTING_POS);
         
         chassis.moveToPoint(LOADER_BL_WAY.x, LOADER_BL_WAY.y, TIMEOUT_SHORT);
@@ -26,19 +25,20 @@ public:
         chassis.moveToPoint(GOAL_L.x, GOAL_L.y, TIMEOUT,
                       {.forwards = false, .maxSpeed = 100});
         chassis.moveToPoint(GOAL_QUICK.x, GOAL_QUICK.y, TIMEOUT_SHORT, {.maxSpeed = 80});
-        chassis.turnToHeading(-45, 900);
-        pros::delay(500);
-        chassis.moveToPoint(WING_LEFT.x, WING_LEFT.y, TIMEOUT_SHORT, {.maxSpeed = 80});
+        pros::delay(1000);
+	    chassis.turnToHeading(-180, 900);
+        chassis.moveToPoint(WING_LEFT.x, WING_LEFT.y,TIMEOUT_SHORT, {.forwards = false, .minSpeed = 80, .earlyExitRange = 8});
         
     }
 
 
 
 private: 
-    const lemlib::Pose WING_LEFT = lemlib::Pose(-38, 40, -90);
+    const lemlib::Pose WING_LEFT = lemlib::Pose(-58, 45, -90);
 
 
-    const lemlib::Pose GOAL_QUICK = lemlib::Pose(-38, 30, -90);
+    const lemlib::Pose GOAL_QUICK = lemlib::Pose(-58, 31, -90);
+
     const lemlib::Pose STARTING_POS{-15.25, 24, -90};
 
     const lemlib::Pose LOADER_BL_WAY = lemlib::Pose(-48, 24, -90);
@@ -50,7 +50,7 @@ private:
     const lemlib::Pose GOAL_MIDDLE{-10, 56, -135};
 
     const lemlib::Pose GOAL_L_WAIT{-50, 24, -135};
-    const lemlib::Pose GOAL_L = lemlib::Pose(-52, 47, -180);
+    const lemlib::Pose GOAL_L = lemlib::Pose(-47, 47, -180);
     const lemlib::Pose GOAL_R = lemlib::Pose(48, 48, -180);
 
     const lemlib::Pose LOADER_BR_WAY = lemlib::Pose(48, 17, 90);

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "commands/EventLoop.h"
 #include "Subsystems.h"
 #include "pros/adi.hpp"
@@ -15,7 +17,7 @@ class MatchLoad : public Subsystems {
     void toggle();
 
   private:
-  static constexpr int DEFAULT_PISTON_PORT = 'G';
+  static constexpr int DEFAULT_PISTON_PORT = 'F';
 
   bool isRetracted;
 

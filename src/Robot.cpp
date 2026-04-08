@@ -38,5 +38,6 @@ void Robot::update() {
     // Update drivetrain
     int throttle = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
     int turn = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X) * 0.8;
+    // int turn = 0;
     chassis.arcade(throttle, turn);
 }

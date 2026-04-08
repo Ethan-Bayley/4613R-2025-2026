@@ -513,7 +513,7 @@ class Chassis {
          * chassis.turnToPoint(7.5, 7.5, 2000, {.minSpeed = 60, .earlyExitRange = 5});
          * @endcode
          */
-        void turnToPoint(float x, float y, int timeout, TurnToPointParams params = {}, bool async = true);
+        void turnToPoint(float x, float y, int timeout, TurnToPointParams params = {}, bool async = false);
         /**
          * @brief Turn the chassis so it is facing the target heading
          *
@@ -617,7 +617,7 @@ class Chassis {
          * @endcode
          */
         void swingToPoint(float x, float y, DriveSide lockedSide, int timeout, SwingToPointParams params = {},
-                          bool async = true);
+                          bool async = false);
         /**
          * @brief Move the chassis towards the target pose
          *
@@ -651,7 +651,7 @@ class Chassis {
          * chassis.moveToPose(0, 0, 0, 4000, {.lead = 0.3});
          * @endcode
          */
-        void moveToPose(float x, float y, float theta, int timeout, MoveToPoseParams params = {}, bool async = true);
+        void moveToPose(float x, float y, float theta, int timeout, MoveToPoseParams params = {}, bool async = false);
         /**
          * @brief Move the chassis towards a target point
          *
@@ -679,7 +679,7 @@ class Chassis {
          * chassis.moveToPoint(7.5, 7.5, 4000, {.minSpeed = 60, .earlyExitRange = 5});
          * @endcode
          */
-        void moveToPoint(float x, float y, int timeout, MoveToPointParams params = {}, bool async = true);
+        void moveToPoint(float x, float y, int timeout, MoveToPointParams params = {}, bool async = false);
         /**
          * @brief Move the chassis along a path
          *
