@@ -17,7 +17,8 @@ public:
     SCORE_LONG,
     HOOD_RAISED,
     SCORE_LONG_NO_COLOUR,
-    INTAKE_PREROLLER
+    INTAKE_PREROLLER,
+    MIDDLE_GOAL_RECOVER
   };
 
   enum class Colour { RED, BLUE, NONE };
@@ -37,6 +38,7 @@ public:
   void scoreLow();
   void scoreLongNoColour();
   void intakePreroller();
+  void middleGoalRecover();
   
   void hoodRaised();
   void scoreLong();

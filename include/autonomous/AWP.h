@@ -56,7 +56,7 @@ public:
 
     passthrough->intake();
 
-    chassis.moveToPoint(STACK_RR.x, STACK_RR.y, 1000, {.minSpeed = 80, .earlyExitRange = 10});
+    chassis.moveToPoint(STACK_RR.x, STACK_RR.y, 1000);
 
     matchLoad->extend();
 
@@ -67,7 +67,7 @@ public:
     //   matchLoad->retract();
     // });
     chassis.swingToPoint(
-        STACK_MIDPOINT.x, STACK_MIDPOINT.y, lemlib::DriveSide::RIGHT, 500,
+        STACK_B.x, STACK_B.y, lemlib::DriveSide::RIGHT, 500,
         {.direction = lemlib::AngularDirection::CCW_COUNTERCLOCKWISE});
 
 
@@ -77,23 +77,21 @@ public:
       matchLoad->extend();
     });
 
-    chassis.moveToPoint(STACK_MIDPOINT.x, STACK_MIDPOINT.y, 1000, {.minSpeed = 80, .earlyExitRange = 8});
-
     chassis.moveToPoint(STACK_B.x, STACK_B.y, 1000);
-    chassis.moveToPoint(STACK_B.x+3, STACK_B.y, 250);
+    chassis.moveToPoint(STACK_B.x+5, STACK_B.y, 250, {.forwards = false});
 
     chassis.turnToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y, TIMEOUT_SUPER_SHORT,
                         {.forwards = false});
     chassis.moveToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y, 750,
                         {.forwards = false, .maxSpeed = 75});
     passthrough->scoreMiddle();
-
-    pros::delay(1000);
+    pros::delay(500);
+    
+    passthrough->middleGoalRecover();
 
     chassis.moveToPoint(LOADER_BL_WAY.x, LOADER_BL_WAY.y, 1250, {.minSpeed = 100}, true);
 
-    passthrough->outtake();
-    pros::delay(500);
+    pros::delay(750);
 
     passthrough->intake();
 
@@ -139,8 +137,8 @@ private:
   
   const lemlib::Pose STACK_MIDPOINT{0, 45, -135};
 
-  const lemlib::Pose STACK_B{-23.5, 42, -90};
-  const lemlib::Pose GOAL_MIDDLE{0, 61, -135};
+  const lemlib::Pose STACK_B{-23.5, 43, -90};
+  const lemlib::Pose GOAL_MIDDLE{0, 60, -135};
 
   const lemlib::Pose GOAL_R = lemlib::Pose(50, 48, -180);
   const lemlib::Pose GOAL_L = lemlib::Pose(-38, 47, -180);
