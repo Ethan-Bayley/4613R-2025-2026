@@ -24,7 +24,7 @@ Robot robot(controller);
 void initialize() {
   pros::lcd::initialize();
 
-  imu.reset(true); // blocks until IMU finishes calibrating (~3 seconds)
+  imu.reset(); // blocks until IMU finishes calibrating (~3 seconds)
   pros::lcd::print(0, "IMU done: %.2f", imu.get_heading());
 
   chassis.calibrate(); // starts LemLib odometry task
@@ -54,18 +54,18 @@ void disabled() {}
 
 void competition_initialize() {}
 
-void autonomous() {}
+void autonomous() {
+  uint32_t start = pros::millis();
+  robot.runAuto<AWP>(robot.getSubsystem<Passthrough>(),
+                     robot.getSubsystem<MatchLoad>());
+              controller.set_text(1, 1, std::to_string((pros::millis() - start)/1000));
+}
 
 void opcontrol() {
-  uint32_t start = pros::millis();
-    pros::Task update([&]() {
-      while (true) {
-        robot.update();
-        // delay to save resources
-        pros::delay(20);
-      }
-    });
-    robot.runAuto<AWP>(robot.getSubsystem<Passthrough>(),
-                       robot.getSubsystem<MatchLoad>());
-              controller.set_text(1, 1, std::to_string((pros::millis() - start)/1000));
+  pros::Task screen_task([&]() {
+    while (true) {
+      robot.update();
+      pros::delay(20);
+    }
+  });
 }

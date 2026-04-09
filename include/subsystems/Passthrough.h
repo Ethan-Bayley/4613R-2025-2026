@@ -48,9 +48,9 @@ public:
   int getColourSorting();
 
 private:
-  static constexpr int PREROLLER_MOTOR_PORT = -3;
+  static constexpr int PREROLLER_MOTOR_PORT = -2;
   static constexpr int MIDDLE_MOTOR_PORT = -9;
-  static constexpr int TOP_MOTOR_PORT = 2;
+  static constexpr int TOP_MOTOR_PORT = 3;
   static constexpr int HOOD_PORT = 'H';
   static constexpr int DISTANCE_PORT = 7;
   static constexpr int OPTICAL_PORT = 6;
@@ -83,6 +83,7 @@ private:
   Colour currentTeam = Colour::RED;
 
   // Stall tracking (0 = not stalling)
+  uint32_t middlePulseStart = 0;
   uint32_t prerollerStallStart = 0;
   uint32_t middleStallStart = 0;
   uint32_t topStallStart = 0;
@@ -93,7 +94,7 @@ private:
                  uint32_t &stallStart);
   void lockMotor(pros::Motor &motor, int voltage, int stallMa,
                  uint32_t &stallStart);
-  void pulseMotor(pros::Motor &motor, int voltage, int stallMa,
-                  uint32_t &stallStart);
+  void pulseMotor(pros::Motor &motor, int voltage, uint32_t &stallStart);
+                  
   bool isWrongColour();
 };

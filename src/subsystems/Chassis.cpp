@@ -4,7 +4,7 @@
 pros::MotorGroup left_mg({-11, -12, 14}, pros::MotorGearset::blue);
 pros::MotorGroup right_mg({19, 18, -17}, pros::MotorGearset::blue);
 
-pros::Imu imu(8);
+pros::Imu imu(7);
 // pros::Rotation odometry(15);
 // pros::Rotation odometryH(19);
 
