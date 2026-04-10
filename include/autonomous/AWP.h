@@ -45,8 +45,8 @@ public:
     chassis.moveToPoint(GOAL_R.x, GOAL_R.y, 1500,
                         {.forwards = false, .maxSpeed = 75}, true);
 
-    pros::delay(1250);
-    passthrough->scoreLongNoColour();
+    pros::delay(1000);
+    passthrough->scoreLong();
     pros::delay(1000);
     matchLoad->retract();
 
@@ -73,7 +73,7 @@ public:
 
     matchLoad->retract();
     pros::Task retractMatchloadTask([&]() {
-      pros::delay(850);
+      pros::delay(250);
       matchLoad->extend();
     });
 
@@ -85,13 +85,13 @@ public:
     chassis.moveToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y, 750,
                         {.forwards = false, .maxSpeed = 75});
     passthrough->scoreMiddle();
-    pros::delay(500);
+    pros::delay(850);
     
     passthrough->middleGoalRecover();
+    pros::delay(250);
 
     chassis.moveToPoint(LOADER_BL_WAY.x, LOADER_BL_WAY.y, 1250, {.minSpeed = 100}, true);
 
-    pros::delay(750);
 
     passthrough->intake();
 
@@ -102,9 +102,8 @@ public:
 
     passthrough->intake();
     chassis.moveToPoint(GOAL_L.x, GOAL_L.y, 5000,
-                        {.forwards = false, .minSpeed = 127});
+                        {.forwards = false, .minSpeed = 127}, true);
     passthrough->scoreLong();
-    pros::delay(1000);
   }
 
 private:
@@ -138,16 +137,16 @@ private:
   const lemlib::Pose STACK_MIDPOINT{0, 45, -135};
 
   const lemlib::Pose STACK_B{-23.5, 43, -90};
-  const lemlib::Pose GOAL_MIDDLE{0, 60, -135};
+  const lemlib::Pose GOAL_MIDDLE{-5, 60, -135};
 
-  const lemlib::Pose GOAL_R = lemlib::Pose(50, 48, -180);
-  const lemlib::Pose GOAL_L = lemlib::Pose(-38, 47, -180);
+  const lemlib::Pose GOAL_R = lemlib::Pose(48, 48, -180);
+  const lemlib::Pose GOAL_L = lemlib::Pose(-36, 47, -180);
 
   const lemlib::Pose LOADER_BR_WAY = lemlib::Pose(48, 24, 90);
   const lemlib::Pose LOADER_BR = lemlib::Pose(48, 9.5, -180);
 
-  const lemlib::Pose LOADER_BL_WAY = lemlib::Pose(-38, 24, -160);
-  const lemlib::Pose LOADER_BL = lemlib::Pose(-38, 6, 180);
+  const lemlib::Pose LOADER_BL_WAY = lemlib::Pose(-34, 24, -160);
+  const lemlib::Pose LOADER_BL = lemlib::Pose(-34, 6, 180);
 
   const lemlib::Pose HIT_LEFT = lemlib::Pose(-52, 38, -180);
   const lemlib::Pose HIT_RIGHT = lemlib::Pose(48, 39, -180);

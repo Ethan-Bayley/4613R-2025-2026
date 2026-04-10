@@ -75,7 +75,7 @@ public:
     matchLoad->retract();
     pros::Task retractMatchloadTask([&]()
                                     {
-      pros::delay(850);
+      pros::delay(750);
       matchLoad->extend(); });
 
     chassis.moveToPoint(STACK_B.x, STACK_B.y, 1000);
@@ -96,11 +96,12 @@ public:
     pros::delay(1000);
 
       chassis.moveToPoint(LOADER_BL_WAY.x, LOADER_BL_WAY.y, 500, {.minSpeed = 100});
-    chassis.turnToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y, TIMEOUT_SUPER_SHORT);
+    chassis.turnToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y, TIMEOUT_SUPER_SHORT, {.forwards = false});
 
     chassis.moveToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y, 1250,
                         {.forwards = false, .maxSpeed = 75});
     passthrough->scoreMiddle();
+    pros::delay(1000);
   }
 
 private:
@@ -134,7 +135,7 @@ private:
   const lemlib::Pose STACK_MIDPOINT{0, 45, -135};
 
   const lemlib::Pose STACK_B{-23.5, 43, -90};
-  const lemlib::Pose GOAL_MIDDLE{0, 60, -135};
+  const lemlib::Pose GOAL_MIDDLE{6, 63, -135};
 
   const lemlib::Pose GOAL_R = lemlib::Pose(50, 48, -180);
   const lemlib::Pose GOAL_L = lemlib::Pose(-38, 47, -180);

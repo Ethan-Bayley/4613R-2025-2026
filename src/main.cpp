@@ -14,6 +14,7 @@
 #include "subsystems/Wing.h"
 
 #include "autonomous/AWP.h"
+#include "autonomous/AWP middle last.h"
 
 #include <memory>
 #include <string>
