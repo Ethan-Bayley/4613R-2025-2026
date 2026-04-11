@@ -60,22 +60,22 @@ public:
 
     matchLoad->extend();
 
-    // matchLoad->extend();
+    matchLoad->extend();
 
-    // pros::Task retractMatchloadTask([&]() {
-    //   pros::delay(500);
-    //   matchLoad->retract();
-    // });
+    pros::Task retractMatchloadTask([&]() {
+      pros::delay(500);
+      matchLoad->retract();
+    });
     chassis.swingToPoint(
         STACK_B.x, STACK_B.y, lemlib::DriveSide::RIGHT, 500,
         {.direction = lemlib::AngularDirection::CCW_COUNTERCLOCKWISE});
 
 
     matchLoad->retract();
-    pros::Task retractMatchloadTask([&]() {
-      pros::delay(250);
-      matchLoad->extend();
-    });
+    // pros::Task retractMatchloadTask([&]() {
+    //   pros::delay(250);
+    //   matchLoad->extend();
+    // });
 
     chassis.moveToPoint(STACK_B.x, STACK_B.y, 1000);
     chassis.moveToPoint(STACK_B.x+5, STACK_B.y, 250, {.forwards = false});
@@ -92,7 +92,7 @@ public:
 
     chassis.moveToPoint(LOADER_BL_WAY.x, LOADER_BL_WAY.y, 1250, {.minSpeed = 100}, true);
 
-
+    matchLoad->extend();
     passthrough->intake();
 
 
@@ -137,16 +137,17 @@ private:
   const lemlib::Pose STACK_MIDPOINT{0, 45, -135};
 
   const lemlib::Pose STACK_B{-23.5, 43, -90};
-  const lemlib::Pose GOAL_MIDDLE{-5, 60, -135};
+  const lemlib::Pose GOAL_MIDDLE{-1, 63, -135};
+  //x went from 6 to -6
 
-  const lemlib::Pose GOAL_R = lemlib::Pose(48, 48, -180);
-  const lemlib::Pose GOAL_L = lemlib::Pose(-36, 47, -180);
+  const lemlib::Pose GOAL_R = lemlib::Pose(50, 48, -180);
+  const lemlib::Pose GOAL_L = lemlib::Pose(-40, 47, -180);
 
   const lemlib::Pose LOADER_BR_WAY = lemlib::Pose(48, 24, 90);
   const lemlib::Pose LOADER_BR = lemlib::Pose(48, 9.5, -180);
 
   const lemlib::Pose LOADER_BL_WAY = lemlib::Pose(-34, 24, -160);
-  const lemlib::Pose LOADER_BL = lemlib::Pose(-34, 6, 180);
+  const lemlib::Pose LOADER_BL = lemlib::Pose(-40, 6, 180);
 
   const lemlib::Pose HIT_LEFT = lemlib::Pose(-52, 38, -180);
   const lemlib::Pose HIT_RIGHT = lemlib::Pose(48, 39, -180);
