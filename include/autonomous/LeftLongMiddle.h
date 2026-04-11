@@ -7,12 +7,12 @@
 
 
 
-class LeftLongMiddle : public Autonomous {
+class ChampsLeftLongMiddle : public Autonomous {
     Passthrough *passthrough;
     MatchLoad *matchload;
 
 public: 
-    LeftLongMiddle(Passthrough *pst, Matchload *ml)
+    ChampsLeftLongMiddle(Passthrough *pst, MatchLoad *ml)
         : passthrough(pst), matchload(ml) {}
 
     void run() override {
@@ -26,44 +26,41 @@ public:
         chassis.setPose(STARTING_POS_LONG_PUSH);
 
         passthrough->hoodRaised();
+        passthrough->intake();
 
         chassis.moveToPoint(STACK_LL.x, STACK_LL.y, TIMEOUT);
         chassis.moveToPoint(UNDER_GOAL_L.x, UNDER_GOAL_L.y, 1500);
 	    pros::delay(1000);
-        
-        chassis.moveToPoint(GOAL_L_WAY.x, GOAL_L_WAY.y, TIMEOUT_SHORT);
 
-        chassis.moveToPoint(LOADER_BL_WAY.x, LOADER_BL_WAY.y, TIMEOUT_SHORT);
+        chassis.moveToPoint(GOAL_L_WAY.x, GOAL_L_WAY.y, 1500,
+                        {.forwards = false});
+
+
+        chassis.moveToPoint(LOADER_BL_WAY.x, LOADER_BL_WAY.y, 1500,
+                        {.forwards = false, .maxSpeed = 75}, true);
+
+
         chassis.turnToPoint(GOAL_L.x, GOAL_L.y, TIMEOUT_SUPER_SHORT);
         chassis.moveToPoint(GOAL_L.x, GOAL_L.y, TIMEOUT_SHORT);
+
+        passthrough->scoreLong();
+        pros::delay(2000);
+        matchload->extend();
+        passthrough->intake();
+
         chassis.moveToPoint(LOADER_BL.x, LOADER_BL.y, TIMEOUT_SHORT);
         pros::delay(1000);
         
         chassis.moveToPoint(LOADER_BL_WAY.x, LOADER_BL_WAY.y, TIMEOUT_SUPER_SHORT);
         chassis.turnToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y, TIMEOUT_SUPER_SHORT);
-        chassis.moveToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y, TIMEOUT_SUPER_SHORT);
-        pros::delay(1000);
 
-        chassis.moveToPoint(WING_WAY.x, WING_WAY.y, TIMEOUT_SHORT);
-        chassis.turnToPoint(WING_END.x, WING_END.y, TIMEOUT_SHORT);
-        chassis.moveToPoint(WING_END.x, WING_END.y, TIMEOUT_SHORT);
-
-
-
-        // chassis.moveToPoint(STACK_LL.x, STACK_LL.y, TIMEOUT_SHORT, {.forwards = false, .minSpeed = 80, .earlyExitRange = 8});
-	    // chassis.moveToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y, 200);
-	    // pros::delay(1000);
-	
-        // chassis.moveToPoint(LOADER_BL_WAY.x, LOADER_BL_WAY.y, TIMEOUT_SHORT);
-
-        // chassis.turnToHeading(180, 900);
-        // chassis.moveToPoint(LOADER_BL.x, LOADER_BL.y, TIMEOUT_SHORT);
-        // chassis.moveToPose(GOAL_L.x, GOAL_L.y, 180, TIMEOUT, {.forwards = false});
+        chassis.moveToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y, TIMEOUT_SUPER_SHORT, 
+                    {.forwards = false, .maxSpeed = 75}, true);
     }
 
 private:
     const lemlib::Pose STARTING_POS_LONG_PUSH{-17, 22, -15};
-    const lemlib::Pose UNDER_GOAL_L = lemlib::Pose(-40, 60, -60);
+    const lemlib::Pose UNDER_GOAL_L = lemlib::Pose(-40, 72, -60);
 
     const lemlib::Pose STACK_LL{-19.5, 48, 135};
 

@@ -15,6 +15,7 @@
 
 #include "autonomous/AWP.h"
 #include "autonomous/AWP middle last.h"
+#include "autonomous/LeftLongMiddle.h"
 
 #include <memory>
 #include <string>
@@ -57,7 +58,7 @@ void competition_initialize() {}
 
 void autonomous() {
   uint32_t start = pros::millis();
-  robot.runAuto<AWP>(robot.getSubsystem<Passthrough>(),
+  robot.runAuto<ChampsLeftLongMiddle>(robot.getSubsystem<Passthrough>(),
                      robot.getSubsystem<MatchLoad>());
               controller.set_text(1, 1, std::to_string((pros::millis() - start)/1000));
 }

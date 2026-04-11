@@ -137,11 +137,11 @@ private:
   const lemlib::Pose STACK_MIDPOINT{0, 45, -135};
 
   const lemlib::Pose STACK_B{-23.5, 43, -90};
-  const lemlib::Pose GOAL_MIDDLE{-1, 63, -135};
+  const lemlib::Pose GOAL_MIDDLE{-6, 60, -135};
   //x went from 6 to -6
 
   const lemlib::Pose GOAL_R = lemlib::Pose(50, 48, -180);
-  const lemlib::Pose GOAL_L = lemlib::Pose(-40, 47, -180);
+  const lemlib::Pose GOAL_L = lemlib::Pose(-43, 47, -180);
 
   const lemlib::Pose LOADER_BR_WAY = lemlib::Pose(48, 24, 90);
   const lemlib::Pose LOADER_BR = lemlib::Pose(48, 9.5, -180);
