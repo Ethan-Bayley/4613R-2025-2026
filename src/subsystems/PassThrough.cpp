@@ -13,13 +13,13 @@ Passthrough::Passthrough()
     : prerollerMotor(PREROLLER_MOTOR_PORT, pros::MotorGearset::blue),
       middleMotor(MIDDLE_MOTOR_PORT, pros::MotorGearset::blue),
       topMotor(TOP_MOTOR_PORT, pros::MotorGearset::blue),
-      hood(HOOD_PORT, false), distance(DISTANCE_PORT), optical(OPTICAL_PORT) {}
+      hood(HOOD_PORT, true, true), distance(DISTANCE_PORT), optical(OPTICAL_PORT) {}
 
 Passthrough::Passthrough(int prerollerPort, int middlePort, int topPort,
                          int hoodPort, int distancePort, int opticalPort)
     : prerollerMotor(prerollerPort, pros::MotorGearset::blue),
       middleMotor(middlePort, pros::MotorGearset::blue),
-      topMotor(topPort, pros::MotorGearset::blue), hood(hoodPort, false),
+      topMotor(topPort, pros::MotorGearset::blue), hood(hoodPort, true, true),
       distance(DISTANCE_PORT), optical(OPTICAL_PORT) {}
 
 // ── Setup

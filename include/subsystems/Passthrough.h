@@ -53,7 +53,7 @@ private:
   static constexpr int PREROLLER_MOTOR_PORT = -2;
   static constexpr int MIDDLE_MOTOR_PORT = -9;
   static constexpr int TOP_MOTOR_PORT = 3;
-  static constexpr int HOOD_PORT = 'H';
+  static constexpr int HOOD_PORT = 'D';
   static constexpr int DISTANCE_PORT = 7;
   static constexpr int OPTICAL_PORT = 6;
 

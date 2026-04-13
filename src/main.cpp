@@ -3,6 +3,7 @@
 #include "brainScreen.h"
 #include "commands/EventLoop.h"
 #include "lemlib/api.hpp" // IWYU pragma: keep
+#include "pros/adi.hpp"
 #include "pros/imu.hpp"
 #include "pros/misc.h"
 #include "pros/rtos.hpp"

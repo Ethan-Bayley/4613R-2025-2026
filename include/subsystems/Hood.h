@@ -17,7 +17,7 @@ class Hood : public Subsystems {
     void toggle();
 
   private:
-  static constexpr int DEFAULT_PISTON_PORT = 'H';
+  static constexpr int DEFAULT_PISTON_PORT = 'D';
 
   bool isRetracted;
 

@@ -1,13 +1,14 @@
 #include "subsystems/Hood.h"
 #include "commands/ButtonCommand.h"
+#include "pros/adi.hpp"
 #include <memory>
 
-Hood::Hood() : piston(DEFAULT_PISTON_PORT, false),
+Hood::Hood() : piston(DEFAULT_PISTON_PORT, false, false),
                          isRetracted(false)
 {
 }
 
-Hood::Hood(int pistonPort) : piston(pistonPort, false),
+Hood::Hood(int pistonPort) : piston(pistonPort, false, false),
                                                          isRetracted(false)
 {
 }
@@ -17,7 +18,7 @@ void Hood::registerHandlers(EventLoop &eventLoop)
   eventLoop.registerCommand(
     std::unique_ptr<Command>(new ButtonCommand(
       eventLoop.controller,
-      pros::E_CONTROLLER_DIGITAL_DOWN,
+      pros::E_CONTROLLER_DIGITAL_LEFT,
       [this]() { toggle(); }
     ))
   );
