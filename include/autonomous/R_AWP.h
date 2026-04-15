@@ -2,21 +2,24 @@
 
 #include "autonomous/Autonomous.h"
 #include "lemlib/chassis/chassis.hpp"
-#include "pros/llemu.hpp"
-#include "pros/rtos.hpp"
+
 #include "subsystems/Chassis.h"
-#include "subsystems/Matchload.h"
+#include "subsystems/MatchLoad.h"
 #include "subsystems/Passthrough.h"
 #include "subsystems/Wing.h"
+#include "subsystems/MidDescore.h"
 
-class AWP : public Autonomous {
+class R_AWP : public Autonomous
+{
   Passthrough *passthrough;
   MatchLoad *matchLoad;
   Wing *wing;
+  MidDescore *midDescore;
 
 public:
-  AWP(Passthrough *pst, MatchLoad *ml, Wing *wg)
-      : passthrough(pst), matchLoad(ml), wing(wg) {}
+  R_AWP(Passthrough *pst, MatchLoad *ml, Wing *wg, MidDescore *md)
+      : passthrough(pst), matchLoad(ml), wing(wg), midDescore(md) {}
+
   void run() override {
     pros::Task passthroughUpdate([&]() {
       while (true) {

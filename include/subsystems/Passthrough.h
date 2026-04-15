@@ -5,9 +5,11 @@
 #include "pros/motors.hpp"
 #include "pros/optical.hpp"
 
-class Passthrough : public Subsystems {
+class Passthrough : public Subsystems
+{
 public:
-  enum class State {
+  enum class State
+  {
     IDLE,
     INTAKE,
     OUTTAKE,
@@ -21,7 +23,12 @@ public:
     MIDDLE_GOAL_RECOVER
   };
 
-  enum class Colour { RED, BLUE, NONE };
+  enum class Colour
+  {
+    RED,
+    BLUE,
+    NONE
+  };
 
   Passthrough();
   Passthrough(int prerollerMotorPort, int middleMotorPort, int topMotorPort,
@@ -39,7 +46,7 @@ public:
   void scoreLongNoColour();
   void intakePreroller();
   void middleGoalRecover();
-  
+
   void hoodRaised();
   void scoreLong();
   void stop();
@@ -48,6 +55,10 @@ public:
   void setTeam(Colour newTeam);
 
   int getColourSorting();
+
+  pros::Motor prerollerMotor;
+  pros::Motor middleMotor;
+  pros::Motor topMotor;
 
 private:
   static constexpr int PREROLLER_MOTOR_PORT = -2;
@@ -68,9 +79,6 @@ private:
   bool colourDetectCooldown = false;
   uint32_t lastDetectTime = 0;
 
-  pros::Motor prerollerMotor;
-  pros::Motor middleMotor;
-  pros::Motor topMotor;
   pros::adi::Pneumatics hood;
   pros::Distance distance;
   pros::Optical optical;
@@ -97,6 +105,6 @@ private:
   void lockMotor(pros::Motor &motor, int voltage, int stallMa,
                  uint32_t &stallStart);
   void pulseMotor(pros::Motor &motor, int voltage, uint32_t &stallStart);
-                  
+
   bool isWrongColour();
 };

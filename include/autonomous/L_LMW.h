@@ -2,29 +2,31 @@
 
 #include "autonomous/Autonomous.h"
 #include "lemlib/chassis/chassis.hpp"
-#include "pros/motors.h"
 #include "subsystems/Chassis.h"
 #include "subsystems/MatchLoad.h"
 #include "subsystems/Passthrough.h"
 #include "subsystems/Wing.h"
-#include <cstdlib>
+#include "subsystems/MidDescore.h"
 
-class ChampsLeftLongMiddle : public Autonomous {
+class L_LMW : public Autonomous
+{
   Passthrough *passthrough;
   MatchLoad *matchload;
   Wing *wing;
+  MidDescore *midDescore;
 
 public:
-  ChampsLeftLongMiddle(Passthrough *pst, MatchLoad *ml, Wing *wg)
-      : passthrough(pst), matchload(ml), wing(wg) {}
+  L_LMW(Passthrough *pst, MatchLoad *ml, Wing *wg, MidDescore *md)
+      : passthrough(pst), matchload(ml), wing(wg), midDescore(md) {}
 
-  void run() override {
-    pros::Task passthroughUpdate([&]() {
+  void run() override
+  {
+    pros::Task passthroughUpdate([&]()
+                                 {
       while (true) {
         passthrough->update();
         pros::delay(20);
-      }
-    });
+      } });
     chassis.setPose(STARTING_POS_LONG_PUSH);
     passthrough->intake();
 
@@ -68,7 +70,6 @@ public:
                         {.forwards = false, .minSpeed = 100}, true);
     pros::delay(1250);
     passthrough->scoreMiddle();
-
 
     chassis.moveToPoint(WING_WAY.x, WING_WAY.y, 1000);
 

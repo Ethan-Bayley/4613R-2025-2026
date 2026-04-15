@@ -251,7 +251,6 @@ void Passthrough::update() {
     }
 
     hood.retract();
-    // hood.extend();
     break;
 
   case State::INTAKE_PREROLLER:
@@ -340,7 +339,6 @@ void Passthrough::update() {
     }
 
     hood.extend();
-    // hood.retract();
     break;
   }
 

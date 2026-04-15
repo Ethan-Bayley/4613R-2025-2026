@@ -1,42 +1,47 @@
 #pragma once
 
 #include "autonomous/Autonomous.h"
-#include "pros/llemu.hpp"
+#include "lemlib/chassis/chassis.hpp"
+
 #include "subsystems/Chassis.h"
+#include "subsystems/MatchLoad.h"
+#include "subsystems/Passthrough.h"
+#include "subsystems/Wing.h"
+#include "subsystems/MidDescore.h"
 
-
-class ChampsRightLong : public Autonomous {
-
+class R_LW : public Autonomous
+{
+    Passthrough *passthrough;
+    MatchLoad *matchLoad;
+    Wing *wing;
+    MidDescore *midDescore;
 
 public:
+    R_LW(Passthrough *pst, MatchLoad *ml, Wing *wg, MidDescore *md)
+        : passthrough(pst), matchLoad(ml), wing(wg), midDescore(md) {}
 
-
-    void run() override {
+    void run() override
+    {
         chassis.setPose(0, 0, 0);
         pros::delay(100);
 
         chassis.setPose(STARTING_POS);
-        
+
         chassis.moveToPoint(LOADER_BR_WAY.x, LOADER_BR_WAY.y, TIMEOUT_SHORT);
         chassis.turnToHeading(-180, TIMEOUT_SUPER_SHORT);
-        
 
         chassis.moveToPoint(LOADER_BR.x, LOADER_BR.y, TIMEOUT_SHORT);
         pros::delay(2100);
         chassis.moveToPoint(GOAL_R.x, GOAL_R.y, TIMEOUT,
-                      {.forwards = false, .maxSpeed = 100});
+                            {.forwards = false, .maxSpeed = 100});
         chassis.moveToPoint(GOAL_QUICK.x, GOAL_QUICK.y, TIMEOUT_SHORT, {.maxSpeed = 80});
         chassis.turnToHeading(45, 900);
         pros::delay(500);
         chassis.moveToPoint(WING_RIGHT.x, WING_RIGHT.y, TIMEOUT_SHORT, {.maxSpeed = 80});
-        
     }
 
-
-
-private: 
+private:
     const lemlib::Pose WING_RIGHT = lemlib::Pose(38, 40, 90);
-
 
     const lemlib::Pose GOAL_QUICK = lemlib::Pose(38, 30, 90);
     const lemlib::Pose STARTING_POS{15.25, 24, 90};
