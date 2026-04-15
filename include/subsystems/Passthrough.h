@@ -59,9 +59,9 @@ private:
 
   uint32_t stateEntryTime = 0;
   // Stall thresholds (mA)
-  static constexpr int PREROLLER_STALL_MA = 2500; // 11W blue motor
-  static constexpr int MIDDLE_STALL_MA = 1200;    // 5.5W 200rpm
-  static constexpr int TOP_STALL_MA = 1200;       // 5.5W 200rpm
+  static constexpr int PREROLLER_STALL_MA = 3500; // 11W blue motor
+  static constexpr int MIDDLE_STALL_MA = 2000;    // 5.5W 200rpm
+  static constexpr int TOP_STALL_MA = 2000;       // 5.5W 200rpm
   static constexpr int STALL_REVERSE_MS = 100;
 
   int wrongBallsQueued = 0;

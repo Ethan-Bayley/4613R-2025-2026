@@ -42,20 +42,21 @@ public:
     chassis.turnToHeading(270, 100, {}, true);
     chassis.moveToPoint(
         STACK_LL.x, STACK_LL.y, TIMEOUT,
-        {.forwards = false, .minSpeed = 80, .earlyExitRange = 8});
+        {.forwards = false, .minSpeed = 127, .earlyExitRange = 8});
 
-    chassis.moveToPoint(GOAL_L_WAY.x, GOAL_L_WAY.y, 1000, {.forwards = false});
+    chassis.moveToPoint(GOAL_L_WAY.x, GOAL_L_WAY.y, 1250, {.forwards = false});
 
     chassis.turnToPoint(GOAL_L.x, GOAL_L.y, 1000, {.forwards = false});
 
-    chassis.moveToPoint(GOAL_L.x, GOAL_L.y, TIMEOUT_SHORT, {.forwards = false});
+    chassis.moveToPoint(GOAL_L.x, GOAL_L.y, 1750, {.forwards = false}, true);
 
+    pros::delay(1000);
     passthrough->scoreLong();
     pros::delay(1000);
 
     passthrough->intake();
 
-    chassis.moveToPoint(LOADER_BL.x, LOADER_BL.y, TIMEOUT_SHORT);
+    chassis.moveToPoint(LOADER_BL.x, LOADER_BL.y, TIMEOUT_SHORT, {.maxSpeed = 80});
     pros::delay(1000);
     matchload->retract();
 
@@ -63,11 +64,11 @@ public:
                         {.forwards = false});
     chassis.turnToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y, TIMEOUT_SUPER_SHORT,
                         {.forwards = false});
-    chassis.moveToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y, 2500,
-                        {.forwards = false, .maxSpeed = 100});
+    chassis.moveToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y, 1750,
+                        {.forwards = false, .minSpeed = 100}, true);
+    pros::delay(1250);
     passthrough->scoreMiddle();
 
-    pros::delay(500);
 
     chassis.moveToPoint(WING_WAY.x, WING_WAY.y, 1000);
 
@@ -90,11 +91,11 @@ private:
 
   const lemlib::Pose STACK_LL{-24, 47, 135};
 
-  const lemlib::Pose LOADER_BL = lemlib::Pose(-44, 14, 180);
+  const lemlib::Pose LOADER_BL = lemlib::Pose(-48, 14, 180);
 
-  const lemlib::Pose GOAL_L_WAY = lemlib::Pose(-45, 24, 0);
-  const lemlib::Pose GOAL_L = lemlib::Pose(-45, 49, -180);
-  const lemlib::Pose GOAL_MIDDLE{-7, 65, -135};
+  const lemlib::Pose GOAL_L_WAY = lemlib::Pose(-48, 24, 0);
+  const lemlib::Pose GOAL_L = lemlib::Pose(-48, 51, -180);
+  const lemlib::Pose GOAL_MIDDLE{-7, 68, -135};
   const lemlib::Pose LOADER_BL_WAY = lemlib::Pose(-44, 25, -90);
 
   const lemlib::Pose WING_WAY = lemlib::Pose(-34, 44, 180);

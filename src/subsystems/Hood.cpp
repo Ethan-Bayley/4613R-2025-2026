@@ -3,25 +3,24 @@
 #include "pros/adi.hpp"
 #include <memory>
 
-Hood::Hood() : piston(DEFAULT_PISTON_PORT, false, false),
-                         isRetracted(false)
+Hood::Hood() : piston(DEFAULT_PISTON_PORT, false)
 {
 }
 
-Hood::Hood(int pistonPort) : piston(pistonPort, false, false),
-                                                         isRetracted(false)
+Hood::Hood(int pistonPort) : piston(pistonPort, false)
 {
 }
+// see passthrough.cpp for changing polarity thing
 
 void Hood::registerHandlers(EventLoop &eventLoop)
 {
-  eventLoop.registerCommand(
-    std::unique_ptr<Command>(new ButtonCommand(
-      eventLoop.controller,
-      pros::E_CONTROLLER_DIGITAL_LEFT,
-      [this]() { toggle(); }
-    ))
-  );
+  // eventLoop.registerCommand(
+  //   std::unique_ptr<Command>(new ButtonCommand(
+  //     eventLoop.controller,
+  //     pros::E_CONTROLLER_DIGITAL_LEFT,
+  //     [this]() { toggle(); }
+  //   ))
+  // );
 }
 
 void Hood::setup()
@@ -29,24 +28,17 @@ void Hood::setup()
   retract();
 }
 
-void Hood::extend()
-{
-  piston.extend();
-  isRetracted = false;
-}
-
 void Hood::toggle()
 {
-  if (isRetracted) {
-    extend();
-  } else {
-    retract();
-  }
+  piston.toggle();
+}
 
+void Hood::extend()
+{
+  piston.retract(); // inverted hardware
 }
 
 void Hood::retract()
 {
-  piston.retract();
-  isRetracted = true;
+  piston.extend(); // inverted hardware
 }

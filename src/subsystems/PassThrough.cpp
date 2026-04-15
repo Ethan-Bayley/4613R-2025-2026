@@ -13,13 +13,14 @@ Passthrough::Passthrough()
     : prerollerMotor(PREROLLER_MOTOR_PORT, pros::MotorGearset::blue),
       middleMotor(MIDDLE_MOTOR_PORT, pros::MotorGearset::blue),
       topMotor(TOP_MOTOR_PORT, pros::MotorGearset::blue),
-      hood(HOOD_PORT, true, true), distance(DISTANCE_PORT), optical(OPTICAL_PORT) {}
+      hood(HOOD_PORT, false), distance(DISTANCE_PORT),
+      optical(OPTICAL_PORT) {}
 
 Passthrough::Passthrough(int prerollerPort, int middlePort, int topPort,
                          int hoodPort, int distancePort, int opticalPort)
     : prerollerMotor(prerollerPort, pros::MotorGearset::blue),
       middleMotor(middlePort, pros::MotorGearset::blue),
-      topMotor(topPort, pros::MotorGearset::blue), hood(hoodPort, true, true),
+      topMotor(topPort, pros::MotorGearset::blue), hood(hoodPort, false),
       distance(DISTANCE_PORT), optical(OPTICAL_PORT) {}
 
 // ── Setup
@@ -215,6 +216,7 @@ void Passthrough::update() {
     moveMotor(middleMotor, 0, MIDDLE_STALL_MA, middleStallStart);
     moveMotor(topMotor, 0, TOP_STALL_MA, topStallStart);
     hood.retract();
+    // hood.extend();
     break;
 
   case State::INTAKE:
@@ -249,6 +251,7 @@ void Passthrough::update() {
     }
 
     hood.retract();
+    // hood.extend();
     break;
 
   case State::INTAKE_PREROLLER:
@@ -319,20 +322,27 @@ void Passthrough::update() {
     moveMotor(topMotor, -12000, TOP_STALL_MA, topStallStart);
     break;
 
-  case State::SCORE_LONG:
-    if (colourSortState == 1) {
-      moveMotor(prerollerMotor, 6000, PREROLLER_STALL_MA, prerollerStallStart);
-      moveMotor(middleMotor, 6000, MIDDLE_STALL_MA, middleStallStart);
-      moveMotor(topMotor, -12000, TOP_STALL_MA, topStallStart);
-    } else {
+  case State::SCORE_LONG: {
+    bool isDelay = (pros::millis() - stateEntryTime) < 100;
+    if (!isDelay) {
+      if (colourSortState == 1) {
+        moveMotor(prerollerMotor, 6000, PREROLLER_STALL_MA,
+                  prerollerStallStart);
+        moveMotor(middleMotor, 6000, MIDDLE_STALL_MA, middleStallStart);
+        moveMotor(topMotor, -12000, TOP_STALL_MA, topStallStart);
+      } else {
 
-      moveMotor(prerollerMotor, 12000, PREROLLER_STALL_MA, prerollerStallStart);
-      moveMotor(middleMotor, 12000, MIDDLE_STALL_MA, middleStallStart);
-      moveMotor(topMotor, 12000, TOP_STALL_MA, topStallStart);
+        moveMotor(prerollerMotor, 12000, PREROLLER_STALL_MA,
+                  prerollerStallStart);
+        moveMotor(middleMotor, 12000, MIDDLE_STALL_MA, middleStallStart);
+        moveMotor(topMotor, 12000, TOP_STALL_MA, topStallStart);
+      }
     }
 
     hood.extend();
+    // hood.retract();
     break;
+  }
 
   case State::SCORE_LONG_NO_COLOUR: {
     hood.extend();

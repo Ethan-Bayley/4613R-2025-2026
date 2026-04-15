@@ -10,7 +10,7 @@
 #include "subsystems/Chassis.h"
 #include "subsystems/Hood.h"
 #include "subsystems/MatchLoad.h"
-#include "subsystems/Matchload.h"
+#include "subsystems/MidDescore.h"
 #include "subsystems/Passthrough.h"
 #include "subsystems/Wing.h"
 
@@ -35,10 +35,11 @@ void initialize() {
   robot.addSubsystem(std::make_unique<Passthrough>());
   robot.addSubsystem(std::make_unique<MatchLoad>());
   robot.addSubsystem(std::make_unique<Wing>());
+  robot.addSubsystem(std::make_unique<MidDescore>());
   robot.setup();
   robot.registerCommands();
 
-  //   drawImage();
+    drawImage();
 
   // pros::Task screen_task([&]() {
   //   while (true) {
@@ -77,19 +78,13 @@ void opcontrol() {
   //   }
   // });
 
-  // pros::Task screen_task([&]() {
-  //   while (true) {
-  //     robot.update();
-  //     pros::delay(20);
-  //   }
-  // });
+  uint32_t start = pros::millis();
+  robot.runAuto<ChampsLeftLongMiddle>(robot.getSubsystem<Passthrough>(),
+                                      robot.getSubsystem<MatchLoad>(), robot.getSubsystem<Wing>());
+  controller.set_text(1, 1, std::to_string((pros::millis() - start) / 1000));
 
   // uint32_t start = pros::millis();
   // robot.runAuto<ChampsLeftLongMiddle>(robot.getSubsystem<Passthrough>(),
   //                                     robot.getSubsystem<MatchLoad>(), robot.getSubsystem<Wing>());
   // controller.set_text(1, 1, std::to_string((pros::millis() - start) / 1000));
-  uint32_t start = pros::millis();
-  robot.runAuto<AWP>(robot.getSubsystem<Passthrough>(),
-                                      robot.getSubsystem<MatchLoad>(), robot.getSubsystem<Wing>());
-  controller.set_text(1, 1, std::to_string((pros::millis() - start) / 1000));
 }

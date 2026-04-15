@@ -19,7 +19,5 @@ class Hood : public Subsystems {
   private:
   static constexpr int DEFAULT_PISTON_PORT = 'D';
 
-  bool isRetracted;
-
   pros::adi::Pneumatics piston;
 };
