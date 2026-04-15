@@ -18,6 +18,7 @@
 #include "autonomous/R_LW.h"
 
 #include "autonomous/R_AWP.h"
+#include "autonomous/R_CSAWP.h"
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 Robot robot(controller);
@@ -80,7 +81,8 @@ void autonomous()
     L_LW,
     R_LMW,
     R_LW,
-    R_AWP
+    R_AWP,
+    R_CSAWP
   };
 
   Auto selectedAuto = Auto::L_LMW;
@@ -101,6 +103,9 @@ void autonomous()
     break;
   case Auto::R_AWP:
     robot.runAuto<R_AWP>(passthrough, matchLoad, wing, midDescore);
+    break;
+  case Auto::R_CSAWP:
+    robot.runAuto<R_CSAWP>(passthrough, matchLoad, wing, midDescore);
     break;
   }
 }

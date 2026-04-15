@@ -46,9 +46,9 @@ public:
         STACK_LL.x, STACK_LL.y, TIMEOUT,
         {.forwards = false, .minSpeed = 127, .earlyExitRange = 8});
 
-    chassis.moveToPoint(GOAL_L_WAY.x, GOAL_L_WAY.y, 1250, {.forwards = false});
+    chassis.moveToPoint(GOAL_L_WAY.x, GOAL_L_WAY.y, 1500, {.forwards = false});
 
-    chassis.turnToPoint(GOAL_L.x, GOAL_L.y, 1000, {.forwards = false});
+    chassis.turnToPoint(GOAL_L.x, GOAL_L.y, 750, {.forwards = false});
 
     chassis.moveToPoint(GOAL_L.x, GOAL_L.y, 1750, {.forwards = false}, true);
 
