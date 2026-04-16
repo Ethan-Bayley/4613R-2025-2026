@@ -27,10 +27,15 @@ void Wing::registerHandlers(EventLoop &eventLoop)
 
 void Wing::toggle()
 {
-  if (piston.is_extended()) {
-    piston.retract();
-  } else {
-    piston.extend();
-  }
+  piston.toggle();
+}
 
+void Wing::extend()
+{
+  piston.retract(); // inverted hardware
+}
+
+void Wing::retract()
+{
+  piston.extend(); // inverted hardware
 }

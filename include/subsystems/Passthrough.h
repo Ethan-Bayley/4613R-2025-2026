@@ -49,6 +49,12 @@ public:
 
   int getColourSorting();
 
+  pros::Motor prerollerMotor;
+  pros::Motor middleMotor;
+  pros::Motor topMotor;
+  
+  Colour currentTeam = Colour::RED;
+
 private:
   static constexpr int PREROLLER_MOTOR_PORT = -2;
   static constexpr int MIDDLE_MOTOR_PORT = -9;
@@ -60,17 +66,14 @@ private:
   uint32_t stateEntryTime = 0;
   // Stall thresholds (mA)
   static constexpr int PREROLLER_STALL_MA = 3500; // 11W blue motor
-  static constexpr int MIDDLE_STALL_MA = 2000;    // 5.5W 200rpm
-  static constexpr int TOP_STALL_MA = 2000;       // 5.5W 200rpm
+  static constexpr int MIDDLE_STALL_MA = 1200;    // 5.5W 200rpm
+  static constexpr int TOP_STALL_MA = 1200;       // 5.5W 200rpm
   static constexpr int STALL_REVERSE_MS = 100;
 
   int wrongBallsQueued = 0;
   bool colourDetectCooldown = false;
   uint32_t lastDetectTime = 0;
 
-  pros::Motor prerollerMotor;
-  pros::Motor middleMotor;
-  pros::Motor topMotor;
   pros::adi::Pneumatics hood;
   pros::Distance distance;
   pros::Optical optical;
@@ -82,7 +85,6 @@ private:
   uint32_t colourSortTime = 0;
 
   State currentState = State::IDLE;
-  Colour currentTeam = Colour::RED;
 
   // Stall tracking (0 = not stalling)
   uint32_t middlePulseStart = 0;

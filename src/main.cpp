@@ -14,24 +14,33 @@
 #include "subsystems/Passthrough.h"
 #include "subsystems/Wing.h"
 
-#include "autonomous/AWP.h"
-#include "autonomous/LeftLongMiddle.h"
+#include "autonomous/R_AWP.h"
+#include "autonomous/R_CAWP.h"
 
+#include "autonomous/R_LMW.h"
+#include "autonomous/R_LMW.h"
+
+#include "autonomous/L_LMW.h"
+
+#include <cstdlib>
 #include <memory>
 #include <string>
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 Robot robot(controller);
 
+double averageVector(std::vector<double> vec) {
+  double sum = 0;
+  for (double num : vec) {
+    sum += num;
+  }
+  return sum / vec.size();
+}
+
 void initialize() {
-  pros::lcd::initialize();
+    pros::lcd::initialize(); // initialize brain screen
 
-  imu.reset(); // blocks until IMU finishes calibrating (~3 seconds)
-  pros::lcd::print(0, "IMU done: %.2f", imu.get_heading());
-
-  chassis.calibrate(); // starts LemLib odometry task
-  pros::lcd::print(1, "Chassis ready");
-
+  chassis.calibrate();
   robot.addSubsystem(std::make_unique<Passthrough>());
   robot.addSubsystem(std::make_unique<MatchLoad>());
   robot.addSubsystem(std::make_unique<Wing>());
@@ -39,18 +48,36 @@ void initialize() {
   robot.setup();
   robot.registerCommands();
 
-    drawImage();
+//   pros::Task controllerScreenTask([&]() {
+//   Passthrough *pass = robot.getSubsystem<Passthrough>();
+//   int tick = 0;
+//   while (true) {
+//     std::string leftTemp =
+//         "L:" + std::to_string((int)averageVector(left_mg.get_temperature_all()));
+//     std::string rightTemp =
+//         "R:" + std::to_string((int)averageVector(right_mg.get_temperature_all()));
+//     std::string prerollerTemp =
+//         "P:" + std::to_string((int)pass->prerollerMotor.get_temperature());
+//     std::string middleTemp =
+//         "M:" + std::to_string((int)pass->middleMotor.get_temperature());
+//     std::string topTemp =
+//         "T:" + std::to_string((int)pass->topMotor.get_temperature());
+//     std::string battStr =
+//         "Bat:" + std::to_string((int)pros::battery::get_capacity()) + "% LMW";
 
-  // pros::Task screen_task([&]() {
-  //   while (true) {
-  //     // print robot location to the brain screen
-  //     pros::lcd::print(0, "X: %f", chassis.getPose().x);         // x
-  //     pros::lcd::print(1, "Y: %f", chassis.getPose().y);         // y
-  //     pros::lcd::print(2, "Theta: %f", chassis.getPose().theta); // heading
-  //     // delay to save resources
-  //     pros::delay(20);
-  //   }
-  // });
+
+//     switch (tick % 3) {
+//       case 0: controller.set_text(0, 0, leftTemp + rightTemp + prerollerTemp + middleTemp + topTemp);   break;
+//       case 1: controller.set_text(1, 0, prerollerTemp + middleTemp + topTemp); break;
+//       case 2: controller.set_text(2, 0, battStr); break;
+//     }
+
+//     tick++;
+//     pros::delay(150); // one row every 150ms, full refresh every 450ms
+//   }
+// });
+
+  // drawImage();
 }
 
 void disabled() {}
@@ -59,8 +86,9 @@ void competition_initialize() {}
 
 void autonomous() {
   uint32_t start = pros::millis();
-  robot.runAuto<AWP>(robot.getSubsystem<Passthrough>(),
-                                      robot.getSubsystem<MatchLoad>(), robot.getSubsystem<Wing>());
+  robot.runAuto<R_AWP>(robot.getSubsystem<Passthrough>(),
+                       robot.getSubsystem<MatchLoad>(),
+                       robot.getSubsystem<Wing>());
   controller.set_text(1, 1, std::to_string((pros::millis() - start) / 1000));
 }
 
@@ -69,22 +97,35 @@ void opcontrol() {
   // controller.clear();
   // pros::Task screen_task([&]() {
   //   while (true) {
-  //     controller.set_text(1, 1, std::to_string((chassis.getPose().x) / 1000));
-  //     controller.set_text(2, 1, std::to_string((chassis.getPose().y) / 1000));
-  //     controller.set_text(3, 1,
+  //     controller.set_text(1, 1, std::to_string((chassis.getPose().x) /
+  //     1000)); controller.set_text(2, 1, std::to_string((chassis.getPose().y)
+  //     / 1000)); controller.set_text(3, 1,
   //                         std::to_string((chassis.getPose().theta) / 1000));
   //     // delay to save resources
   //     pros::delay(20);
   //   }
   // });
+  bool isTip = false;
 
-  uint32_t start = pros::millis();
-  robot.runAuto<ChampsLeftLongMiddle>(robot.getSubsystem<Passthrough>(),
-                                      robot.getSubsystem<MatchLoad>(), robot.getSubsystem<Wing>());
-  controller.set_text(1, 1, std::to_string((pros::millis() - start) / 1000));
+  while (true) {
+    robot.update();
+    if (std::abs(imu.get_roll()) > 7 && !isTip) {
+      robot.getSubsystem<Wing>()->toggle();
+      isTip = true;
+    } else if (std::abs(imu.get_roll()) < 7) {
+      isTip = false;
+    }
+    pros::delay(20);
+  }
+  // uint32_t start = pros::millis();
+  // robot.runAuto<L_LMW>(robot.getSubsystem<Passthrough>(),
+  //                      robot.getSubsystem<MatchLoad>(),
+  //                      robot.getSubsystem<Wing>());
+  // controller.set_text(1, 1, std::to_string((pros::millis() - start) / 1000));
 
   // uint32_t start = pros::millis();
   // robot.runAuto<ChampsLeftLongMiddle>(robot.getSubsystem<Passthrough>(),
-  //                                     robot.getSubsystem<MatchLoad>(), robot.getSubsystem<Wing>());
+  //                                     robot.getSubsystem<MatchLoad>(),
+  //                                     robot.getSubsystem<Wing>());
   // controller.set_text(1, 1, std::to_string((pros::millis() - start) / 1000));
 }
