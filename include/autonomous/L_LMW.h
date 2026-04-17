@@ -29,8 +29,9 @@ public:
 
     chassis.moveToPoint(BEFORE_UNDER_GOAL_L.x, BEFORE_UNDER_GOAL_L.y, TIMEOUT,
                         {.minSpeed = 80, .earlyExitRange = 4}, true);
-    pros::Task ballsInMatchload([&]() {
-      pros::delay(300);
+
+    pros::Task retractMatchloadTask([this]() {
+      pros::delay(250);
       matchload->extend();
       pros::delay(350);
       matchload->retract();
@@ -98,10 +99,10 @@ private:
   const lemlib::Pose GOAL_MIDDLE{-10, 67, -135};
   const lemlib::Pose LOADER_BL_WAY = lemlib::Pose(-44, 25, -90);
 
-  const lemlib::Pose WING_WAY = lemlib::Pose(-36, 44, 180);
-  const lemlib::Pose WING_MID = lemlib::Pose(-38, 48, 180);
+  const lemlib::Pose WING_WAY = lemlib::Pose(-38, 44, 180);
+  const lemlib::Pose WING_MID = lemlib::Pose(-40, 48, 180);
 
-  const lemlib::Pose WING_END = lemlib::Pose(-41, 67, 180);
+  const lemlib::Pose WING_END = lemlib::Pose(-43, 67, 180);
 
   int TIMEOUT_SUPER_SHORT = 500;
   int TIMEOUT_SHORT = 1000;

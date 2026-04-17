@@ -18,7 +18,7 @@ public:
       : passthrough(pst), matchload(ml), wing(wg) {}
 
   void run() override {
-    pros::Task passthroughUpdate([&]() {
+    pros::Task passthroughUpdate([this]() {
       while (true) {
         passthrough->update();
         pros::delay(20);
@@ -29,7 +29,7 @@ public:
 
     chassis.moveToPoint(BEFORE_UNDER_GOAL_R.x, BEFORE_UNDER_GOAL_R.y, TIMEOUT,
                         {.minSpeed = 80, .earlyExitRange = 4}, true);
-    pros::Task ballsInMatchload([&]() {
+    pros::Task ballsInMatchload([this]() {
       pros::delay(300);
       matchload->extend();
       pros::delay(350);
@@ -37,7 +37,7 @@ public:
     });
 
     chassis.moveToPoint(UNDER_GOAL_R.x, UNDER_GOAL_R.y, 750, {}, true);
-    pros::Task ballsInMatchload1([&]() {
+    pros::Task ballsInMatchload1([this]() {
       pros::delay(500);
       matchload->extend();
     });

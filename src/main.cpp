@@ -18,7 +18,6 @@
 #include "autonomous/R_CAWP.h"
 
 #include "autonomous/R_LMW.h"
-#include "autonomous/R_LMW.h"
 
 #include "autonomous/L_LMW.h"
 
@@ -38,46 +37,61 @@ double averageVector(std::vector<double> vec) {
 }
 
 void initialize() {
-    pros::lcd::initialize(); // initialize brain screen
+  pros::lcd::initialize(); // initialize brain screen
 
   chassis.calibrate();
   robot.addSubsystem(std::make_unique<Passthrough>());
   robot.addSubsystem(std::make_unique<MatchLoad>());
   robot.addSubsystem(std::make_unique<Wing>());
   robot.addSubsystem(std::make_unique<MidDescore>());
+
+  // auto* ml = robot.getSubsystem<MatchLoad>();
+  // auto* md = robot.getSubsystem<MidDescore>();
+  // ml->setRobot(&robot);
+  // md->setRobot(&robot);
+
   robot.setup();
   robot.registerCommands();
 
-//   pros::Task controllerScreenTask([&]() {
-//   Passthrough *pass = robot.getSubsystem<Passthrough>();
-//   int tick = 0;
-//   while (true) {
-//     std::string leftTemp =
-//         "L:" + std::to_string((int)averageVector(left_mg.get_temperature_all()));
-//     std::string rightTemp =
-//         "R:" + std::to_string((int)averageVector(right_mg.get_temperature_all()));
-//     std::string prerollerTemp =
-//         "P:" + std::to_string((int)pass->prerollerMotor.get_temperature());
-//     std::string middleTemp =
-//         "M:" + std::to_string((int)pass->middleMotor.get_temperature());
-//     std::string topTemp =
-//         "T:" + std::to_string((int)pass->topMotor.get_temperature());
-//     std::string battStr =
-//         "Bat:" + std::to_string((int)pros::battery::get_capacity()) + "% LMW";
+  pros::Task controllerScreenTask([&]() {
+    Passthrough *pass = robot.getSubsystem<Passthrough>();
+    int tick = 0;
+    while (true) {
+      std::string leftTemp =
+          "L:" +
+          std::to_string((int)averageVector(left_mg.get_temperature_all()));
+      std::string rightTemp =
+          "R:" +
+          std::to_string((int)averageVector(right_mg.get_temperature_all()));
+      std::string prerollerTemp =
+          "P:" + std::to_string((int)pass->prerollerMotor.get_temperature());
+      std::string middleTemp =
+          "M:" + std::to_string((int)pass->middleMotor.get_temperature());
+      std::string topTemp =
+          "T:" + std::to_string((int)pass->topMotor.get_temperature());
+      std::string battStr =
+          "Bat:" + std::to_string((int)pros::battery::get_capacity()) +
+          "%";
 
+          switch (tick % 3) {
+      case 0:
+        controller.set_text(
+            0, 0, leftTemp + rightTemp + prerollerTemp + middleTemp + topTemp);
+        break;
+      case 1:
+        controller.set_text(1, 0, prerollerTemp + middleTemp + topTemp);
+        break;
+      case 2:
+        controller.set_text(2, 0, battStr);
+        break;
+      }
 
-//     switch (tick % 3) {
-//       case 0: controller.set_text(0, 0, leftTemp + rightTemp + prerollerTemp + middleTemp + topTemp);   break;
-//       case 1: controller.set_text(1, 0, prerollerTemp + middleTemp + topTemp); break;
-//       case 2: controller.set_text(2, 0, battStr); break;
-//     }
+      tick++;
+      pros::delay(150); // one row every 150ms, full refresh every 450ms
+    }
+  });
 
-//     tick++;
-//     pros::delay(150); // one row every 150ms, full refresh every 450ms
-//   }
-// });
-
-  // drawImage();
+  drawImage();
 }
 
 void disabled() {}
@@ -86,10 +100,16 @@ void competition_initialize() {}
 
 void autonomous() {
   uint32_t start = pros::millis();
-  robot.runAuto<R_AWP>(robot.getSubsystem<Passthrough>(),
-                       robot.getSubsystem<MatchLoad>(),
-                       robot.getSubsystem<Wing>());
+  robot.runAuto<
+      // L_LMW
+      // R_LMW
+      R_AWP>(robot.getSubsystem<Passthrough>(), robot.getSubsystem<MatchLoad>(),
+             robot.getSubsystem<Wing>());
   controller.set_text(1, 1, std::to_string((pros::millis() - start) / 1000));
+  /*
+  pros build
+  pros upload --slot 3 --name R_AWP
+  */
 }
 
 void opcontrol() {
@@ -105,16 +125,10 @@ void opcontrol() {
   //     pros::delay(20);
   //   }
   // });
-  bool isTip = false;
+  // bool isTip = false;
 
   while (true) {
     robot.update();
-    if (std::abs(imu.get_roll()) > 7 && !isTip) {
-      robot.getSubsystem<Wing>()->toggle();
-      isTip = true;
-    } else if (std::abs(imu.get_roll()) < 7) {
-      isTip = false;
-    }
     pros::delay(20);
   }
   // uint32_t start = pros::millis();

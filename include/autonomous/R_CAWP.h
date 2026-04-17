@@ -19,7 +19,7 @@ public:
       : passthrough(pst), matchLoad(ml), wing(wg) {}
 
   void run() override {
-    pros::Task passthroughUpdate([&]() {
+    pros::Task passthroughUpdate([this]() {
       while (true) {
         passthrough->update();
         // delay to save resources
@@ -41,7 +41,7 @@ public:
 
     chassis.moveToPoint(LOADER_BR.x, LOADER_BR.y, TIMEOUT_SHORT);
 
-    // pros::Task hoodRaise([&]() {
+    // pros::Task hoodRaise([this]() {
     //   pros::delay(250);
     // });
     chassis.moveToPoint(GOAL_R.x, GOAL_R.y, 1500,

@@ -18,7 +18,7 @@ public:
   R_AWP(Passthrough *pst, MatchLoad *ml, Wing *wg)
       : passthrough(pst), matchLoad(ml), wing(wg) {}
   void run() override {
-    pros::Task passthroughUpdate([&]() {
+    pros::Task passthroughUpdate([this]() {
       while (true) {
         passthrough->update();
         // delay to save resources
@@ -31,17 +31,18 @@ public:
 
     chassis.moveToPoint(PUSH.x, PUSH.y, 750, {.minSpeed = 100});
 
-    chassis.moveToPoint(LOADER_BR_WAY.x, LOADER_BR_WAY.y, 1250,
+    chassis.moveToPoint(LOADER_BR_WAY.x, LOADER_BR_WAY.y, 1400,
                         {.forwards = false});
-    passthrough->intake();
+
     matchLoad->extend();
+    
+    passthrough->intake();
 
     chassis.turnToPoint(LOADER_BR.x, LOADER_BR.y, 600);
-    pros::delay(250);
 
     chassis.moveToPoint(LOADER_BR.x, LOADER_BR.y, TIMEOUT_SHORT);
 
-    // pros::Task hoodRaise([&]() {
+    // pros::Task hoodRaise([this]() {
     //   pros::delay(250);
     // });
     chassis.moveToPoint(GOAL_R.x, GOAL_R.y, 1500,
@@ -58,39 +59,40 @@ public:
 
     passthrough->intake();
 
-    chassis.moveToPoint(STACK_RR.x, STACK_RR.y, 800);
+    chassis.moveToPoint(STACK_RR.x, STACK_RR.y, 800, {.earlyExitRange = 4});
     matchLoad->extend();
 
     chassis.swingToPoint(
         STACK_MIDPOINT.x, STACK_MIDPOINT.y, lemlib::DriveSide::RIGHT, 500,
         {.direction = lemlib::AngularDirection::CCW_COUNTERCLOCKWISE});
-    matchLoad->extend();
+    matchLoad->retract();
 
     chassis.moveToPoint(STACK_MIDPOINT.x, STACK_MIDPOINT.y, 1000,
                         {.minSpeed = 80, .earlyExitRange = 4});
 
     // matchLoad->extend();
 
-    // pros::Task retractMatchloadTask([&]() {
+    // pros::Task retractMatchloadTask([this]() {
     //   pros::delay(500);
     //   matchLoad->retract();
     // });
 
     matchLoad->retract();
-    pros::Task retractMatchloadTask([&]() {
+    pros::Task retractMatchloadTask([this]() {
       pros::delay(500);
       matchLoad->extend();
     });
 
     chassis.moveToPoint(STACK_B.x, STACK_B.y, 1000);
 
+
     // chassis.swingToPoint(
     //     GOAL_MIDDLE.x, GOAL_MIDDLE.y, lemlib::DriveSide::RIGHT, 500,
     //     {.forwards = false,
     //      .direction = lemlib::AngularDirection::CCW_COUNTERCLOCKWISE});
-    chassis.turnToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y, 750, {.forwards = false});
+    chassis.swingToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y, lemlib::DriveSide::RIGHT, 750, {.forwards = false});
 
-    chassis.moveToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y, 1500, {.forwards = false},
+    chassis.moveToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y, 175, {.forwards = false},
                         true);
     // while (true) {
     //   // print robot location to the brain screen
@@ -103,15 +105,11 @@ public:
 
     pros::delay(750);
     passthrough->scoreMiddleSlow();
-    pros::delay(1000);
-
-    chassis.moveToPoint(LOADER_BL_WAY.x, LOADER_BL_WAY.y, 1250, {}, true);
+    pros::delay(1250);
 
     passthrough->intake();
 
-    pros::delay(750);
-
-    passthrough->intake();
+    chassis.moveToPoint(LOADER_BL_WAY.x, LOADER_BL_WAY.y, 1250);
 
     chassis.turnToPoint(LOADER_BL.x, LOADER_BL.y, 750);
     chassis.moveToPoint(LOADER_BL.x, LOADER_BL.y, 1000);
@@ -153,19 +151,19 @@ private:
 
   const lemlib::Pose STACK_RR{19.5, 47, -135};
 
-  const lemlib::Pose STACK_MIDPOINT{0, 39, -135};
+  const lemlib::Pose STACK_MIDPOINT{0, 40, -135};
 
   const lemlib::Pose STACK_B{-23.5, 47, -90};
-  const lemlib::Pose GOAL_MIDDLE{-8, 56, -135};
+  const lemlib::Pose GOAL_MIDDLE{-5, 60, -135};
 
-  const lemlib::Pose GOAL_R = lemlib::Pose(48, 46, -180);
-  const lemlib::Pose GOAL_L = lemlib::Pose(-42, 40, -180);
+  const lemlib::Pose GOAL_R = lemlib::Pose(50, 46, -180);
+  const lemlib::Pose GOAL_L = lemlib::Pose(-44, 40, -180);
 
-  const lemlib::Pose LOADER_BR_WAY = lemlib::Pose(48, 22, 90);
-  const lemlib::Pose LOADER_BR = lemlib::Pose(48, 9.5, -180);
+  const lemlib::Pose LOADER_BR_WAY = lemlib::Pose(50, 22, 90);
+  const lemlib::Pose LOADER_BR = lemlib::Pose(50, 9.5, -180);
 
-  const lemlib::Pose LOADER_BL_WAY = lemlib::Pose(-42, 22, -160);
-  const lemlib::Pose LOADER_BL = lemlib::Pose(-42, 7.5, 180);
+  const lemlib::Pose LOADER_BL_WAY = lemlib::Pose(-44, 22, -160);
+  const lemlib::Pose LOADER_BL = lemlib::Pose(-44, 7.5, 180);
 
   const lemlib::Pose HIT_LEFT = lemlib::Pose(-52, 36, -180);
   const lemlib::Pose HIT_RIGHT = lemlib::Pose(48, 37, -180);
