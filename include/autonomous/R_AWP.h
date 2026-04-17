@@ -92,7 +92,7 @@ public:
     //      .direction = lemlib::AngularDirection::CCW_COUNTERCLOCKWISE});
     chassis.swingToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y, lemlib::DriveSide::RIGHT, 750, {.forwards = false});
 
-    chassis.moveToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y, 175, {.forwards = false},
+    chassis.moveToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y, 2000, {.forwards = false},
                         true);
     // while (true) {
     //   // print robot location to the brain screen
@@ -163,7 +163,7 @@ private:
   const lemlib::Pose LOADER_BR = lemlib::Pose(50, 9.5, -180);
 
   const lemlib::Pose LOADER_BL_WAY = lemlib::Pose(-44, 22, -160);
-  const lemlib::Pose LOADER_BL = lemlib::Pose(-44, 7.5, 180);
+  const lemlib::Pose LOADER_BL = lemlib::Pose(-44, 6.5, 180);
 
   const lemlib::Pose HIT_LEFT = lemlib::Pose(-52, 36, -180);
   const lemlib::Pose HIT_RIGHT = lemlib::Pose(48, 37, -180);

@@ -119,7 +119,7 @@ private:
   const lemlib::Pose STACK_MIDPOINT{0, 40, -135};
 
   const lemlib::Pose STACK_B{-23.5, 41, -90};
-  const lemlib::Pose GOAL_MIDDLE{-10, 67, -135};
+  const lemlib::Pose GOAL_MIDDLE{-10, 64, -135};
 
   const lemlib::Pose GOAL_R = lemlib::Pose(50, 46, -180);
   const lemlib::Pose GOAL_L = lemlib::Pose(-45, 40, -180);
