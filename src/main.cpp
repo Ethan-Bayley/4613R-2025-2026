@@ -52,44 +52,34 @@ void initialize() {
 
   robot.setup();
   robot.registerCommands();
+  Passthrough *pass = robot.getSubsystem<Passthrough>();
 
-  pros::Task controllerScreenTask([&]() {
-    Passthrough *pass = robot.getSubsystem<Passthrough>();
-    int tick = 0;
-    while (true) {
-      std::string leftTemp =
-          "L:" +
-          std::to_string((int)averageVector(left_mg.get_temperature_all()));
-      std::string rightTemp =
-          "R:" +
-          std::to_string((int)averageVector(right_mg.get_temperature_all()));
-      std::string prerollerTemp =
-          "P:" + std::to_string((int)pass->prerollerMotor.get_temperature());
-      std::string middleTemp =
-          "M:" + std::to_string((int)pass->middleMotor.get_temperature());
-      std::string topTemp =
-          "T:" + std::to_string((int)pass->topMotor.get_temperature());
-      std::string battStr =
-          "Bat:" + std::to_string((int)pros::battery::get_capacity()) +
-          "%";
+//   pros::Task controllerScreenTask([pass]() {
+//   int tick = 0;
+//   while (true) {
+//     std::string leftTemp =
+//         "L:" + std::to_string((int)averageVector(left_mg.get_temperature_all()));
+//     std::string rightTemp =
+//         "R:" + std::to_string((int)averageVector(right_mg.get_temperature_all()));
+//     std::string prerollerTemp =
+//         "P:" + std::to_string((int)pass->prerollerMotor.get_temperature());
+//     std::string middleTemp =
+//         "M:" + std::to_string((int)pass->middleMotor.get_temperature());
+//     std::string topTemp =
+//         "T:" + std::to_string((int)pass->topMotor.get_temperature());
+//     std::string battStr =
+//         "Bat:" + std::to_string((int)pros::battery::get_capacity()) + "%";
 
-          switch (tick % 3) {
-      case 0:
-        controller.set_text(
-            0, 0, leftTemp + rightTemp + prerollerTemp + middleTemp + topTemp);
-        break;
-      case 1:
-        controller.set_text(1, 0, prerollerTemp + middleTemp + topTemp);
-        break;
-      case 2:
-        controller.set_text(2, 0, battStr);
-        break;
-      }
+//     switch (tick % 3) {
+//       case 0: controller.set_text(0, 0, leftTemp + " " + rightTemp); break;
+//       case 1: controller.set_text(1, 0, prerollerTemp + " " + middleTemp + " " + topTemp); break;
+//       case 2: controller.set_text(2, 0, battStr); break;
+//     }
 
-      tick++;
-      pros::delay(150); // one row every 150ms, full refresh every 450ms
-    }
-  });
+//     tick++;
+//     pros::delay(150);
+//   }
+// });
 
   drawImage();
 }
@@ -105,10 +95,14 @@ void autonomous() {
       // R_LMW
       R_AWP>(robot.getSubsystem<Passthrough>(), robot.getSubsystem<MatchLoad>(),
              robot.getSubsystem<Wing>());
+  controller.set_text(0, 1, std::to_string((pros::millis() - start) / 1000));
   controller.set_text(1, 1, std::to_string((pros::millis() - start) / 1000));
+  controller.set_text(2, 1, std::to_string((pros::millis() - start) / 1000));
+  controller.set_text(3, 1, std::to_string((pros::millis() - start) / 1000));
+
   /*
   pros build
-  pros upload --slot 3 --name R_AWP
+  pros upload --slot 2 --name L_LMW
   */
 }
 
@@ -127,10 +121,10 @@ void opcontrol() {
   // });
   // bool isTip = false;
 
-  while (true) {
-    robot.update();
-    pros::delay(20);
-  }
+  // while (true) {
+  //   robot.update();
+  //   pros::delay(20);
+  // }
   // uint32_t start = pros::millis();
   // robot.runAuto<L_LMW>(robot.getSubsystem<Passthrough>(),
   //                      robot.getSubsystem<MatchLoad>(),

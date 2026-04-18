@@ -297,9 +297,9 @@ void Passthrough::update() {
       moveMotor(middleMotor, -12000, MIDDLE_STALL_MA, middleStallStart);
       moveMotor(topMotor, -12000, TOP_STALL_MA, topStallStart);
     } else {
-      prerollerMotor.move_voltage(12000);
-      moveMotor(middleMotor, 12000, MIDDLE_STALL_MA, middleStallStart);
-      topMotor.move_voltage(12000 - std::min(int(pros::millis() - stateEntryTime) * 6, 6000));
+      prerollerMotor.move_voltage(6000);
+      moveMotor(middleMotor, 6000, MIDDLE_STALL_MA, middleStallStart);
+      topMotor.move_voltage(-6000);
     }
     hood.retract();
     break;
@@ -347,25 +347,15 @@ void Passthrough::update() {
   }
 
   case State::SCORE_LONG_NO_COLOUR: {
-    bool isDelay = (pros::millis() - stateEntryTime) < 100;
+    bool isDelay = (pros::millis() - stateEntryTime) < 150;
     if (!isDelay) {
-      if (colourSortState == 1) {
-        moveMotor(prerollerMotor, 6000, PREROLLER_STALL_MA,
-                  prerollerStallStart);
-        moveMotor(middleMotor, 6000, MIDDLE_STALL_MA, middleStallStart);
-        moveMotor(topMotor, -12000, TOP_STALL_MA, topStallStart);
-      } else {
-
-        moveMotor(prerollerMotor, 12000, PREROLLER_STALL_MA,
-                  prerollerStallStart);
-        moveMotor(middleMotor, 12000, MIDDLE_STALL_MA, middleStallStart);
-        moveMotor(topMotor, 12000, TOP_STALL_MA, topStallStart);
-      }
+      moveMotor(prerollerMotor, 12000, PREROLLER_STALL_MA, prerollerStallStart);
+      moveMotor(middleMotor, 12000, MIDDLE_STALL_MA, middleStallStart);
+      moveMotor(topMotor, 12000, TOP_STALL_MA, topStallStart);
     } else {
-      moveMotor(prerollerMotor, -12000, PREROLLER_STALL_MA,
-                prerollerStallStart);
-      moveMotor(middleMotor, -12000, MIDDLE_STALL_MA, middleStallStart);
-      moveMotor(topMotor, -12000, TOP_STALL_MA, topStallStart);
+      prerollerMotor.move_voltage(-12000);
+      middleMotor.move_voltage(-12000);
+      topMotor.move_voltage(-12000);
     }
 
     hood.extend();
