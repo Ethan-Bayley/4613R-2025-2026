@@ -258,7 +258,7 @@ void Passthrough::update() {
   case State::INTAKE_PREROLLER:
 
     moveMotor(prerollerMotor, 12000, PREROLLER_STALL_MA, prerollerStallStart);
-    moveMotor(middleMotor, 2000, MIDDLE_STALL_MA, middleStallStart);
+    moveMotor(middleMotor, 0, MIDDLE_STALL_MA, middleStallStart);
     topMotor.move_voltage(0);
     hood.retract();
     break;
@@ -314,7 +314,7 @@ void Passthrough::update() {
   }
 
   case State::SCORE_LOW:
-    moveMotor(prerollerMotor, -3000, PREROLLER_STALL_MA, prerollerStallStart);
+    moveMotor(prerollerMotor, -8000, PREROLLER_STALL_MA, prerollerStallStart);
     moveMotor(middleMotor, -12000, MIDDLE_STALL_MA, middleStallStart);
     moveMotor(topMotor, -12000, TOP_STALL_MA, topStallStart);
     break;

@@ -18,12 +18,6 @@ public:
       : passthrough(pst), matchload(ml), wing(wg) {}
 
   void run() override {
-    pros::Task passthroughUpdate([&]() {
-      while (true) {
-        passthrough->update();
-        pros::delay(20);
-      }
-    });
     chassis.setPose(STARTING_POS_LONG_PUSH);
     passthrough->intake();
 
@@ -51,6 +45,8 @@ public:
 
     chassis.turnToPoint(GOAL_L.x, GOAL_L.y, 500, {.forwards = false});
     chassis.moveToPoint(GOAL_L.x, GOAL_L.y, 1750, {.forwards = false, .maxSpeed = 80}, true);
+    retractMatchloadTask.remove();
+    ballsInMatchload1.remove();
 
     pros::delay(500);
     passthrough->scoreLong();

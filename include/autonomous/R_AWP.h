@@ -18,13 +18,6 @@ public:
   R_AWP(Passthrough *pst, MatchLoad *ml, Wing *wg)
       : passthrough(pst), matchLoad(ml), wing(wg) {}
   void run() override {
-    pros::Task passthroughUpdate([this]() {
-      while (true) {
-        passthrough->update();
-        // delay to save resources
-        pros::delay(20);
-      }
-    });
     chassis.setPose(STARTING_POS);
 
     passthrough->intake();
@@ -83,6 +76,8 @@ public:
     chassis.moveToPoint(STACK_B.x, STACK_B.y, 800);
     chassis.moveToPoint(GOAL_MIDDLE.x - 13, GOAL_MIDDLE.y - 13, 750,
                         {.forwards = false}, true);
+                        
+    retractMatchloadTask.remove();
 
     // chassis.swingToPoint(
     //     GOAL_MIDDLE.x, GOAL_MIDDLE.y, lemlib::DriveSide::RIGHT, 500,
@@ -122,9 +117,6 @@ public:
     pros::delay(1000);
     matchLoad->retract();
     passthrough->stop();
-
-    retractMatchloadTask.remove();
-    passthroughUpdate.remove();
   }
 
 private:
