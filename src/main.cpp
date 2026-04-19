@@ -1,5 +1,6 @@
 #include "main.h"
 #include "Robot.h"
+#include "autonomous/L_LRUSH.h"
 #include "brainScreen.h"
 #include "commands/EventLoop.h"
 #include "lemlib/api.hpp" // IWYU pragma: keep
@@ -15,7 +16,6 @@
 #include "subsystems/Wing.h"
 
 #include "autonomous/R_AWP.h"
-#include "autonomous/R_CAWP.h"
 
 #include "autonomous/R_LMW.h"
 #include "autonomous/R_LW.h"
@@ -103,13 +103,15 @@ void autonomous() {
   });
   uint32_t start = pros::millis();
   robot.runAuto<
-      L_LMW
+      // L_LMW
+      L_LRUSH
       // R_LMW
       // R_AWP
       // R_LW
       // R_LRUSH
       >(robot.getSubsystem<Passthrough>(), robot.getSubsystem<MatchLoad>(),
         robot.getSubsystem<Wing>());
+
   controller.clear();
   controller.set_text(0, 1, std::to_string((pros::millis() - start) / 1000));
   controller.set_text(1, 1, std::to_string((pros::millis() - start) / 1000));
@@ -119,16 +121,16 @@ void autonomous() {
   /*
 
   pros build
-  pros upload --slot 2 --name L_LMW
+  pros upload --slot 4 --name L_LRUSH
 
   Slot:
   1 - R_AWP
-  2 - L_LMW
+  2 - L_LMW ✅
   3 - L_LW
   4 - L_LRUSH
-  5 - R_LMW
-  6 - R_LW
-  7 - R_LRUSH
+  5 - R_LMW ✅
+  6 - R_LW ✅
+  7 - R_LRUSH ✅
 
   */
 }
