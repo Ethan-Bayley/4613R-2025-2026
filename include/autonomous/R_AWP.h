@@ -29,6 +29,8 @@ public:
 
     matchLoad->extend();
 
+    passthrough->intakePreroller();
+
     chassis.turnToPoint(LOADER_BR.x, LOADER_BR.y, 600);
 
     chassis.moveToPoint(LOADER_BR.x, LOADER_BR.y, TIMEOUT_SHORT);
@@ -41,15 +43,15 @@ public:
 
     pros::delay(1000);
     passthrough->scoreLongNoColour();
-    pros::delay(750);
-    passthrough->intake();
+    pros::delay(1000);
     matchLoad->retract();
 
     // END OF RIGHT GOAL
 
     chassis.swingToPoint(STACK_RR.x, STACK_RR.y, lemlib::DriveSide::RIGHT, 500);
+    passthrough->intake();
 
-    chassis.moveToPoint(STACK_RR.x, STACK_RR.y, 800, {.earlyExitRange = 4});
+    chassis.moveToPoint(STACK_RR.x, STACK_RR.y, 800, {.earlyExitRange = 6});
     matchLoad->extend();
 
     chassis.swingToPoint(
@@ -59,6 +61,7 @@ public:
 
     chassis.moveToPoint(STACK_MIDPOINT.x, STACK_MIDPOINT.y, 1000,
                         {.minSpeed = 80, .earlyExitRange = 4});
+      passthrough->intakePreroller();
 
     // matchLoad->extend();
 
@@ -69,7 +72,7 @@ public:
 
     matchLoad->retract();
     pros::Task retractMatchloadTask([this]() {
-      pros::delay(500);
+      pros::delay(400);
       matchLoad->extend();
     });
 
@@ -97,15 +100,18 @@ public:
     //   pros::delay(20);
     // }
 
-    pros::delay(500);
+    pros::delay(300);
     passthrough->scoreMiddleSlow();
-    pros::delay(1500);
+    pros::delay(1250);
+    passthrough->middleGoalRecover();
 
-    passthrough->intake();
 
     chassis.moveToPoint(LOADER_BL_WAY.x, LOADER_BL_WAY.y, 1250);
+    passthrough->intake();
 
     chassis.turnToPoint(LOADER_BL.x, LOADER_BL.y, 750);
+
+      passthrough->intakePreroller();
     chassis.moveToPoint(LOADER_BL.x, LOADER_BL.y, 1000);
 
     chassis.moveToPoint(GOAL_L.x, GOAL_L.y, 1000,
@@ -154,10 +160,10 @@ private:
   const lemlib::Pose GOAL_L = lemlib::Pose(-46, 42, -180);
 
   const lemlib::Pose LOADER_BR_WAY = lemlib::Pose(48, 22, 90);
-  const lemlib::Pose LOADER_BR = lemlib::Pose(50, 9.5, -180);
+  const lemlib::Pose LOADER_BR = lemlib::Pose(50, 8.5, -180);
 
   const lemlib::Pose LOADER_BL_WAY = lemlib::Pose(-44, 22, -160);
-  const lemlib::Pose LOADER_BL = lemlib::Pose(-44, 6.5, 180);
+  const lemlib::Pose LOADER_BL = lemlib::Pose(-44, 4.5, 180);
 
   const lemlib::Pose HIT_LEFT = lemlib::Pose(-52, 36, -180);
   const lemlib::Pose HIT_RIGHT = lemlib::Pose(48, 37, -180);

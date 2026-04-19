@@ -290,7 +290,7 @@ void Passthrough::update() {
   }
 
   case State::SCORE_MIDDLE_SLOW: {
-    bool reversing = (pros::millis() - stateEntryTime) < 350;
+    bool reversing = (pros::millis() - stateEntryTime) < 200;
     if (reversing) {
       moveMotor(prerollerMotor, -12000, PREROLLER_STALL_MA,
                 prerollerStallStart);
@@ -299,7 +299,7 @@ void Passthrough::update() {
     } else {
       prerollerMotor.move_voltage(6000);
       moveMotor(middleMotor, 6000, MIDDLE_STALL_MA, middleStallStart);
-      topMotor.move_voltage(-6000);
+      topMotor.move_voltage(-4000);
     }
     hood.retract();
     break;
