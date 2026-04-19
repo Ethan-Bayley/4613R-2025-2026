@@ -22,6 +22,8 @@
 
 #include "autonomous/L_LMW.h"
 
+#include "autonomous/R_LRUSH.h"
+
 #include <cstdlib>
 #include <memory>
 #include <string>
@@ -104,7 +106,8 @@ void autonomous() {
       // L_LMW
       // R_LMW
       // R_AWP
-      R_LW
+      // R_LW
+      R_LRUSH
       >(robot.getSubsystem<Passthrough>(), robot.getSubsystem<MatchLoad>(),
         robot.getSubsystem<Wing>());
   controller.clear();
@@ -114,8 +117,19 @@ void autonomous() {
   controller.set_text(3, 1, std::to_string((pros::millis() - start) / 1000));
   passthroughUpdate.remove();
   /*
+  
   pros build
-  pros upload --slot 5 --name R_LW
+  pros upload --slot 7 --name R_LRUSH
+
+  Slot:
+  1 - R_AWP
+  2 - L_LMW
+  3 - L_LW
+  4 - L_LRUSH
+  5 - R_LMW
+  6 - R_LW
+  7 - R_LRUSH
+
   */
 }
 
