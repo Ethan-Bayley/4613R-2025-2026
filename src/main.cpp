@@ -103,11 +103,11 @@ void autonomous() {
   });
   uint32_t start = pros::millis();
   robot.runAuto<
-      // L_LMW
+      L_LMW
       // R_LMW
       // R_AWP
       // R_LW
-      R_LRUSH
+      // R_LRUSH
       >(robot.getSubsystem<Passthrough>(), robot.getSubsystem<MatchLoad>(),
         robot.getSubsystem<Wing>());
   controller.clear();
@@ -117,9 +117,9 @@ void autonomous() {
   controller.set_text(3, 1, std::to_string((pros::millis() - start) / 1000));
   passthroughUpdate.remove();
   /*
-  
+
   pros build
-  pros upload --slot 7 --name R_LRUSH
+  pros upload --slot 2 --name L_LMW
 
   Slot:
   1 - R_AWP

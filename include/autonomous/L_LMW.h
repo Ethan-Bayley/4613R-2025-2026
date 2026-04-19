@@ -20,22 +20,27 @@ public:
   void run() override {
     chassis.setPose(STARTING_POS_LONG_PUSH);
     passthrough->intake();
-
-    chassis.moveToPoint(BEFORE_UNDER_GOAL_L.x, BEFORE_UNDER_GOAL_L.y, TIMEOUT,
-                        {.minSpeed = 80, .earlyExitRange = 4}, true);
-
-    pros::Task retractMatchloadTask([this]() {
-      pros::delay(250);
-      matchload->extend();
+    
+    pros::Task ballsInMatchload([this]() {
       pros::delay(350);
+      matchload->extend();
+      pros::delay(300);
       matchload->retract();
     });
 
+    chassis.moveToPoint(STACK_LL.x, STACK_LL.y, TIMEOUT,
+                        {.minSpeed = 127, .earlyExitRange = 8});
+
+    chassis.moveToPoint(BEFORE_UNDER_GOAL_L.x, BEFORE_UNDER_GOAL_L.y, TIMEOUT,
+                        {.minSpeed = 80, .earlyExitRange = 4});
+
+
     chassis.moveToPoint(UNDER_GOAL_L.x, UNDER_GOAL_L.y, 750, {}, true);
-    pros::Task ballsInMatchload1([&]() {
+    pros::Task ballsInMatchload1([this]() {
       pros::delay(300);
       matchload->extend();
     });
+
     chassis.turnToHeading(270, 100, {}, true);
     chassis.moveToPoint(
         STACK_LL.x, STACK_LL.y, TIMEOUT,
@@ -45,8 +50,6 @@ public:
 
     chassis.turnToPoint(GOAL_L.x, GOAL_L.y, 500, {.forwards = false});
     chassis.moveToPoint(GOAL_L.x, GOAL_L.y, 1750, {.forwards = false, .maxSpeed = 80}, true);
-    retractMatchloadTask.remove();
-    ballsInMatchload1.remove();
 
     pros::delay(500);
     passthrough->scoreLong();
@@ -82,7 +85,7 @@ public:
 
 private:
   const lemlib::Pose STARTING_POS_LONG_PUSH{-12.5, 24.5, 0};
-  const lemlib::Pose UNDER_GOAL_L = lemlib::Pose(-44, 62, -60);
+  const lemlib::Pose UNDER_GOAL_L = lemlib::Pose(-43.5, 62, -60);
   const lemlib::Pose BEFORE_UNDER_GOAL_L =
       lemlib::Pose(-24, UNDER_GOAL_L.y - 11, 135);
 
@@ -96,9 +99,9 @@ private:
   const lemlib::Pose LOADER_BL_WAY = lemlib::Pose(-44, 25, -90);
 
   const lemlib::Pose WING_WAY = lemlib::Pose(-38, 44, 180);
-  const lemlib::Pose WING_MID = lemlib::Pose(-40, 48, 180);
+  const lemlib::Pose WING_MID = lemlib::Pose(-39, 48, 180);
 
-  const lemlib::Pose WING_END = lemlib::Pose(-43, 67, 180);
+  const lemlib::Pose WING_END = lemlib::Pose(-41, 67, 180);
 
   int TIMEOUT_SUPER_SHORT = 500;
   int TIMEOUT_SHORT = 1000;

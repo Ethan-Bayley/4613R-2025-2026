@@ -28,11 +28,7 @@ void MatchLoad::extend() {
 void MatchLoad::retract() { piston.retract(); }
 
 void MatchLoad::toggle() {
-  if (piston.is_extended()) {
-    extend();
-  } else {
-    retract();
-  }
+  piston.toggle();
 }
 
 // void MatchLoad::setRobot(Robot *md) { robot = md; }

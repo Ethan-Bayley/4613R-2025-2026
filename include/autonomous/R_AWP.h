@@ -76,8 +76,6 @@ public:
     chassis.moveToPoint(STACK_B.x, STACK_B.y, 800);
     chassis.moveToPoint(GOAL_MIDDLE.x - 13, GOAL_MIDDLE.y - 13, 750,
                         {.forwards = false}, true);
-                        
-    retractMatchloadTask.remove();
 
     // chassis.swingToPoint(
     //     GOAL_MIDDLE.x, GOAL_MIDDLE.y, lemlib::DriveSide::RIGHT, 500,
