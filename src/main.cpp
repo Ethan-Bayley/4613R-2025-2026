@@ -24,6 +24,8 @@
 
 #include "autonomous/R_LRUSH.h"
 
+#include "autonomous/L_LW.h"
+
 #include <cstdlib>
 #include <memory>
 #include <string>
@@ -103,10 +105,11 @@ void autonomous() {
   });
   uint32_t start = pros::millis();
   robot.runAuto<
+      R_AWP
       // L_LMW
-      L_LRUSH
+      // L_LW
+      // L_LRUSH
       // R_LMW
-      // R_AWP
       // R_LW
       // R_LRUSH
       >(robot.getSubsystem<Passthrough>(), robot.getSubsystem<MatchLoad>(),
@@ -121,13 +124,13 @@ void autonomous() {
   /*
 
   pros build
-  pros upload --slot 4 --name L_LRUSH
+  pros upload --slot 1 --name R_AWP
 
   Slot:
   1 - R_AWP
   2 - L_LMW ✅
-  3 - L_LW
-  4 - L_LRUSH
+  3 - L_LW ✅
+  4 - L_LRUSH ✅
   5 - R_LMW ✅
   6 - R_LW ✅
   7 - R_LRUSH ✅
