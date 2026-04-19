@@ -61,7 +61,7 @@ public:
 
     chassis.moveToPoint(STACK_MIDPOINT.x, STACK_MIDPOINT.y, 1000,
                         {.minSpeed = 80, .earlyExitRange = 4});
-      passthrough->intakePreroller();
+    passthrough->intakePreroller();
 
     // matchLoad->extend();
 
@@ -77,7 +77,8 @@ public:
     });
 
     chassis.moveToPoint(STACK_B.x, STACK_B.y, 800);
-    chassis.moveToPoint(GOAL_MIDDLE.x - 13, GOAL_MIDDLE.y - 13, 750,
+    matchLoad->retract();
+    chassis.moveToPoint(GOAL_MIDDLE.x - 13, GOAL_MIDDLE.y - 13, 1000,
                         {.forwards = false}, true);
 
     // chassis.swingToPoint(
@@ -87,7 +88,7 @@ public:
     // chassis.swingToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y,
     // lemlib::DriveSide::RIGHT, 750, {.forwards = false});
 
-    chassis.turnToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y, 750, {.forwards = false});
+    chassis.turnToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y, 1000, {.forwards = false});
 
     chassis.moveToPoint(GOAL_MIDDLE.x, GOAL_MIDDLE.y, 2000, {.forwards = false},
                         true);
@@ -100,18 +101,21 @@ public:
     //   pros::delay(20);
     // }
 
-    pros::delay(300);
+    pros::delay(0);
     passthrough->scoreMiddleSlow();
-    pros::delay(1250);
+    chassis.turnToHeading(-145, 500);
+    chassis.turnToHeading(-125, 500);
+    chassis.turnToHeading(-145, 500);
+    chassis.turnToHeading(-125, 500);
     passthrough->middleGoalRecover();
-
+    matchLoad->extend();
 
     chassis.moveToPoint(LOADER_BL_WAY.x, LOADER_BL_WAY.y, 1250);
     passthrough->intake();
 
     chassis.turnToPoint(LOADER_BL.x, LOADER_BL.y, 750);
 
-      passthrough->intakePreroller();
+    passthrough->intakePreroller();
     chassis.moveToPoint(LOADER_BL.x, LOADER_BL.y, 1000);
 
     chassis.moveToPoint(GOAL_L.x, GOAL_L.y, 1000,

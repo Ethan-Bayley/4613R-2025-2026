@@ -89,13 +89,12 @@ void Passthrough::moveMotor(pros::Motor &motor, int voltage, int stallMa,
                             uint32_t &stallStart) {
   uint32_t now = pros::millis();
 
-  // If currently in a stall reverse, keep reversing until timer expires
   if (stallStart != 0) {
     if ((now - stallStart) < (uint32_t)STALL_REVERSE_MS) {
       motor.move_voltage(-12000);
       return;
     }
-    stallStart = 0; // reverse done, resume normal
+    stallStart = 0;
   }
 
   if (voltage == 0) {
@@ -103,8 +102,10 @@ void Passthrough::moveMotor(pros::Motor &motor, int voltage, int stallMa,
     return;
   }
 
-  // Detect stall: high current AND low velocity
-  bool highCurrent = motor.get_current_draw() > stallMa;
+  // Scale stall threshold proportionally to voltage
+  int scaledStallMa = stallMa * std::abs(voltage) / 12000;
+
+  bool highCurrent = motor.get_current_draw() > scaledStallMa;
   bool lowVelocity = std::abs(motor.get_actual_velocity()) < 10;
 
   if (highCurrent && lowVelocity) {
@@ -120,19 +121,20 @@ void Passthrough::lockMotor(pros::Motor &motor, int voltage, int stallMa,
                             uint32_t &stallStart) {
   uint32_t now = pros::millis();
 
-  // Locked: stay stopped until caller passes voltage=0
   if (stallStart != 0) {
     motor.move_voltage(3000);
     return;
   }
 
   if (voltage == 0) {
-    stallStart = 0; // reset lock so motor can run again next time
+    stallStart = 0;
     motor.move_voltage(3000);
     return;
   }
 
-  bool highCurrent = motor.get_current_draw() > stallMa;
+  int scaledStallMa = stallMa * std::abs(voltage) / 12000;
+
+  bool highCurrent = motor.get_current_draw() > scaledStallMa;
   bool lowVelocity = std::abs(motor.get_actual_velocity()) < 10;
 
   if (highCurrent && lowVelocity) {
@@ -297,8 +299,8 @@ void Passthrough::update() {
       moveMotor(middleMotor, -12000, MIDDLE_STALL_MA, middleStallStart);
       moveMotor(topMotor, -12000, TOP_STALL_MA, topStallStart);
     } else {
-      prerollerMotor.move_voltage(6000);
-      moveMotor(middleMotor, 6000, MIDDLE_STALL_MA, middleStallStart);
+      prerollerMotor.move_voltage(0);
+      middleMotor.move_voltage(8000);
       topMotor.move_voltage(-4000);
     }
     hood.retract();
