@@ -265,6 +265,14 @@ void Passthrough::update() {
     hood.retract();
     break;
 
+  case State::INTAKE_PULSEMIDDLE:
+
+    moveMotor(prerollerMotor, 12000, PREROLLER_STALL_MA, prerollerStallStart);
+    pulseMotor(middleMotor, 12000, middleStallStart);
+    topMotor.move_voltage(0);
+    hood.retract();
+    break;
+
   case State::OUTTAKE:
     // No antistall on outtake -- high current is expected
     prerollerMotor.move_voltage(-12000);
@@ -389,4 +397,5 @@ void Passthrough::scoreLow() { setState(State::SCORE_LOW); }
 void Passthrough::scoreLong() { setState(State::SCORE_LONG); }
 void Passthrough::hoodRaised() { setState(State::HOOD_RAISED); }
 void Passthrough::scoreLongNoColour() { setState(State::SCORE_LONG_NO_COLOUR); }
+void Passthrough::intakePulseMiddle() { setState(State::INTAKE_PULSEMIDDLE); }
 void Passthrough::middleGoalRecover() { setState(State::MIDDLE_GOAL_RECOVER); }
