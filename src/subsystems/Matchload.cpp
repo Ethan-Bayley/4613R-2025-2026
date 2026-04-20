@@ -1,50 +1,34 @@
-#include "subsystems/Matchload.h"
+#include "MatchLoad.h"
 #include "commands/ButtonCommand.h"
+#include "pros/rtos.hpp"
 #include <memory>
 
-MatchLoad::MatchLoad() : piston(DEFAULT_PISTON_PORT, false),
-                         isRetracted(true)
-{
+
+MatchLoad::MatchLoad() : piston(DEFAULT_PISTON_PORT, false) {}
+
+MatchLoad::MatchLoad(int pistonPort) : piston(pistonPort, false) {}
+
+void MatchLoad::registerHandlers(EventLoop &eventLoop) {
+  eventLoop.registerCommand(std::unique_ptr<Command>(
+      new ButtonCommand(eventLoop.controller, pros::E_CONTROLLER_DIGITAL_B,
+                        [this]() { toggle(); })));
 }
 
-MatchLoad::MatchLoad(int pistonPort) : piston(pistonPort, false),
-                                                         isRetracted(true)
-{
+void MatchLoad::setup() {}
+
+void MatchLoad::extend() {
+  // robot->getSubsystem<MidDescore>()->extend();
+  // pros::Task extendMatchLoadTask([this]() {
+  //   pros::delay(250);
+  //   piston.extend();
+  // });
+    piston.extend();
 }
 
-void MatchLoad::registerHandlers(EventLoop &eventLoop)
-{
-  eventLoop.registerCommand(
-    std::unique_ptr<Command>(new ButtonCommand(
-      eventLoop.controller,
-      pros::E_CONTROLLER_DIGITAL_B,
-      [this]() { toggle(); }
-    ))
-  );
+void MatchLoad::retract() { piston.retract(); }
+
+void MatchLoad::toggle() {
+  piston.toggle();
 }
 
-void MatchLoad::setup()
-{
-  retract();
-}
-
-void MatchLoad::extend()
-{
-  piston.extend();
-  isRetracted = false;
-}
-
-void MatchLoad::toggle()
-{
-  if (isRetracted) {
-    extend();
-  } else {
-    retract();
-  }
-}
-
-void MatchLoad::retract()
-{
-  piston.retract();
-  isRetracted = true;
-}
+// void MatchLoad::setRobot(Robot *md) { robot = md; }

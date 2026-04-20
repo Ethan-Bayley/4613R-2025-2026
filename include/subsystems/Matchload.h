@@ -1,25 +1,26 @@
 #pragma once
 
-#include "commands/EventLoop.h"
 #include "Subsystems.h"
+#include "commands/EventLoop.h"
 #include "pros/adi.hpp"
+#include "Robot.h"
 
 class MatchLoad : public Subsystems {
-  public:
-    MatchLoad();
-    MatchLoad(int DEFAULT_PISTON_PORT);
+public:
+  MatchLoad();
+  MatchLoad(int DEFAULT_PISTON_PORT);
 
-    void setup() override;
-    void registerHandlers(EventLoop &eventLoop) override;
+  void setup() override;
+  void registerHandlers(EventLoop &eventLoop) override;
 
-    void extend();
-    void retract();
-    void toggle();
+  void extend();
+  void retract();
+  void toggle();
+  // void setRobot(Robot *md);
 
-  private:
+private:
   static constexpr int DEFAULT_PISTON_PORT = 'G';
-
-  bool isRetracted;
+  // Robot *robot = nullptr;
 
   pros::adi::Pneumatics piston;
 };

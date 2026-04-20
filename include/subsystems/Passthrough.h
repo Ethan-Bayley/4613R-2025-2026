@@ -5,11 +5,9 @@
 #include "pros/motors.hpp"
 #include "pros/optical.hpp"
 
-class Passthrough : public Subsystems
-{
+class Passthrough : public Subsystems {
 public:
-  enum class State
-  {
+  enum class State {
     IDLE,
     INTAKE,
     OUTTAKE,
@@ -20,15 +18,14 @@ public:
     HOOD_RAISED,
     SCORE_LONG_NO_COLOUR,
     INTAKE_PREROLLER,
-    MIDDLE_GOAL_RECOVER
+    MIDDLE_GOAL_RECOVER,
+INTAKE_PULSEMIDDLE,
+SCORE_MIDDLE_SLOW_SLOW,
+TOP_MOTOR_REVERSE,
+SCORE_LONG_DRIVER
   };
 
-  enum class Colour
-  {
-    RED,
-    BLUE,
-    NONE
-  };
+  enum class Colour { RED, BLUE, NONE };
 
   Passthrough();
   Passthrough(int prerollerMotorPort, int middleMotorPort, int topMotorPort,
@@ -46,9 +43,13 @@ public:
   void scoreLongNoColour();
   void intakePreroller();
   void middleGoalRecover();
-
+  void intakePulseMiddle();
   void hoodRaised();
   void scoreLong();
+  void scoreMiddleSlowSlow();
+    void topMotorReverse();
+    void scoreLongDriver();
+
   void stop();
   void setState(State newState);
 
@@ -59,6 +60,8 @@ public:
   pros::Motor prerollerMotor;
   pros::Motor middleMotor;
   pros::Motor topMotor;
+  
+  Colour currentTeam = Colour::RED;
 
 private:
   static constexpr int PREROLLER_MOTOR_PORT = -2;
@@ -71,8 +74,8 @@ private:
   uint32_t stateEntryTime = 0;
   // Stall thresholds (mA)
   static constexpr int PREROLLER_STALL_MA = 3500; // 11W blue motor
-  static constexpr int MIDDLE_STALL_MA = 2000;    // 5.5W 200rpm
-  static constexpr int TOP_STALL_MA = 2000;       // 5.5W 200rpm
+  static constexpr int MIDDLE_STALL_MA = 1200;    // 5.5W 200rpm
+  static constexpr int TOP_STALL_MA = 1200;       // 5.5W 200rpm
   static constexpr int STALL_REVERSE_MS = 100;
 
   int wrongBallsQueued = 0;
@@ -90,7 +93,6 @@ private:
   uint32_t colourSortTime = 0;
 
   State currentState = State::IDLE;
-  Colour currentTeam = Colour::RED;
 
   // Stall tracking (0 = not stalling)
   uint32_t middlePulseStart = 0;
@@ -100,11 +102,11 @@ private:
 
   // Moves a motor at voltage with antistall -- reverses for STALL_REVERSE_MS if
   // jammed
-  void moveMotor(pros::Motor &motor, int voltage, int stallMa,
+  void moveMotor(int time, pros::Motor &motor, int voltage, int stallMa,
                  uint32_t &stallStart);
   void lockMotor(pros::Motor &motor, int voltage, int stallMa,
                  uint32_t &stallStart);
   void pulseMotor(pros::Motor &motor, int voltage, uint32_t &stallStart);
-
+                  
   bool isWrongColour();
 };

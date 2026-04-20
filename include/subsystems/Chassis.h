@@ -1,5 +1,6 @@
 #include "lemlib/chassis/chassis.hpp"
 #include "pros/imu.hpp"
+#include "pros/motor_group.hpp"
 
 extern lemlib::Chassis chassis;
 

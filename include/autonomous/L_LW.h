@@ -2,78 +2,86 @@
 
 #include "autonomous/Autonomous.h"
 #include "lemlib/chassis/chassis.hpp"
-
 #include "subsystems/Chassis.h"
 #include "subsystems/MatchLoad.h"
+#include "subsystems/MidDescore.h"
 #include "subsystems/Passthrough.h"
 #include "subsystems/Wing.h"
-#include "subsystems/MidDescore.h"
 
-class L_LW : public Autonomous
-{
-    Passthrough *passthrough;
-    MatchLoad *matchLoad;
-    Wing *wing;
-    MidDescore *midDescore;
+class L_LW : public Autonomous {
+  Passthrough *passthrough;
+  MatchLoad *matchload;
+  Wing *wing;
 
 public:
-    L_LW(Passthrough *pst, MatchLoad *ml, Wing *wg, MidDescore *md)
-        : passthrough(pst), matchLoad(ml), wing(wg), midDescore(md) {}
+  L_LW(Passthrough *pst, MatchLoad *ml, Wing *wg)
+      : passthrough(pst), matchload(ml), wing(wg) {}
 
-    void run() override
-    {
-        chassis.setPose(0, 0, 0);
-        pros::delay(100);
-        chassis.setPose(STARTING_POS);
+  void run() override {
+    chassis.setPose(STARTING_POS_LONG_PUSH);
+    passthrough->intake();
+    
+    pros::Task ballsInMatchload([this]() {
+      pros::delay(350);
+      matchload->extend();
+    });
 
-        chassis.moveToPoint(LOADER_BL_WAY.x, LOADER_BL_WAY.y, TIMEOUT_SHORT);
-        chassis.turnToHeading(-180, TIMEOUT_SUPER_SHORT);
+    chassis.moveToPoint(STACK_LL.x, STACK_LL.y, 750);
 
-        chassis.moveToPoint(LOADER_BL.x, LOADER_BL.y, TIMEOUT_SHORT);
-        pros::delay(2100);
-        chassis.moveToPoint(GOAL_L.x, GOAL_L.y, TIMEOUT,
-                            {.forwards = false, .maxSpeed = 100});
-        chassis.moveToPoint(GOAL_QUICK.x, GOAL_QUICK.y, TIMEOUT_SHORT, {.maxSpeed = 80});
-        pros::delay(1000);
-        chassis.turnToHeading(-180, 900);
-        chassis.moveToPoint(WING_LEFT.x, WING_LEFT.y, TIMEOUT_SHORT, {.forwards = false, .minSpeed = 80, .earlyExitRange = 8});
-    }
+    chassis.moveToPoint(GOAL_L_WAY.x, GOAL_L_WAY.y, 1625, {.forwards = false});
+
+    chassis.turnToPoint(LOADER_BL.x, LOADER_BL.y, 500);
+
+    passthrough->intakePreroller();
+
+    chassis.moveToPoint(LOADER_BL.x, LOADER_BL.y, 1250, {.maxSpeed = 60});
+
+    chassis.moveToPoint(GOAL_L.x, GOAL_L.y, 750, {.forwards = false, .maxSpeed = 80}, true);
+
+    pros::delay(500);
+    passthrough->scoreLong();
+    pros::delay(1750);
+    passthrough->intake();
+
+    chassis.moveToPoint(LOADER_BL_WAY.x, LOADER_BL_WAY.y, 750);
+    matchload->retract();
+
+    // chassis.moveToPoint(WING_WAY.x, WING_WAY.y, 750, {.forwards = false, .earlyExitRange = 4});
+
+    chassis.turnToHeading(180, 250);
+    chassis.setBrakeMode(pros::motor_brake_mode_e::E_MOTOR_BRAKE_HOLD);
+    chassis.moveToPoint(WING_MID.x, WING_MID.y, 500,
+                        {.forwards = false, .minSpeed = 127, .earlyExitRange = 8});
+    chassis.moveToPoint(WING_END.x, WING_END.y, 1000000000,
+                        {.forwards = false, .maxSpeed = 50});
+  }
 
 private:
-    const lemlib::Pose WING_LEFT = lemlib::Pose(-58, 45, -90);
+  const lemlib::Pose STARTING_POS_LONG_PUSH{-12.5, 24.5, 0};
+  const lemlib::Pose UNDER_GOAL_L = lemlib::Pose(-43.5, 62, -60);
+  const lemlib::Pose BEFORE_UNDER_GOAL_L =
+      lemlib::Pose(-24, UNDER_GOAL_L.y - 11, 135);
 
-    const lemlib::Pose GOAL_QUICK = lemlib::Pose(-58, 31, -90);
+  const lemlib::Pose STACK_LL{-24, 47, 135};
+  const lemlib::Pose LOADER_BL = lemlib::Pose(-44, 10, 180);
 
-    const lemlib::Pose STARTING_POS{-15.25, 24, -90};
+  const lemlib::Pose GOAL_L_WAY = lemlib::Pose(-46, 24, 0);
+  const lemlib::Pose GOAL_L = lemlib::Pose(-46, 45, -180);
+  const lemlib::Pose GOAL_MIDDLE{-10, 67, -135};
+  const lemlib::Pose LOADER_BL_WAY = lemlib::Pose(-36, 25, -90);
 
-    const lemlib::Pose LOADER_BL_WAY = lemlib::Pose(-48, 24, -90);
-    const lemlib::Pose LOADER_BL = lemlib::Pose(-48, 11, -180);
+  const lemlib::Pose WING_WAY = lemlib::Pose(-37, 44, 180);
+  const lemlib::Pose WING_MID = lemlib::Pose(-38, 48, 180);
 
-    const lemlib::Pose STACK_RR{19.5, 48, -135};
-    const lemlib::Pose STACK_B_MIDPOINT{-16, 46, -90};
-    const lemlib::Pose STACK_B{-23.5, 48, -90};
-    const lemlib::Pose GOAL_MIDDLE{-10, 56, -135};
+  const lemlib::Pose WING_END = lemlib::Pose(-41, 67, 180);
 
-    const lemlib::Pose GOAL_L_WAIT{-50, 24, -135};
-    const lemlib::Pose GOAL_L = lemlib::Pose(-47, 47, -180);
-    const lemlib::Pose GOAL_R = lemlib::Pose(48, 48, -180);
-
-    const lemlib::Pose LOADER_BR_WAY = lemlib::Pose(48, 17, 90);
-    const lemlib::Pose LOADER_MID = lemlib::Pose(0, 32, 90);
-    const lemlib::Pose LOADER_BR_WAY1 = lemlib::Pose(49, 30, 160);
-    const lemlib::Pose LOADER_BR = lemlib::Pose(48, 6, 180);
-
-    const lemlib::Pose PARK_WAY = lemlib::Pose(-51, 33, 180);
-    const lemlib::Pose PARK_MID = lemlib::Pose(-3, 33, 90);
-    const lemlib::Pose PARK = lemlib::Pose(-3, 16, 90);
-
-    const lemlib::Pose HIT_LEFT = lemlib::Pose(-52, 38, -180);
-    const lemlib::Pose HIT_RIGHT = lemlib::Pose(48, 39, -180);
-
-    int TIMEOUT_SUPER_SHORT = 500;
-    int TIMEOUT_SHORT = 1000;
-    int TIMEOUT = 2000;
-    int TIMEOUT_LONG = 3000;
-    float MIN_SPEED = 80;
-    float LEAD = 0.8;
+  int TIMEOUT_SUPER_SHORT = 500;
+  int TIMEOUT_SHORT = 1000;
+  int TIMEOUT = 2000;
+  int TIMEOUT_LONG = 3000;
+  float MIN_SPEED = 80;
+  float LEAD = 0.8;
 };
+
+ 
+

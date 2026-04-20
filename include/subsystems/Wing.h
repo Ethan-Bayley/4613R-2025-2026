@@ -13,6 +13,8 @@ class Wing : public Subsystems {
     void registerHandlers(EventLoop &eventLoop) override;
 
     void toggle();
+    void extend();
+    void retract();
 
   private:
   static constexpr int DEFAULT_PISTON_PORT = 'E';

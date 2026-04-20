@@ -35,10 +35,10 @@ void Hood::toggle()
 
 void Hood::extend()
 {
-  piston.retract(); // inverted hardware
+  piston.extend();
 }
 
 void Hood::retract()
 {
-  piston.extend(); // inverted hardware
+  piston.retract();
 }

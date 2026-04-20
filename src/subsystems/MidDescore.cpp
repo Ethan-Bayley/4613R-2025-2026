@@ -16,7 +16,7 @@ void MidDescore::registerHandlers(EventLoop &eventLoop)
   eventLoop.registerCommand(
     std::unique_ptr<Command>(new ButtonCommand(
       eventLoop.controller,
-      pros::E_CONTROLLER_DIGITAL_UP,
+      pros::E_CONTROLLER_DIGITAL_Y,
       [this]() { toggle(); }
     ))
   );
@@ -26,17 +26,23 @@ void MidDescore::setup()
 {
 }
 
-void MidDescore::toggle()
-{
-  piston.toggle();
+void MidDescore::extend() {
+  // robot->getSubsystem<MatchLoad>()->retract();
+  // pros::Task extendMatchLoadTask([this]() {
+  //   pros::delay(250);
+  //   piston.extend();
+  // });
+    piston.extend();
 }
 
-void MidDescore::extend()
-{
-  piston.retract(); // inverted hardware
+void MidDescore::retract() { piston.retract(); }
+
+void MidDescore::toggle() {
+  if (!piston.is_extended()) {
+    extend();
+  } else {
+    retract();
+  }
 }
 
-void MidDescore::retract()
-{
-  piston.extend(); // inverted hardware
-}
+// void MidDescore::setRobot(Robot *md) { robot = md; }
