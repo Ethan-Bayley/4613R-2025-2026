@@ -105,11 +105,11 @@ void autonomous() {
   });
   uint32_t start = pros::millis();
   robot.runAuto<
-      R_AWP
+      // R_AWP
       // L_LMW
       // L_LW
       // L_LRUSH
-      // R_LMW
+      R_LMW
       // R_LW
       // R_LRUSH
       >(robot.getSubsystem<Passthrough>(), robot.getSubsystem<MatchLoad>(),
@@ -124,7 +124,7 @@ void autonomous() {
   /*
 
   pros build
-  pros upload --slot 1 --name R_AWP
+  pros upload --slot 5 --name R_LMW
 
   Slot:
   1 - R_AWP

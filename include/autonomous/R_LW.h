@@ -33,6 +33,8 @@ public:
     
     chassis.turnToPoint(LOADER_BR.x, LOADER_BR.y, 750);
 
+    passthrough->intakePreroller();
+
     chassis.moveToPoint(LOADER_BR.x, LOADER_BR.y, 1625, {.maxSpeed = 80});
 
     chassis.moveToPoint(GOAL_R.x, GOAL_R.y, 1750,
@@ -48,7 +50,7 @@ public:
     // chassis.moveToPoint(WING_MID.x, WING_MID.y, 500, {.forwards = false, .minSpeed = 80, .earlyExitRange = 8}, true);
 
     chassis.moveToPoint(WING_END.x, WING_END.y, 10000000,
-                        {.forwards = false, .minSpeed = 50});
+                        {.forwards = false, .maxSpeed = 50});
 
     //   pros::delay(20);
     // }

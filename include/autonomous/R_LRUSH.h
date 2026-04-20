@@ -46,7 +46,7 @@ public:
     // chassis.moveToPoint(WING_MID.x, WING_MID.y, 500, {.forwards = false, .minSpeed = 80, .earlyExitRange = 8}, true);
 
     chassis.moveToPoint(WING_END.x, WING_END.y, 10000000,
-                        {.forwards = false, .minSpeed = 80});
+                        {.forwards = false, .maxSpeed = 80});
 
     //   pros::delay(20);
     // }

@@ -19,7 +19,10 @@ public:
     SCORE_LONG_NO_COLOUR,
     INTAKE_PREROLLER,
     MIDDLE_GOAL_RECOVER,
-INTAKE_PULSEMIDDLE
+INTAKE_PULSEMIDDLE,
+SCORE_MIDDLE_SLOW_SLOW,
+TOP_MOTOR_REVERSE,
+SCORE_LONG_DRIVER
   };
 
   enum class Colour { RED, BLUE, NONE };
@@ -43,6 +46,10 @@ INTAKE_PULSEMIDDLE
   void intakePulseMiddle();
   void hoodRaised();
   void scoreLong();
+  void scoreMiddleSlowSlow();
+    void topMotorReverse();
+    void scoreLongDriver();
+
   void stop();
   void setState(State newState);
 
@@ -95,7 +102,7 @@ private:
 
   // Moves a motor at voltage with antistall -- reverses for STALL_REVERSE_MS if
   // jammed
-  void moveMotor(pros::Motor &motor, int voltage, int stallMa,
+  void moveMotor(int time, pros::Motor &motor, int voltage, int stallMa,
                  uint32_t &stallStart);
   void lockMotor(pros::Motor &motor, int voltage, int stallMa,
                  uint32_t &stallStart);

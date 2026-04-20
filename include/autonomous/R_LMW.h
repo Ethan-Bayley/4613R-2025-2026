@@ -35,7 +35,7 @@ public:
                         {.forwards = false, .maxSpeed = 80}, true);
 
     pros::delay(500);
-    passthrough->scoreLong();
+    passthrough->scoreLongNoColour();
     pros::delay(1250);
     passthrough->intakePreroller();
 
@@ -72,7 +72,7 @@ private:
 
   const lemlib::Pose GOAL_R_WAY = lemlib::Pose(45, 25, 0);
   const lemlib::Pose GOAL_R = lemlib::Pose(48, 40, -180);
-  const lemlib::Pose GOAL_MIDDLE{13, 50, -135};
+  const lemlib::Pose GOAL_MIDDLE{13, 52, -135};
   const lemlib::Pose LOADER_BR_WAY = lemlib::Pose(48, 15, -90);
 
   const lemlib::Pose WING_WAY = lemlib::Pose(35, 32, 180);

@@ -48,7 +48,7 @@ void Passthrough::registerHandlers(EventLoop &eventLoop) {
   // Score Long
   eventLoop.registerCommand(std::unique_ptr<Command>(new ButtonCommand(
       eventLoop.controller, pros::E_CONTROLLER_DIGITAL_L1,
-      [this]() { setState(State::SCORE_LONG); },
+      [this]() { setState(State::SCORE_LONG_DRIVER); },
       [this]() { setState(State::IDLE); })));
 
   // Score Middle
@@ -85,12 +85,12 @@ void Passthrough::setState(State newState) {
 // current exceeds threshold, reverse it for STALL_REVERSE_MS. Passing voltage=0
 // always stops the motor with no stall check.
 
-void Passthrough::moveMotor(pros::Motor &motor, int voltage, int stallMa,
-                            uint32_t &stallStart) {
+void Passthrough::moveMotor(int time, pros::Motor &motor, int voltage,
+                            int stallMa, uint32_t &stallStart) {
   uint32_t now = pros::millis();
 
   if (stallStart != 0) {
-    if ((now - stallStart) < (uint32_t)STALL_REVERSE_MS) {
+    if ((now - stallStart) < (uint32_t)time) {
       motor.move_voltage(-12000);
       return;
     }
@@ -215,15 +215,16 @@ void Passthrough::update() {
 
   switch (currentState) {
   case State::IDLE:
-    moveMotor(prerollerMotor, 0, PREROLLER_STALL_MA, prerollerStallStart);
-    moveMotor(middleMotor, 0, MIDDLE_STALL_MA, middleStallStart);
-    moveMotor(topMotor, 0, TOP_STALL_MA, topStallStart);
+    moveMotor(100, prerollerMotor, 0, PREROLLER_STALL_MA, prerollerStallStart);
+    moveMotor(100, middleMotor, 0, MIDDLE_STALL_MA, middleStallStart);
+    moveMotor(100, topMotor, 0, TOP_STALL_MA, topStallStart);
     hood.retract();
     // hood.extend();
     break;
 
   case State::INTAKE:
-    moveMotor(prerollerMotor, 12000, PREROLLER_STALL_MA, prerollerStallStart);
+    moveMotor(100, prerollerMotor, 12000, PREROLLER_STALL_MA,
+              prerollerStallStart);
 
     // Middle: run until stall, then stay stopped
     if (middleStallStart != 0) {
@@ -259,15 +260,17 @@ void Passthrough::update() {
 
   case State::INTAKE_PREROLLER:
 
-    moveMotor(prerollerMotor, 12000, PREROLLER_STALL_MA, prerollerStallStart);
-    moveMotor(middleMotor, 0, MIDDLE_STALL_MA, middleStallStart);
+    moveMotor(100, prerollerMotor, 12000, PREROLLER_STALL_MA,
+              prerollerStallStart);
+    moveMotor(100, middleMotor, 1000, MIDDLE_STALL_MA, middleStallStart);
     topMotor.move_voltage(0);
     hood.retract();
     break;
 
   case State::INTAKE_PULSEMIDDLE:
 
-    moveMotor(prerollerMotor, 12000, PREROLLER_STALL_MA, prerollerStallStart);
+    moveMotor(100, prerollerMotor, 12000, PREROLLER_STALL_MA,
+              prerollerStallStart);
     pulseMotor(middleMotor, 12000, middleStallStart);
     topMotor.move_voltage(0);
     hood.retract();
@@ -287,13 +290,15 @@ void Passthrough::update() {
       middleMotor.move_voltage(-12000);
       topMotor.move_voltage(-12000);
     } else if (colourSortState == 1) {
-      moveMotor(prerollerMotor, 6000, PREROLLER_STALL_MA, prerollerStallStart);
-      moveMotor(middleMotor, 6000, MIDDLE_STALL_MA, middleStallStart);
-      moveMotor(topMotor, 12000, TOP_STALL_MA, topStallStart);
+      moveMotor(100, prerollerMotor, 6000, PREROLLER_STALL_MA,
+                prerollerStallStart);
+      moveMotor(100, middleMotor, 6000, MIDDLE_STALL_MA, middleStallStart);
+      moveMotor(100, topMotor, 12000, TOP_STALL_MA, topStallStart);
     } else {
-      moveMotor(prerollerMotor, 12000, PREROLLER_STALL_MA, prerollerStallStart);
-      moveMotor(middleMotor, 12000, MIDDLE_STALL_MA, middleStallStart);
-      moveMotor(topMotor, -12000, TOP_STALL_MA, topStallStart);
+      moveMotor(100, prerollerMotor, 12000, PREROLLER_STALL_MA,
+                prerollerStallStart);
+      moveMotor(100, middleMotor, 12000, MIDDLE_STALL_MA, middleStallStart);
+      moveMotor(100, topMotor, -12000, TOP_STALL_MA, topStallStart);
     }
     hood.retract();
     break;
@@ -302,66 +307,84 @@ void Passthrough::update() {
   case State::SCORE_MIDDLE_SLOW: {
     bool reversing = (pros::millis() - stateEntryTime) < 200;
     if (reversing) {
-      moveMotor(prerollerMotor, -12000, PREROLLER_STALL_MA,
+      moveMotor(100, prerollerMotor, -12000, PREROLLER_STALL_MA,
                 prerollerStallStart);
-      moveMotor(middleMotor, -12000, MIDDLE_STALL_MA, middleStallStart);
-      moveMotor(topMotor, -12000, TOP_STALL_MA, topStallStart);
+      moveMotor(100, middleMotor, -12000, MIDDLE_STALL_MA, middleStallStart);
+      moveMotor(100, topMotor, -12000, TOP_STALL_MA, topStallStart);
     } else {
-      prerollerMotor.move_voltage(0);
-      middleMotor.move_voltage(8000);
-      topMotor.move_voltage(-4000);
+      moveMotor(100, prerollerMotor, 9000, PREROLLER_STALL_MA,
+                prerollerStallStart);
+      moveMotor(100, middleMotor, 9000, MIDDLE_STALL_MA, middleStallStart);
+      topMotor.move_voltage(-9000);
     }
     hood.retract();
     break;
   }
 
-  case State::HOOD_RAISED: {
-    moveMotor(prerollerMotor, 0, PREROLLER_STALL_MA, prerollerStallStart);
-    moveMotor(middleMotor, 0, MIDDLE_STALL_MA, middleStallStart);
-    moveMotor(topMotor, 0, TOP_STALL_MA, topStallStart);
+  case State::SCORE_MIDDLE_SLOW_SLOW: {
+    moveMotor(100, prerollerMotor, 6000, PREROLLER_STALL_MA,
+              prerollerStallStart);
+    moveMotor(100, middleMotor, 6000, MIDDLE_STALL_MA, middleStallStart);
+    moveMotor(100, topMotor, -5000, TOP_STALL_MA, topStallStart);
+
     hood.extend();
     break;
   }
 
+  case State::TOP_MOTOR_REVERSE: {
+    moveMotor(100, prerollerMotor, 0, PREROLLER_STALL_MA, prerollerStallStart);
+    moveMotor(100, middleMotor, 0, MIDDLE_STALL_MA, middleStallStart);
+    moveMotor(100, topMotor, -12000, TOP_STALL_MA, topStallStart);
+    hood.retract();
+    break;
+  }
+
   case State::SCORE_LOW:
-    moveMotor(prerollerMotor, -8000, PREROLLER_STALL_MA, prerollerStallStart);
-    moveMotor(middleMotor, -12000, MIDDLE_STALL_MA, middleStallStart);
-    moveMotor(topMotor, -12000, TOP_STALL_MA, topStallStart);
+    moveMotor(100, prerollerMotor, -8000, PREROLLER_STALL_MA,
+              prerollerStallStart);
+    moveMotor(100, middleMotor, -12000, MIDDLE_STALL_MA, middleStallStart);
+    moveMotor(100, topMotor, -12000, TOP_STALL_MA, topStallStart);
     break;
 
   case State::SCORE_LONG: {
     bool isDelay = (pros::millis() - stateEntryTime) < 100;
     if (!isDelay) {
       if (colourSortState == 1) {
-        moveMotor(prerollerMotor, 6000, PREROLLER_STALL_MA,
+        moveMotor(100, prerollerMotor, 6000, PREROLLER_STALL_MA,
                   prerollerStallStart);
-        moveMotor(middleMotor, 6000, MIDDLE_STALL_MA, middleStallStart);
-        moveMotor(topMotor, -12000, TOP_STALL_MA, topStallStart);
+        moveMotor(100, middleMotor, 6000, MIDDLE_STALL_MA, middleStallStart);
+        moveMotor(100, topMotor, -12000, TOP_STALL_MA, topStallStart);
       } else {
 
-        moveMotor(prerollerMotor, 12000, PREROLLER_STALL_MA,
+        moveMotor(100, prerollerMotor, 12000, PREROLLER_STALL_MA,
                   prerollerStallStart);
-        moveMotor(middleMotor, 12000, MIDDLE_STALL_MA, middleStallStart);
-        moveMotor(topMotor, 12000, TOP_STALL_MA, topStallStart);
+        moveMotor(100, middleMotor, 12000, MIDDLE_STALL_MA, middleStallStart);
+        moveMotor(100, topMotor, 12000, TOP_STALL_MA, topStallStart);
       }
     } else {
-      moveMotor(prerollerMotor, -12000, PREROLLER_STALL_MA,
+      moveMotor(100, prerollerMotor, -12000, PREROLLER_STALL_MA,
                 prerollerStallStart);
-      moveMotor(middleMotor, -12000, MIDDLE_STALL_MA, middleStallStart);
-      moveMotor(topMotor, -12000, TOP_STALL_MA, topStallStart);
+      moveMotor(100, middleMotor, -12000, MIDDLE_STALL_MA, middleStallStart);
+      moveMotor(100, topMotor, -12000, TOP_STALL_MA, topStallStart);
     }
-
-    hood.extend();
-    // hood.retract();
-    break;
   }
+  case State::SCORE_LONG_DRIVER:
+    if ((pros::millis() - stateEntryTime) > 100) {
+      moveMotor(150, prerollerMotor, 12000, PREROLLER_STALL_MA,
+                prerollerStallStart);
+      moveMotor(150, middleMotor, 12000, MIDDLE_STALL_MA, middleStallStart);
+      moveMotor(150, topMotor, 12000, TOP_STALL_MA, topStallStart);
+
+    }
+      hood.extend();
+    break;
 
   case State::SCORE_LONG_NO_COLOUR: {
     bool isDelay = (pros::millis() - stateEntryTime) < 150;
     if (!isDelay) {
-      moveMotor(prerollerMotor, 12000, PREROLLER_STALL_MA, prerollerStallStart);
-      moveMotor(middleMotor, 12000, MIDDLE_STALL_MA, middleStallStart);
-      moveMotor(topMotor, 12000, TOP_STALL_MA, topStallStart);
+      prerollerMotor.move_voltage(12000);
+      middleMotor.move_voltage(12000);
+      topMotor.move_voltage(12000);
     } else {
       prerollerMotor.move_voltage(-12000);
       middleMotor.move_voltage(-12000);
@@ -374,9 +397,9 @@ void Passthrough::update() {
     break;
   }
   case State::MIDDLE_GOAL_RECOVER:
-    moveMotor(prerollerMotor, 0, PREROLLER_STALL_MA, prerollerStallStart);
-    moveMotor(middleMotor, -12000, MIDDLE_STALL_MA, middleStallStart);
-    moveMotor(topMotor, 12000, TOP_STALL_MA, topStallStart);
+    moveMotor(100, prerollerMotor, 0, PREROLLER_STALL_MA, prerollerStallStart);
+    moveMotor(100, middleMotor, -12000, MIDDLE_STALL_MA, middleStallStart);
+    moveMotor(100, topMotor, 12000, TOP_STALL_MA, topStallStart);
     hood.retract();
     break;
   }
@@ -395,7 +418,10 @@ void Passthrough::scoreMiddle() { setState(State::SCORE_MIDDLE_FAST); }
 void Passthrough::scoreMiddleSlow() { setState(State::SCORE_MIDDLE_SLOW); }
 void Passthrough::scoreLow() { setState(State::SCORE_LOW); }
 void Passthrough::scoreLong() { setState(State::SCORE_LONG); }
-void Passthrough::hoodRaised() { setState(State::HOOD_RAISED); }
+void Passthrough::topMotorReverse() { setState(State::TOP_MOTOR_REVERSE); }
 void Passthrough::scoreLongNoColour() { setState(State::SCORE_LONG_NO_COLOUR); }
 void Passthrough::intakePulseMiddle() { setState(State::INTAKE_PULSEMIDDLE); }
 void Passthrough::middleGoalRecover() { setState(State::MIDDLE_GOAL_RECOVER); }
+void Passthrough::scoreMiddleSlowSlow() {
+  setState(State::SCORE_MIDDLE_SLOW_SLOW);
+}
