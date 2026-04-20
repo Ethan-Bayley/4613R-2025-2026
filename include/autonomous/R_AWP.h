@@ -52,7 +52,7 @@ public:
     // END OF RIGHT GOAL
 
     chassis.swingToPoint(STACK_RR.x, STACK_RR.y, lemlib::DriveSide::RIGHT, 500);
-    passthrough->intake();
+    passthrough->intakePulseMiddle();
     
     matchLoad->extend()
 
@@ -73,7 +73,10 @@ public:
 
     matchLoad->retract();
     pros::Task retractMatchloadTask([this]() {
-      pros::delay(1100);
+      pros::delay(750);
+      
+      passthrough->intakePreroller();
+      pros::delay(350);
       matchLoad->extend();
     });
     
