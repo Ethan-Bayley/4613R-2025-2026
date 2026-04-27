@@ -104,6 +104,8 @@ private:
   // jammed
   void moveMotor(int time, pros::Motor &motor, int voltage, int stallMa,
                  uint32_t &stallStart);
+  void moveMotor1(int time, pros::Motor &motor, int voltage, int stallMa,
+                 uint32_t &stallStart);
   void lockMotor(pros::Motor &motor, int voltage, int stallMa,
                  uint32_t &stallStart);
   void pulseMotor(pros::Motor &motor, int voltage, uint32_t &stallStart);

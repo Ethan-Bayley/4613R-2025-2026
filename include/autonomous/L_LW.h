@@ -66,7 +66,7 @@ private:
   const lemlib::Pose LOADER_BL = lemlib::Pose(-44, 10, 180);
 
   const lemlib::Pose GOAL_L_WAY = lemlib::Pose(-46, 24, 0);
-  const lemlib::Pose GOAL_L = lemlib::Pose(-46, 45, -180);
+  const lemlib::Pose GOAL_L = lemlib::Pose(-50, 45, -180);
   const lemlib::Pose GOAL_MIDDLE{-10, 67, -135};
   const lemlib::Pose LOADER_BL_WAY = lemlib::Pose(-36, 25, -90);
 

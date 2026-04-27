@@ -19,27 +19,27 @@ public:
 
   void run() override {
     chassis.setPose(STARTING_POS_LONG_PUSH);
-    chassis.setBrakeMode(pros::motor_brake_mode_e::E_MOTOR_BRAKE_HOLD);
-    wing->extend();
     passthrough->intake();
-
-    chassis.moveToPoint(STACK_R.x, STACK_R.y, 550, {}, true);
-    pros::delay(500);
-    matchload->extend();
     
-    chassis.turnToHeading(0, 500);
+    pros::Task ballsInMatchload([this]() {
+      pros::delay(400);
+      matchload->extend();
+    });
 
-    chassis.moveToPoint(GOAL_R_WAY.x, GOAL_R_WAY.y, 1250, {.forwards = false});
+    chassis.moveToPoint(STACK_R.x, STACK_R.y, 750, {.minSpeed = 70});
 
-    chassis.turnToPoint(GOAL_R.x, GOAL_R.y, 750, {.forwards = false});
+    chassis.moveToPoint(GOAL_R_WAY.x, GOAL_R_WAY.y, 1500, {.forwards = false});
 
-    chassis.moveToPoint(GOAL_R.x, GOAL_R.y, 1250,
-                        {.forwards = false, .maxSpeed = 80}, true);
-
-    pros::delay(500);
+    chassis.turnToPoint(GOAL_R.x, GOAL_R.y, 400, {.forwards = false});
+    
+    chassis.moveToPoint(
+        GOAL_R.x, GOAL_R.y, 750,
+        {.forwards = false, .minSpeed = 127, .earlyExitRange = 15});
+    chassis.moveToPoint(GOAL_R.x, GOAL_R.y, 750,
+                        {.forwards = false, .maxSpeed = 50}, true);
     passthrough->scoreLongNoColour();
-    pros::delay(1500);
-    matchload->retract();
+    pros::delay(1250);
+    passthrough->intake();
 
     chassis.moveToPoint(WING_WAY.x, WING_WAY.y, 750);
     chassis.turnToHeading(180, 750);
@@ -61,6 +61,7 @@ private:
   const lemlib::Pose GOAL_R_WAY = lemlib::Pose(45, 25, 0);
   const lemlib::Pose GOAL_R = lemlib::Pose(48, 40, -180);
   const lemlib::Pose GOAL_MIDDLE{13, 50, -135};
+  
   const lemlib::Pose LOADER_BR_WAY = lemlib::Pose(48, 15, -90);
 
   const lemlib::Pose WING_WAY = lemlib::Pose(60, 30, 180);

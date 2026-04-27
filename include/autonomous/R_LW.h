@@ -73,6 +73,14 @@ private:
   const lemlib::Pose WING_MID = lemlib::Pose(63, 35, 180);
   const lemlib::Pose WING_END = lemlib::Pose(60, 54, 180);
 
+  
+  const lemlib::Pose LOADER_BL_WAY = lemlib::Pose(-34, 25, -90);
+
+  const lemlib::Pose WING_WAY = lemlib::Pose(-38, 44, 180);
+  const lemlib::Pose WING_MID = lemlib::Pose(-38, 48, 180);
+
+  const lemlib::Pose WING_END = lemlib::Pose(-39, 67, 180);
+
   int TIMEOUT_SUPER_SHORT = 500;
   int TIMEOUT_SHORT = 1000;
   int TIMEOUT = 2000;

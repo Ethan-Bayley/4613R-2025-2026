@@ -90,6 +90,7 @@ void initialize() {
   });
 
   drawImage();
+  pros::delay(3000);
 }
 
 void disabled() {}
@@ -109,22 +110,15 @@ void autonomous() {
       // L_LMW
       // L_LW
       // L_LRUSH
-      R_LMW
+      // R_LMW
       // R_LW
-      // R_LRUSH
+      R_LRUSH
       >(robot.getSubsystem<Passthrough>(), robot.getSubsystem<MatchLoad>(),
         robot.getSubsystem<Wing>());
-
-  controller.clear();
-  controller.set_text(0, 1, std::to_string((pros::millis() - start) / 1000));
-  controller.set_text(1, 1, std::to_string((pros::millis() - start) / 1000));
-  controller.set_text(2, 1, std::to_string((pros::millis() - start) / 1000));
-  controller.set_text(3, 1, std::to_string((pros::millis() - start) / 1000));
-  passthroughUpdate.remove();
   /*
 
   pros build
-  pros upload --slot 5 --name R_LMW
+  pros upload --slot 7 --name R_LRUSH
 
   Slot:
   1 - R_AWP

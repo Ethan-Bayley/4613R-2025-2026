@@ -22,23 +22,26 @@ public:
     passthrough->intake();
     
     pros::Task ballsInMatchload([this]() {
-      pros::delay(350);
+      pros::delay(400);
       matchload->extend();
     });
 
-    chassis.moveToPoint(STACK_LL.x, STACK_LL.y, 750);
+    chassis.moveToPoint(STACK_LL.x, STACK_LL.y, 750, {.minSpeed = 70});
 
     chassis.moveToPoint(GOAL_L_WAY.x, GOAL_L_WAY.y, 1500, {.forwards = false});
 
-    chassis.turnToPoint(GOAL_L.x, GOAL_L.y, 500, {.forwards = false});
-    chassis.moveToPoint(GOAL_L.x, GOAL_L.y, 1750, {.forwards = false, .maxSpeed = 80}, true);
-
-    pros::delay(500);
-    passthrough->scoreLong();
+    chassis.turnToPoint(GOAL_L.x, GOAL_L.y, 400, {.forwards = false});
+    
+    chassis.moveToPoint(
+        GOAL_L.x, GOAL_L.y, 750,
+        {.forwards = false, .minSpeed = 127, .earlyExitRange = 15});
+    chassis.moveToPoint(GOAL_L.x, GOAL_L.y, 750,
+                        {.forwards = false, .maxSpeed = 50}, true);
+    passthrough->scoreLongNoColour();
     pros::delay(1250);
     passthrough->intake();
 
-    chassis.moveToPoint(LOADER_BL_WAY.x, LOADER_BL_WAY.y, 750);
+    chassis.moveToPoint(LOADER_BL_WAY.x, LOADER_BL_WAY.y, 750, {.minSpeed = 40});
     matchload->retract();
 
     // chassis.moveToPoint(WING_WAY.x, WING_WAY.y, 750, {.forwards = false, .earlyExitRange = 4});
@@ -62,12 +65,14 @@ private:
   const lemlib::Pose GOAL_L_WAY = lemlib::Pose(-48, 24, 0);
   const lemlib::Pose GOAL_L = lemlib::Pose(-49, 51, -180);
   const lemlib::Pose GOAL_MIDDLE{-10, 67, -135};
-  const lemlib::Pose LOADER_BL_WAY = lemlib::Pose(-38, 25, -90);
+
+  
+  const lemlib::Pose LOADER_BL_WAY = lemlib::Pose(-34, 25, -90);
 
   const lemlib::Pose WING_WAY = lemlib::Pose(-38, 44, 180);
-  const lemlib::Pose WING_MID = lemlib::Pose(-39, 48, 180);
+  const lemlib::Pose WING_MID = lemlib::Pose(-38, 48, 180);
 
-  const lemlib::Pose WING_END = lemlib::Pose(-41, 67, 180);
+  const lemlib::Pose WING_END = lemlib::Pose(-39, 67, 180);
 
   int TIMEOUT_SUPER_SHORT = 500;
   int TIMEOUT_SHORT = 1000;
